@@ -1,0 +1,27 @@
+.body-auth {
+	width: 40.2%;
+	background: #000;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	padding: 24px 48px;
+	&__row {
+		flex-direction: column;
+	}
+	&__logo-wrap {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 24px;
+	}
+	&__form {
+		flex: 1 1 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+	&__form-body {
+		width: 100%;
+		max-width: 420px;
+	}
+}

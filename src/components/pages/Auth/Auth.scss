@@ -1,0 +1,43 @@
+.auth {
+	min-height: 100vh;
+	animation-name: auth-bg-ellipses;
+	animation-duration: 15s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+@keyframes auth-bg-ellipses {
+	0% {
+		background:
+			url("../../../assets/images/auth/blur-bg.svg") 50px 500px / 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") 450px -200px / 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") -300px 150px / 700px 700px  no-repeat
+	}
+
+	25% {
+		background:
+			url("../../../assets/images/auth/blur-bg.svg") 500px 400px/ 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") -250px 200px/ 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") -350px 100px / 700px 700px  no-repeat
+	}
+	50% {
+		background:
+			url("../../../assets/images/auth/blur-bg.svg") 600px -100px / 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") 650px 300px/ 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") -450px 400px / 700px 700px  no-repeat
+	}
+
+	75% {
+		background:
+			url("../../../assets/images/auth/blur-bg.svg") 250px -400px/ 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") 1050px -100px/ 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") 150px -200px / 700px 700px  no-repeat
+	}
+	100% {
+		background:
+			url("../../../assets/images/auth/blur-bg.svg") 50px 500px / 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") 450px -200px / 700px 700px  no-repeat,
+			url("../../../assets/images/auth/blur-bg2.svg") -300px 150px / 700px 700px  no-repeat
+	}
+}
+

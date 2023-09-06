@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"jsx": "react-jsx",
+		"module": "ESNext",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"moduleResolution": "Node",
+		"baseUrl": "./",
+		"allowSyntheticDefaultImports": true,
+		"isolatedModules": true,
+		"paths": {
+			"@reduxjs/toolkit": [
+				"node_modules/@reduxjs/toolkit/dist"
+			]
+		},
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}
