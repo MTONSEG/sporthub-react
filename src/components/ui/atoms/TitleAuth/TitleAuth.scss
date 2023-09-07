@@ -2,4 +2,7 @@
 	font-size: 36px;
 	font-weight: 500;
 	line-height: normal;
+	@media (max-width: 575px) {
+		font-size: 32px;
+	}
 }

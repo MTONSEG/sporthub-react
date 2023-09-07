@@ -1,6 +1,8 @@
 .sing-in {
-	&__input-list,
-	&__footer {
+	&__input-list{
+		margin-bottom: 35px;
+	}
+	&__footer{
 		margin-bottom: 40px;
 	}
 }

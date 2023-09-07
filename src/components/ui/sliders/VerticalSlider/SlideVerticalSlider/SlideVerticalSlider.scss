@@ -1,0 +1,42 @@
+.vertical-slide {
+	border-radius: 16px;
+	overflow: hidden;
+	width: 280px;
+	height: 340px;
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	&__image,
+	&__image-wrap {
+		width: 100%;
+		height: 100%;
+	}
+	&__image-wrap {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	&__image {
+		object-fit: cover;
+	}
+	&__body {
+		position: relative;
+		z-index: 1;
+		padding: 16px;
+	}
+	&__name {
+		font-weight: 600;
+		line-height: 1.12;
+		margin-bottom: 4px;
+		font-size: 16px;
+	}
+	&__text {
+		line-height: 1.28;
+	}
+	&.small .vertical-slide__name{
+		font-size: 14px;
+	}
+	&.small .vertical-slide__text {
+		font-size: 12px;
+	}
+}

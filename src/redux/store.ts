@@ -5,6 +5,7 @@ import singupSlice from "./slices/auth/singupSlice";
 import forgotSlice from "./slices/auth/forgotSlice";
 import restoreSlice from "./slices/auth/restoreSlice";
 import checkSlice from "./slices/auth/checkSlice";
+import sliderAuthSlice from "./slices/auth/sliderAuthSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
 		forgot: forgotSlice,
 		restore: restoreSlice,
 		check: checkSlice,
+		sliderAuth: sliderAuthSlice
 	},
 
 })

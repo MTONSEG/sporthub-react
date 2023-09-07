@@ -25,7 +25,7 @@ const Input: React.FC<inputType> = ({
 	value,
 	setValue,
 	maxWidth = '100%',
-	mb = '24px'
+	mb = '22px'
 }) => {
 	const [typePass, setTypePass] = useState<passType>('password');
 	const forgot = useAppSelector(state => state.singin.forgot);

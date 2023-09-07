@@ -1,3 +1,19 @@
-.slider-auth{
+.slider-auth {
 	width: 59.8%;
+	height: 100vh;
+	overflow: hidden;
+	&__row {
+		display: flex;
+		justify-content: center;
+		column-gap: 43px;
+	}
+	&__left {
+		flex: 0 0 280px;
+	}
+	&__right {
+		flex: 0 0 220px;
+	}
+	@media (max-width: 992px) {
+		display: none;
+	}
 }
