@@ -7,10 +7,6 @@ import { Button } from "../../../ui/atoms/Button/Button";
 import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 
-const data = {
-	title: 'Sign in'
-}
-
 const SingIn = () => {
 	const state = useAppSelector(state => state.singin);
 	const [email, setEmail] = useState<string>('');
