@@ -3,6 +3,9 @@ import './SingIn.scss';
 import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import { useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
+import { Button } from "../../../ui/atoms/Button/Button";
+import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
+import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 
 const data = {
 	title: 'Sign in'
@@ -15,22 +18,35 @@ const SingIn = () => {
 
 	return (
 		<>
-			<TitleAuth title={state.title} mb="40px"/>
+			<TitleAuth title={state.title} mb="40px" />
 			<div className="sing-in">
-				<Input
-					value={email}
-					setValue={setEmail}
-					title={state.email.title}
-					placeholder={state.email.placeholder}
-				/>
-				<Input
-					value={password}
-					setValue={setPassword}
-					title={state.password.title}
-					placeholder={state.password.placeholder}
-					type="password"
+				<div className="sing-in__input-list">
+					<Input
+						value={email}
+						setValue={setEmail}
+						title={state.email.title}
+						placeholder={state.email.placeholder}
+					/>
+					<Input
+						value={password}
+						setValue={setPassword}
+						title={state.password.title}
+						placeholder={state.password.placeholder}
+						type="password"
+						mb="0"
+					/>
+				</div>
+				<div className="sing-in__footer">
+					<Button maxWidth="180px" centered={true}>{state.btn}</Button>
+				</div>
+
+				<SubtextAuth
+					titleLink={state.subtext.linkTitle}
+					path={state.subtext.link}
+					text={state.subtext.text}
 				/>
 			</div>
+			<TermsPolicyAuth/>
 		</>
 	)
 }

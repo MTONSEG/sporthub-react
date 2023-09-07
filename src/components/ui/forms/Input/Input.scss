@@ -13,6 +13,9 @@
 		font-weight: 500;
 		color: #ad7955;
 		margin: 0 0 0 10px;
+		&:hover {
+			color: rgba(173, 122, 85, 0.7);
+		}
 	}
 	&__input {
 		display: block;
@@ -23,8 +26,15 @@
 		line-height: normal;
 		border-radius: 8px;
 		background: #222;
+		border: 1px solid transparent;
 		&::placeholder {
 			color: #999999;
+		}
+		&:hover {
+			border-color: rgba(173, 122, 85, 0.5);
+		}
+		&:focus {
+			border-color: #ad7955;
 		}
 	}
 	&__pass-view-btn {
@@ -34,12 +44,33 @@
 		position: absolute;
 		top: 0;
 		right: 12px;
+		&:hover {
+			opacity: 0.5;
+		}
+		&:hover ~ .input-field__input {
+			border-color: rgba(173, 122, 85, 0.5);
+		}
+		&.show::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 22px;
+			height: 1px;
+			background: #fff;
+			display: block;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%) rotate(45deg);
+			z-index: 1;
+		}
 	}
 	&__eye-icon {
 		width: 22px;
 		height: 12px;
 		fill: #fff;
 		stroke: #fff;
+		position: relative;
 	}
 	&__wrapper {
 		position: relative;

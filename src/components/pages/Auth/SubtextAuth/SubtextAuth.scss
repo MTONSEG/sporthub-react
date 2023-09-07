@@ -1,0 +1,16 @@
+.subtext-auth {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	line-height: normal;
+	gap: 3px;
+	&__link {
+		font-weight: 500;
+		color: #AD7955;
+		text-decoration: underline;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}

@@ -3,6 +3,7 @@ import './Input.scss';
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/hooks";
 import { Icon } from "../../atoms/Icon/Icon";
+import { isChecked } from "../../../../utils/addActiveClassFunctions";
 
 type inputType = {
 	title?: string,
@@ -14,6 +15,8 @@ type inputType = {
 	mb?: string,
 }
 
+type passType = 'password' | 'text';
+
 
 const Input: React.FC<inputType> = ({
 	title = '',
@@ -24,7 +27,7 @@ const Input: React.FC<inputType> = ({
 	maxWidth = '100%',
 	mb = '24px'
 }) => {
-
+	const [typePass, setTypePass] = useState<passType>('password');
 	const forgot = useAppSelector(state => state.singin.forgot);
 	const isPassword: boolean = type === 'password';
 	const styles: CSSProperties = {
@@ -32,8 +35,11 @@ const Input: React.FC<inputType> = ({
 		marginBottom: mb
 	}
 
-	const passViewClickHandler = () => {
+	const passViewClickHandler = (): void => {
+		if (typePass === 'password') setTypePass('text');
+		if (typePass === 'text') setTypePass('password');
 	}
+
 	return (
 		<div className="input-field" style={styles}>
 			<div className="input-field__head">
@@ -50,31 +56,32 @@ const Input: React.FC<inputType> = ({
 			</div>
 
 			<div className="input-field__wrapper">
+				{
+					isPassword
+						? <button
+							className={`input-field__pass-view-btn ${isChecked(typePass, 'text', 'show')}`}
+							onClick={passViewClickHandler}
+						>
+							<Icon
+								id="eye"
+								className={`input-field__eye-icon`}
+							/>
+						</button>
+
+						: <></>
+				}
 				<input
 					style={
 						isPassword ? { paddingRight: '48px' } : {}
 					}
-					type={type}
+					type={isPassword ? typePass : type}
 					className="input-field__input"
 					aria-label={title}
 					value={value}
 					placeholder={placeholder}
 					onChange={e => { setValue(e.target.value) }}
 				/>
-				{
-					isPassword
-						? <button
-							className="input-field__pass-view-btn"
-							onClick={passViewClickHandler}
-						>
-							<Icon
-								id="eye"
-								className="input-field__eye-icon"
-							/>
-						</button>
 
-						: <></>
-				}
 			</div>
 		</div>
 	)
