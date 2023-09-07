@@ -13,6 +13,7 @@ type inputType = {
 	setValue: Function,
 	maxWidth?: string,
 	mb?: string,
+	forgotLink?:boolean
 }
 
 type passType = 'password' | 'text';
@@ -25,7 +26,8 @@ const Input: React.FC<inputType> = ({
 	value,
 	setValue,
 	maxWidth = '100%',
-	mb = '22px'
+	mb = '22px',
+	forgotLink = false
 }) => {
 	const [typePass, setTypePass] = useState<passType>('password');
 	const forgot = useAppSelector(state => state.singin.forgot);
@@ -45,7 +47,7 @@ const Input: React.FC<inputType> = ({
 			<div className="input-field__head">
 				<p className="input-field__title">{title}</p>
 				{
-					isPassword
+					forgotLink
 						? <Link className="input-field__forgot-link"
 							to={forgot.link}>
 							{forgot.title}

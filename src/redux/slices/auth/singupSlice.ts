@@ -1,55 +1,47 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE } from "../../../routes/routes";
+import { createSlice } from "@reduxjs/toolkit";
+import { AUTH_ROUTE } from "../../../routes/routes";
+import { inputType, subtextType } from "./singinSlice";
 
-type forgotType = {
+export type singUpType = {
 	title: string,
-	link: string
-}
-export type inputType = {
-	title: string,
-	placeholder: string
-}
-export type subtextType = {
-	text: string,
-	linkTitle: string,
-	link: string
-}
-
-export type singInType = {
-	title: string,
-	forgot: forgotType,
 	btn: string,
+	firstName: inputType,
+	lastName: inputType,
 	email: inputType,
 	password: inputType
 	subtext: subtextType,
 	terms: string
 }
 
-const initialState: singInType = {
-	title: 'Sign in',
-	forgot: {
-		title: 'Forgot password?',
-		link: AUTH_FORGOT_ROUTE
+const initialState: singUpType = {
+	title: 'Sign up',
+	btn: 'Sign up',
+	firstName: {
+		title: 'First Name',
+		placeholder: 'Your First Name'
 	},
-	btn: 'Sign in',
+	lastName: {
+		title: 'Last Name',
+		placeholder: 'Your Last Name'
+	},
 	email: {
 		title: 'Email',
 		placeholder: 'Your Email'
 	},
 	password: {
-		title: 'Email',
-		placeholder: 'Your Email'
+		title: 'Password',
+		placeholder: 'Your password'
 	},
 	subtext: {
-		text: 'Don’t have an account?',
-		linkTitle: 'Sign up',
-		link: AUTH_REG_ROUTE
+		text: 'Already have an account?',
+		linkTitle: 'Sign in',
+		link: AUTH_ROUTE
 	},
 	terms: 'By proceeding, you agree to our Terms of Use and Privacy Policy'
 }
 
 const singupSlice = createSlice({
-	name: 'singIn',
+	name: 'singUp',
 	initialState,
 	reducers: {}
 })

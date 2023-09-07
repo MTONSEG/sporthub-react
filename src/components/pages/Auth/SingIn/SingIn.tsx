@@ -26,12 +26,14 @@ const SingIn = () => {
 						setValue={setEmail}
 						title={state.email.title}
 						placeholder={state.email.placeholder}
+						type="email"
 					/>
 					<Input
 						value={password}
 						setValue={setPassword}
 						title={state.password.title}
 						placeholder={state.password.placeholder}
+						forgotLink={true}
 						type="password"
 						mb="0"
 					/>
