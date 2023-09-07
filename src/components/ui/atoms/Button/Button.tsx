@@ -32,7 +32,8 @@ export const Button: React.FC<propsType> = ({
 	}
 
 	return (
-		<Link to='/' className={`button ${className}`} style={styles} onClick={onClickHandler}>
+		<Link to='/' className={`button ${className}`} style={styles}
+			onClick={e => onClickHandler(e)}>
 			{children}
 		</Link>
 	)

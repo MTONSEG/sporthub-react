@@ -1,42 +1,31 @@
 import React from "react";
-import './Auth.scss';
-import { Route, Routes } from "react-router-dom";
+import './CheckEmail.scss';
+import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
+import { useAppSelector } from "../../../../hooks/hooks";
+import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 
-const Auth = () => {
+type propsType = {
+	email:string
+}
+
+const CheckEmail:React.FC<propsType> = ({ email }) => {
+	const state = useAppSelector(state => state.check);
+
 	return (
-		<div className="auth">
-			<ContainerAuth>
-				<SliderAuth />
-				<BodyAuth />
-			</ContainerAuth>
-		</div>
+		<>
+			<TitleAuth title={state.title} mb="16px" />
+			<p className="forgot-text" >
+				Check your email <span>{email}</span> for instructions on how to reset your password. If it doesn’t appear within a few minutes, check your spam folder.
+			</p>
+			<div className="sing-in">
+				<SubtextAuth
+					titleLink={state.subtext.linkTitle}
+					path={state.subtext.link}
+					text={state.subtext.text}
+				/>
+			</div>
+		</>
 	)
 }
 
-export default Auth;
-
-const BodyAuth = () => {
-	return (
-		<div className="body-auth">
-			lol
-		</div>
-	)
-}
-
-const SliderAuth = () => {
-	return (
-		<div className="slider-auth">
-			<Routes>
-				<Route index element={<></>}/>
-			</Routes>
-		</div>
-	)
-}
-
-const ContainerAuth = ({ children }) => {
-	return (
-		<div className="container-auth">
-			{children}
-		</div>
-	)
-}
+export default CheckEmail;

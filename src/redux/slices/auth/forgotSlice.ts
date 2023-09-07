@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { inputType, subtextType } from "./singinSlice";
+import { inputType} from "./singinSlice";
 
 export type forgotType = {
 	title: string,

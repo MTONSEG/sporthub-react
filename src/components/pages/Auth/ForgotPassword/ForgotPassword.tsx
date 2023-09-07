@@ -4,18 +4,26 @@ import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import { useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
-import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
-import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
+import { useNavigate } from "react-router-dom";
+
+type propsType = {
+	setRestoreEmail: Function
+}
 
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC<propsType> = ({ setRestoreEmail }) => {
 	const state = useAppSelector(state => state.forgot);
+	const navigate = useNavigate();
 	const [email, setEmail] = useState<string>('');
+
+	const handlerClickBtn = (): void => {
+		setRestoreEmail(email);
+	}
 
 	return (
 		<>
 			<TitleAuth title={state.title} mb="16px" />
-			<p className="forgot-text" >{state.text }</p>
+			<p className="forgot-text" >{state.text}</p>
 			<div className="sing-in">
 				<div className="sing-in__input-list">
 					<Input
@@ -28,7 +36,10 @@ const ForgotPassword = () => {
 					/>
 				</div>
 				<div className="sing-in__footer">
-					<Button maxWidth="180px" centered={true}>{state.btn}</Button>
+					<Button
+						maxWidth="180px"
+						onClickHandler={handlerClickBtn}
+						centered={true}>{state.btn}</Button>
 				</div>
 
 
