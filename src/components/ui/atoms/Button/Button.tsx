@@ -9,7 +9,8 @@ type propsType = {
 	className?: string,
 	style?: CSSProperties,
 	centered?: boolean,
-	mb?: string | number
+	mb?: string | number,
+	path?:string
 }
 
 export const Button: React.FC<propsType> = ({
@@ -19,7 +20,8 @@ export const Button: React.FC<propsType> = ({
 	className = '',
 	style = {},
 	centered = false,
-	mb = 0
+	mb = 0,
+	path = ''
 }) => {
 
 	const isCentered = centered ? { margin: '0 auto' } : {};
@@ -32,8 +34,8 @@ export const Button: React.FC<propsType> = ({
 	}
 
 	return (
-		<Link to='/' className={`button ${className}`} style={styles}
-			onClick={e => onClickHandler(e)}>
+		<Link to={path} className={`button ${className}`} style={styles}
+			onClick={onClickHandler}>
 			{children}
 		</Link>
 	)

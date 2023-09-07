@@ -1,51 +1,24 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE } from "../../../routes/routes";
+import { createSlice } from "@reduxjs/toolkit";
+import { inputType} from "./singinSlice";
 
-type forgotType = {
+export type restorePassType = {
 	title: string,
-	link: string
-}
-export type inputType = {
-	title: string,
-	placeholder: string
-}
-export type subtextType = {
-	text: string,
-	linkTitle: string,
-	link: string
-}
-
-export type singInType = {
-	title: string,
-	forgot: forgotType,
 	btn: string,
-	email: inputType,
-	password: inputType
-	subtext: subtextType,
-	terms: string
+	password: inputType,
+	confirmPassword: inputType,
 }
 
-const initialState: singInType = {
-	title: 'Sign in',
-	forgot: {
-		title: 'Forgot password?',
-		link: AUTH_FORGOT_ROUTE
-	},
-	btn: 'Sign in',
-	email: {
-		title: 'Email',
-		placeholder: 'Your Email'
-	},
+const initialState: restorePassType = {
+	title: 'Restore password',
+	btn: 'Save',
 	password: {
-		title: 'Email',
-		placeholder: 'Your Email'
+		title: 'New Password',
+		placeholder: 'New password'
 	},
-	subtext: {
-		text: 'Don’t have an account?',
-		linkTitle: 'Sign up',
-		link: AUTH_REG_ROUTE
+	confirmPassword: {
+		title: 'Confirm Password',
+		placeholder: 'Confirm password'
 	},
-	terms: 'By proceeding, you agree to our Terms of Use and Privacy Policy'
 }
 
 const restoreSlice = createSlice({
@@ -54,5 +27,5 @@ const restoreSlice = createSlice({
 	reducers: {}
 })
 
-// export const { test } = restoreSlice.actions;
+// export const { test } = singupSlice.actions;
 export default restoreSlice.reducer;

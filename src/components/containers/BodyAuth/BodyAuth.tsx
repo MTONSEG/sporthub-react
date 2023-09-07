@@ -6,6 +6,7 @@ import SingIn from "../../pages/Auth/SingIn/SingIn";
 import SingUp from "../../pages/Auth/SingUp/SingUp";
 import ForgotPassword from "../../pages/Auth/ForgotPassword/ForgotPassword";
 import CheckEmail from "../../pages/Auth/CheckEmail/CheckEmail";
+import RestorePassword from "../../pages/Auth/RestorePassword/RestorePassword";
 
 export const BodyAuth = () => {
 	const [restoreEmail, setRestoreEmail] = useState<string>('test@mgmail.com');
@@ -21,7 +22,7 @@ export const BodyAuth = () => {
 						<Route index element={<SingIn />} />
 						<Route path="reg" element={<SingUp />} />
 						<Route path="forgot" element={<ForgotPassword setRestoreEmail={setRestoreEmail} />} />
-						<Route path="restore" element={<>restore pass</>} />
+						<Route path="restore" element={<RestorePassword />} />
 						<Route path="check" element={<CheckEmail email={restoreEmail} />} />
 					</Routes>
 				</div>

@@ -11,12 +11,12 @@ const initialState: forgotType = {
 	subtext: {
 		text: 'Didn\'t receive the email?',
 		linkTitle: 'Go to Support',
-		link: '/'
+		link: ''
 	},
 }
 
 const checkSlice = createSlice({
-	name: 'forgotPassword',
+	name: 'checkEmail',
 	initialState,
 	reducers: {}
 })
