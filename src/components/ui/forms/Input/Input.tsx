@@ -4,6 +4,14 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/hooks";
 import { Icon } from "../../atoms/Icon/Icon";
 import { isChecked } from "../../../../utils/addActiveClassFunctions";
+import InputDateMask from 'react-input-mask';
+
+type eventTarget = {
+	target: {
+		value: string;
+	}
+}
+
 
 type inputType = {
 	title?: string,
@@ -13,7 +21,9 @@ type inputType = {
 	setValue: Function,
 	maxWidth?: string,
 	mb?: string,
-	forgotLink?:boolean
+	forgotLink?: boolean,
+	dateMask?: string,
+	maskChar?: string,
 }
 
 type passType = 'password' | 'text';
@@ -27,7 +37,9 @@ const Input: React.FC<inputType> = ({
 	setValue,
 	maxWidth = '100%',
 	mb = '22px',
-	forgotLink = false
+	forgotLink = false,
+	dateMask,
+	maskChar
 }) => {
 	const [typePass, setTypePass] = useState<passType>('password');
 	const forgot = useAppSelector(state => state.singin.forgot);
@@ -72,17 +84,33 @@ const Input: React.FC<inputType> = ({
 
 						: <></>
 				}
-				<input
-					style={
-						isPassword ? { paddingRight: '48px' } : {}
-					}
-					type={isPassword ? typePass : type}
-					className="input-field__input"
-					aria-label={title}
-					value={value}
-					placeholder={placeholder}
-					onChange={e => { setValue(e.target.value) }}
-				/>
+				{
+					dateMask
+						? <>
+							<InputDateMask
+								className="input-field__input"
+								aria-label={title}
+								mask={dateMask}
+								maskChar={maskChar}
+								placeholder={placeholder}
+								value={value}
+								onChange={(e: eventTarget) => { setValue(e.target.value) }}
+							/>
+						</>
+
+						: <input
+							style={
+								isPassword ? { paddingRight: '48px' } : {}
+							}
+							type={isPassword ? typePass : type}
+							className="input-field__input"
+							aria-label={title}
+							value={value}
+							placeholder={placeholder}
+							onChange={(e: eventTarget) => { setValue(e.target.value) }}
+						/>
+				}
+
 
 			</div>
 		</div>

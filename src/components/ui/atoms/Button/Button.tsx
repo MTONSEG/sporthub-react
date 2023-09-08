@@ -2,6 +2,8 @@ import React, { CSSProperties, MouseEventHandler } from "react";
 import './Button.scss';
 import { Link } from "react-router-dom";
 
+type variantType = 'black' | 'default'
+
 type propsType = {
 	children: any,
 	maxWidth?: string,
@@ -10,7 +12,8 @@ type propsType = {
 	style?: CSSProperties,
 	centered?: boolean,
 	mb?: string | number,
-	path?:string
+	path?: string,
+	variant?: variantType
 }
 
 export const Button: React.FC<propsType> = ({
@@ -21,7 +24,8 @@ export const Button: React.FC<propsType> = ({
 	style = {},
 	centered = false,
 	mb = 0,
-	path = ''
+	path = '',
+	variant = 'default'
 }) => {
 
 	const isCentered = centered ? { margin: '0 auto' } : {};
@@ -34,7 +38,7 @@ export const Button: React.FC<propsType> = ({
 	}
 
 	return (
-		<Link to={path} className={`button ${className}`} style={styles}
+		<Link to={path} className={`button button_${variant} ${className}`} style={styles}
 			onClick={onClickHandler}>
 			{children}
 		</Link>

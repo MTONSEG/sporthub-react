@@ -11,4 +11,14 @@
 	&:hover {
 		background: rgba(173, 122, 85, 0.7);
 	}
+	&_black {
+		background: #111;
+		border: 1px solid #ad7955;
+		color: #ad7955;
+		&:hover {
+			background: #222;
+			color: #9b5624;
+			border-color: #9b5624;
+		}
+	}
 }

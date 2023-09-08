@@ -10,7 +10,9 @@ export type genderType = 'male' | 'female' | 'none';
 
 export type birthdayType = {
 	title: string,
-	text: string
+	placeholder: string,
+	dateMask: string,
+	maskChar: string,
 }
 export type radioType = {
 	id: string | number,
@@ -28,7 +30,7 @@ export type personalAuthType = {
 	btnNext: string,
 	btnBack: string,
 	upload: uploadType,
-	birthday: inputType,
+	birthday: birthdayType,
 	radio: radioListType
 
 }
@@ -43,8 +45,10 @@ const initialState: personalAuthType = {
 	btnNext: 'Finish',
 	btnBack: 'Back',
 	birthday: {
-		title: 'birthday',
-		placeholder: 'MM.DD.YYYY'
+		title: 'Date of birthday',
+		placeholder: 'MM.DD.YYYY',
+		dateMask: '99.99.9999',
+		maskChar: '_'
 	},
 	radio: {
 		title: 'Gender',
