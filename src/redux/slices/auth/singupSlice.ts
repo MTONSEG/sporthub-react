@@ -1,8 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AUTH_ROUTE } from "../../../routes/routes";
 import { inputType, subtextType } from "./singinSlice";
 
+interface ICurrent {
+	firstName: string,
+	lastName: string,
+	email: string,
+	password: string,
+	gender?: string,
+	dob?: string
+}
+
 export type singUpType = {
+	current: ICurrent,
 	title: string,
 	btn: string,
 	firstName: inputType,
@@ -14,6 +24,12 @@ export type singUpType = {
 }
 
 const initialState: singUpType = {
+	current: {
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+	},
 	title: 'Sign up',
 	btn: 'Sign up',
 	firstName: {
@@ -43,8 +59,12 @@ const initialState: singUpType = {
 const singupSlice = createSlice({
 	name: 'singUp',
 	initialState,
-	reducers: {}
+	reducers: {
+		setCurrentReg(state, action: PayloadAction<ICurrent>) {
+			state.current = action.payload;
+		},
+	}
 })
 
-// export const { test } = singupSlice.actions;
+export const { setCurrentReg } = singupSlice.actions;
 export default singupSlice.reducer;

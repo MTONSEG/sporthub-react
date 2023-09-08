@@ -9,6 +9,8 @@ import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
+import { setCurrentReg } from "../../../../redux/slices/auth/singupSlice";
+import { getClearMessage } from "../../../../utils/getErrorMessage";
 
 interface IAdditionalData {
 	displayName: string
@@ -18,15 +20,31 @@ interface IAdditionalData {
 const SingUp = () => {
 	const state = useAppSelector(state => state.singup);
 	const alert = useAppSelector(state => state.alert);
+
 	const [firstName, setFirstName] = useState<string>('');
 	const [lastName, setLastName] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
-	const [alertMess, setAlertMess] = useState<string>('test');
+
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const handleSingUp = (): void => {
+		const isFullInfo = firstName && lastName && email && password;
+
+		if (!isFullInfo) {
+			dispatch(setVarianError());
+			dispatch(setMessage(alert.require));
+			dispatch(showAlert(true));
+			setTimeout((): void => {
+				dispatch(showAlert(false));
+				dispatch(setVarianMess());
+			}, 3000)
+			return
+		}
+
+		dispatch(setCurrentReg({ firstName, lastName, email, password }))
+
 		const auth = getAuth();
 
 		createUserWithEmailAndPassword(auth, email, password)
@@ -39,22 +57,19 @@ const SingUp = () => {
 
 				updateProfile(auth.currentUser, additionalData);
 
-				navigate('/auth');
+				navigate('/auth/personal');
 				dispatch(setMessage(alert.success))
 				dispatch(showAlert(true));
 
 				setTimeout((): void => {
 					dispatch(showAlert(false));
-				}, 3000)
+				}, 5000)
 			})
 			.catch(error => {
-				console.log(error.message)
-				let errorMess: string = error.code.split('/').pop();
-				let message: string = errorMess.charAt(0).toUpperCase() + errorMess.slice(1)
-
 				dispatch(setVarianError());
-				dispatch(setMessage(message));
+				dispatch(setMessage(getClearMessage(error.code)));
 				dispatch(showAlert(true));
+				
 				setTimeout((): void => {
 					dispatch(showAlert(false));
 					dispatch(setVarianMess());

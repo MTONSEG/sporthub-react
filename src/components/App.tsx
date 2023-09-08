@@ -13,7 +13,7 @@ const App = () => {
 			<Routes>
 				<Route index element={<Main/>} />
 				<Route path="/auth/*" element={<Auth />} />
-				<Route path="/auth/personal" element={<PersonalAuth/>}/>
+				{/* <Route path="/auth/personal" element={<PersonalAuth/>}/> */}
 			</Routes>
 			<Alert/>
 		</div>

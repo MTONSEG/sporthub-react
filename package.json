@@ -4,10 +4,10 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack server",
+    "dev": "webpack server",
     "build": "webpack --mode=production",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "sb": "storybook dev -p 6006",
+    "build-sb": "storybook build"
   },
   "keywords": [],
   "author": "",

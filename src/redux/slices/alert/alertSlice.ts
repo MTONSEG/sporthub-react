@@ -4,14 +4,18 @@ export type alertType = {
 	variant: 'error' | 'mess',
 	mess: string,
 	show: boolean,
-	success: string
+	success: string,
+	require: string,
+	needReg: string,
 }
 
 const initialState: alertType = {
 	variant: 'mess',
 	mess: '',
 	show: false,
-	success: 'Success. Can you sing in with your email and password'
+	success: 'You have successfully registered. \nAdd some information about yourself.',
+	require: 'All fields are required',
+	needReg: 'First you need to Sing Up'
 }
 
 const alertSlice = createSlice({
