@@ -1,0 +1,9 @@
+.radio-list {
+	&__title {
+		margin-bottom: 4px;
+	}
+	&__radios-wrap {
+		display: flex;
+		column-gap: 16px;
+	}
+}

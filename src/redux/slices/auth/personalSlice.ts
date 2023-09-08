@@ -6,6 +6,7 @@ export type uploadType = {
 	title: string,
 	text: string
 }
+export type genderType = 'male' | 'female' | 'none';
 
 export type birthdayType = {
 	title: string,
@@ -14,7 +15,7 @@ export type birthdayType = {
 export type radioType = {
 	id: string | number,
 	title: string,
-	checked: boolean
+	value: genderType
 }
 export type radioListType = {
 	title: string,
@@ -48,9 +49,9 @@ const initialState: personalAuthType = {
 	radio: {
 		title: 'Gender',
 		list: [
-			{ id: uuid(), title: 'Male', checked: false },
-			{ id: uuid(), title: 'Female', checked: false },
-			{ id: uuid(), title: 'None', checked: false },
+			{ id: uuid(), title: 'Male', value:'male' },
+			{ id: uuid(), title: 'Female', value:'female' },
+			{ id: uuid(), title: 'None', value:'none'},
 		]
 	}
 }
