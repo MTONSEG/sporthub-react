@@ -4,7 +4,8 @@ import uuid from "react-uuid";
 
 export type uploadType = {
 	title: string,
-	text: string
+	text: string,
+	accept: string,
 }
 export type genderType = 'male' | 'female' | 'none';
 
@@ -39,6 +40,7 @@ const initialState: personalAuthType = {
 	gender: '',
 	title: 'Personal Information',
 	upload: {
+		accept:'.jpg, .png, .jpeg',
 		title: 'Information about adding photo',
 		text: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
 	},

@@ -25,7 +25,10 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 				<Upload
 					title={upload.title}
 					text={upload.text}
-					mb="28px" />
+					mb="28px"
+					// accept={upload.accept}
+					accept={''}
+				/>
 				<RadioList
 					mb="24px"
 					title={radio.title}
