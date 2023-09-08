@@ -11,6 +11,7 @@ import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../.
 import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE } from "../../../../routes/routes";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getStorage, ref } from "firebase/storage";
 
 type propsType = {
 	email?: string
@@ -33,6 +34,7 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const auth = getAuth();
+	const storage = getStorage();
 
 	useEffect(() => {
 		signInWithEmailAndPassword(auth, 'mtonseg@gmail.com', 'pass123')
@@ -49,14 +51,14 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 						dispatch(setVarianMess());
 					}, 3000);
 
-					// navigate(AUTH_REG_ROUTE);
+					navigate(AUTH_REG_ROUTE);
 				}
 			})
 
 	}, [])
 
 	const handlerFinishBtn = (): void => {
-
+		console.log(storage);
 	}
 
 	return (
@@ -67,6 +69,7 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 				text={upload.text}
 				mb="28px"
 				accept={upload.accept}
+				auth={auth}
 			/>
 			<RadioList
 				mb="24px"

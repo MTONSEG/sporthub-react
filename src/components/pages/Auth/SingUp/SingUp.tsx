@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentReg } from "../../../../redux/slices/auth/singupSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 
-interface IAdditionalData {
+export interface IAdditionalData {
 	displayName: string
 }
 

@@ -1,12 +1,25 @@
 import React, { CSSProperties, ChangeEvent, ChangeEventHandler, useState } from "react";
 import './Upload.scss';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
+import { useNavigate } from "react-router-dom";
+import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
+import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { Auth, updateProfile } from "firebase/auth";
 
 interface uploadType {
 	title: string,
 	text: string,
 	mb?: string,
 	img?: string | null,
-	accept?: string
+	accept?: string,
+	auth?: Auth
+}
+export interface IAdditionalData {
+	displayName?: string,
+	photoURL?: string,
+	gender?: string,
+	bod?:string,
 }
 
 
@@ -15,26 +28,66 @@ const Upload: React.FC<uploadType> = ({
 	text,
 	img,
 	mb = '0',
-	accept = ''
+	accept = '',
+	auth
 }) => {
-	const [file, setFile] = useState<File | null>(null);
-	const [imageUrl, setImageUrl] = useState<string>();
 
-	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-		if (!e.target.files.length) return;
+	const alert = useAppSelector(state => state.alert);
 
-		const selectedFile = e.target.files && e.target.files[0];
-		if (selectedFile) setFile(file);
+	const [imageUrl, setImageUrl] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false);
 
-		const reader = new FileReader();
+	const storage = getStorage();
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
-		reader.onload = async e => {
-			if (e.target && e.target.result) {
-				setImageUrl(e.target.result as string);
+
+	const onChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+		if (!e.target.files?.length) return;
+
+		setLoading(true);
+
+		const selectedFile = e.target.files[0];
+
+		if (selectedFile) {
+			console.log(selectedFile);
+			try {
+				const storageRef = ref(storage, `image/${selectedFile.name}`);
+				const snapshot = await uploadBytes(storageRef, selectedFile);
+
+				dispatch(setMessage(alert.photo))
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+				}, 5000)
+
+				const downloadURL = await getDownloadURL(storageRef);
+				setImageUrl(downloadURL);
+
+				setLoading(false);
+
+				if (auth.currentUser) {
+					const additionalData: IAdditionalData = {
+						photoURL: downloadURL,
+						gender: 'test'
+					}
+
+					updateProfile(auth.currentUser, additionalData);
+				}
+			} catch (error) {
+				dispatch(setVarianError());
+				dispatch(setMessage(getClearMessage(error.code)));
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+					dispatch(setVarianMess());
+				}, 3000)
 			}
 		}
 
-		reader.readAsDataURL(file);
+		// setImageUrl(URL.createObjectURL(selectedFile));
 	}
 
 	const style: CSSProperties = {
@@ -43,7 +96,7 @@ const Upload: React.FC<uploadType> = ({
 
 	return (
 		<div className="upload-field" style={style}>
-			<label className="upload-field__label">
+			<label className={`upload-field__label ${loading && 'loading-file'}`}>
 				<input
 					type="file"
 					className="upload-field__input"

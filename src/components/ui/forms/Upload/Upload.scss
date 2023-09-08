@@ -1,7 +1,6 @@
 .upload-field {
 	display: flex;
 	align-items: center;
-	overflow: hidden;
 	&__input {
 		position: absolute;
 		z-index: -1;
@@ -23,8 +22,11 @@
 			url("../../../../assets/icons/upload.svg") center center/39px 39px no-repeat,
 			#653012;
 		cursor: pointer;
-		&:hover {
-			box-shadow: 0 0 30px #653012;
+		&.loading-file {
+			animation: loading 1s linear infinite normal;
+		}
+		&.loading-file {
+			box-shadow: none;
 		}
 	}
 	&__image {
@@ -51,5 +53,17 @@
 		&__title {
 			text-align: center;
 		}
+	}
+}
+
+@keyframes loading {
+	0% {
+		box-shadow: 0 0 30px #653012;
+	}
+	50% {
+		box-shadow: 0 0 100px #653012;
+	}
+	100% {
+		box-shadow: 0 0 30px #653012;
 	}
 }

@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 import { fbconfig } from '../fb'
 
@@ -10,10 +11,11 @@ const firebaseConfig = {
 	storageBucket: fbconfig.storageBucket,
 	messagingSenderId: fbconfig.messagingSenderId,
 	appId: fbconfig.appId,
-	measurementId: fbconfig.measurementId
+	measurementId: fbconfig.measurementId,
 };
 
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const storage = getStorage(app);
