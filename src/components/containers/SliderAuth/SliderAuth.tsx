@@ -26,12 +26,6 @@ const SliderAuth = () => {
 		list: small,
 	}
 
-	useEffect(() => {
-		setTimeout(() => { console.log('go') }, 2000);
-	}, [])
-
-	setTimeout(() => { console.log('go') }, 2000)
-
 	return (
 		<div className="slider-auth">
 

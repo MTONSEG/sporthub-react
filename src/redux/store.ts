@@ -7,6 +7,7 @@ import restoreSlice from "./slices/auth/restoreSlice";
 import checkSlice from "./slices/auth/checkSlice";
 import sliderAuthSlice from "./slices/auth/sliderAuthSlice";
 import personalSlice from "./slices/auth/personalSlice";
+import alertSlice from "./slices/alert/alertSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
 		restore: restoreSlice,
 		check: checkSlice,
 		sliderAuth: sliderAuthSlice,
-		personalAuth: personalSlice
+		personalAuth: personalSlice,
+		alert: alertSlice
 	},
 
 })

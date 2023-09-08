@@ -5,6 +5,7 @@ import App from "./components/App";
 import './styles/index.scss';
 import { store } from "./redux/store";
 import { BrowserRouter } from "react-router-dom";
+import './firebase';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
