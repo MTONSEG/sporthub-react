@@ -7,6 +7,7 @@ export type alertType = {
 	success: string,
 	require: string,
 	needReg: string,
+	welcome: string,
 }
 
 const initialState: alertType = {
@@ -15,7 +16,8 @@ const initialState: alertType = {
 	show: false,
 	success: 'You have successfully registered. \nAdd some information about yourself.',
 	require: 'All fields are required',
-	needReg: 'First you need to Sing Up'
+	needReg: 'First you need to Sing Up',
+	welcome: 'Welcome! Make yourself at home'
 }
 
 const alertSlice = createSlice({
