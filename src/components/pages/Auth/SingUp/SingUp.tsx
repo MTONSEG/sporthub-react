@@ -11,9 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentUID } from "../../../../redux/slices/auth/singupSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import {getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 import { AUTH_DATA_ROUTE } from "../../../../routes/routes";
-
 
 export interface IAdditionalData {
 	displayName: string
@@ -59,6 +58,10 @@ const SingUp: React.FC = () => {
 				const user = userCredential.user;
 				const userRef = ref(db, `users/${user.uid}`);
 				const userData: ISingUpState = { firstName, lastName, email };
+
+				updateProfile(auth.currentUser, {
+					displayName: firstName
+				})
 
 				set(userRef, userData);
 				dispatch(setCurrentUID(user.uid))

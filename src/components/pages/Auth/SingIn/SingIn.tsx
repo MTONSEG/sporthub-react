@@ -8,10 +8,8 @@ import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
-import { AUTH_REG_ROUTE } from "../../../../routes/routes";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
-import { get } from "firebase/database";
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);

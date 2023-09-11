@@ -1,23 +1,43 @@
 import React, { useState } from "react";
 import './ForgotPassword.scss';
 import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
-import { useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { AUTH_CHECK_ROUTE } from "../../../../routes/routes";
+import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
+import { setCurrentForgotEmail } from "../../../../redux/slices/auth/forgotSlice";
 
-type propsType = {
-	setRestoreEmail: Function
-}
 
-
-const ForgotPassword: React.FC<propsType> = ({ setRestoreEmail }) => {
+const ForgotPassword = () => {
 	const state = useAppSelector(state => state.forgot);
-	const navigate = useNavigate();
+
 	const [email, setEmail] = useState<string>('');
 
+	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const auth = getAuth();
+
 	const handlerClickBtn = (): void => {
-		setRestoreEmail(email);
+		dispatch(setCurrentForgotEmail(email));
+
+		sendPasswordResetEmail(auth, email)
+			.then(() => {
+				navigate(AUTH_CHECK_ROUTE);
+			})
+			.catch(error => {
+				dispatch(setVarianError());
+				dispatch(setMessage(getClearMessage(error.code)));
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+					dispatch(setVarianMess());
+				}, 3000)
+			})
 	}
 
 	return (

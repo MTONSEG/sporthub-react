@@ -12,8 +12,6 @@ const RestorePassword = React.lazy(() => import("../../pages/Auth/RestorePasswor
 const PersonalAuth = React.lazy(() => import('../../pages/Auth/PersonalAuth/PersonalAuth'));
 
 export const BodyAuth = () => {
-	const [restoreEmail, setRestoreEmail] = useState<string>('test@mgmail.com');
-
 	return (
 		<div className="body-auth">
 			<div className="body-auth__logo-wrap">
@@ -33,13 +31,13 @@ export const BodyAuth = () => {
 								element={<SingUp />} />
 							<Route
 								path="forgot"
-								element={<ForgotPassword setRestoreEmail={setRestoreEmail} />} />
+								element={<ForgotPassword/>} />
 							<Route
 								path="restore"
 								element={<RestorePassword />} />
 							<Route
 								path="check"
-								element={<CheckEmail email={restoreEmail} />} />
+								element={<CheckEmail/>} />
 							<Route
 								path="personal"
 								element={<PersonalAuth />} />

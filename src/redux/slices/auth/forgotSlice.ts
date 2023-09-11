@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { inputType} from "./singinSlice";
 
 export type forgotType = {
 	title: string,
 	text: string
 	btn: string,
+	current: string,
 	email: inputType
 }
 
@@ -16,13 +17,18 @@ const initialState: forgotType = {
 		title: 'Email',
 		placeholder: 'Your Email'
 	},
+	current: '',
 }
 
 const forgotSlice = createSlice({
 	name: 'forgotPassword',
 	initialState,
-	reducers: {}
+	reducers: {
+		setCurrentForgotEmail(state, action: PayloadAction<string>) {
+			state.current = action.payload;
+		}
+	}
 })
 
-// export const { test } = singupSlice.actions;
+export const { setCurrentForgotEmail } = forgotSlice.actions;
 export default forgotSlice.reducer;

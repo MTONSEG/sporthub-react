@@ -4,12 +4,9 @@ import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import { useAppSelector } from "../../../../hooks/hooks";
 import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 
-type propsType = {
-	email:string
-}
-
-const CheckEmail:React.FC<propsType> = ({ email }) => {
+const CheckEmail = () => {
 	const state = useAppSelector(state => state.check);
+	const email = useAppSelector(state => state.forgot.current);
 
 	return (
 		<>
