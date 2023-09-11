@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import App from "./components/App";
 import './styles/index.scss';
 import { store } from "./redux/store";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import './firebase';
 
 const root = ReactDOM.createRoot(
@@ -13,8 +13,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
 	<Provider store={store}>
-		<BrowserRouter>
+		<HashRouter>
 			<App />
-		</BrowserRouter>
+		</HashRouter>
 	</Provider>
 )

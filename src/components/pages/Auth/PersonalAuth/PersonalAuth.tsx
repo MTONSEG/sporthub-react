@@ -9,9 +9,9 @@ import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
-import { AUTH_REG_ROUTE } from "../../../../routes/routes";
+import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getStorage, ref } from "firebase/storage";
+import { getDatabase, ref, onValue, set, get, update } from "firebase/database";
 
 type propsType = {
 	email?: string
@@ -29,42 +29,53 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 
 	const { radio, upload, birthday, ...state } = useAppSelector(state => state.personalAuth);
 	const [gender, setGender] = useState<genderType>('none');
-	const [date, setDate] = useState<string>('');
+	const [bod, setBod] = useState<string>('');
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const auth = getAuth();
-	const storage = getStorage();
+	const db = getDatabase();
+
+	const userRef = ref(db, `users/${singup.current.uid}`);
 
 	useEffect(() => {
-		signInWithEmailAndPassword(auth, 'mtonseg@gmail.com', 'pass123')
-			.then((res) => {
-				console.log(auth.currentUser);
+		if (!auth.currentUser) {
+			dispatch(setVarianError());
+			dispatch(setMessage(alert.needReg));
+			dispatch(showAlert(true));
+			setTimeout((): void => {
+				dispatch(showAlert(false));
+				dispatch(setVarianMess());
+			}, 3000);
 
-
-				if (!auth.currentUser) {
-					dispatch(setVarianError());
-					dispatch(setMessage(alert.needReg));
-					dispatch(showAlert(true));
-					setTimeout((): void => {
-						dispatch(showAlert(false));
-						dispatch(setVarianMess());
-					}, 3000);
-
-					navigate(AUTH_REG_ROUTE);
-				}
-			})
-
+			navigate(AUTH_REG_ROUTE);
+		}
 	}, [])
 
 	const handlerFinishBtn = (): void => {
-		console.log(storage);
+		const dataRef = { gender, bod };
+
+		update(userRef, dataRef)
+			.then(() => {
+				dispatch(setMessage(alert.singin))
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+				}, 5000)
+
+
+				navigate(AUTH_ROUTE);
+			})
+
 	}
 
 	return (
 		<>
 			<TitleAuth title={state.title} mb="39px" />
 			<Upload
+				current={singup.current}
+				userRef={userRef}
 				title={upload.title}
 				text={upload.text}
 				mb="28px"
@@ -82,8 +93,8 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 				mb="36px"
 				title={birthday.title}
 				placeholder={birthday.placeholder}
-				value={date}
-				setValue={setDate}
+				value={bod}
+				setValue={setBod}
 				dateMask={birthday.dateMask}
 				maskChar={birthday.maskChar}
 			/>

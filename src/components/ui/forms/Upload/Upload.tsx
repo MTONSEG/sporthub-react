@@ -1,11 +1,14 @@
 import React, { CSSProperties, ChangeEvent, ChangeEventHandler, useState } from "react";
 import './Upload.scss';
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { Auth, updateProfile } from "firebase/auth";
+import { update, ref as databaseRef } from "firebase/database";
+import { getDownloadURL, getStorage, ref, ref as storageRef, uploadBytes } from "firebase/storage";
+import { ICurrent } from "../../../../redux/slices/auth/singupSlice";
+
 
 interface uploadType {
 	title: string,
@@ -13,23 +16,25 @@ interface uploadType {
 	mb?: string,
 	img?: string | null,
 	accept?: string,
-	auth?: Auth
+	auth?: Auth,
+	current?:ICurrent,
+	userRef?: any
 }
 export interface IAdditionalData {
 	displayName?: string,
 	photoURL?: string,
 	gender?: string,
-	bod?:string,
+	bod?: string,
 }
 
 
 const Upload: React.FC<uploadType> = ({
 	title,
 	text,
-	img,
 	mb = '0',
 	accept = '',
-	auth
+	userRef,
+	current
 }) => {
 
 	const alert = useAppSelector(state => state.alert);
@@ -50,7 +55,6 @@ const Upload: React.FC<uploadType> = ({
 		const selectedFile = e.target.files[0];
 
 		if (selectedFile) {
-			console.log(selectedFile);
 			try {
 				const storageRef = ref(storage, `image/${selectedFile.name}`);
 				const snapshot = await uploadBytes(storageRef, selectedFile);
@@ -64,17 +68,11 @@ const Upload: React.FC<uploadType> = ({
 
 				const downloadURL = await getDownloadURL(storageRef);
 				setImageUrl(downloadURL);
-
 				setLoading(false);
+				update(userRef, { imageUrl: downloadURL });
+				
+				// console.log(current);
 
-				if (auth.currentUser) {
-					const additionalData: IAdditionalData = {
-						photoURL: downloadURL,
-						gender: 'test'
-					}
-
-					updateProfile(auth.currentUser, additionalData);
-				}
 			} catch (error) {
 				dispatch(setVarianError());
 				dispatch(setMessage(getClearMessage(error.code)));
@@ -87,7 +85,8 @@ const Upload: React.FC<uploadType> = ({
 			}
 		}
 
-		// setImageUrl(URL.createObjectURL(selectedFile));
+
+		
 	}
 
 	const style: CSSProperties = {

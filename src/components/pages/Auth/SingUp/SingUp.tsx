@@ -6,18 +6,25 @@ import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
-import { setCurrentReg } from "../../../../redux/slices/auth/singupSlice";
+import { setCurrentUID } from "../../../../redux/slices/auth/singupSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { get, getDatabase, onValue, ref, set } from "firebase/database";
+
 
 export interface IAdditionalData {
 	displayName: string
 }
 
+export interface ISingUpState {
+	firstName: string;
+	lastName: string;
+	email: string;
+}
 
-const SingUp = () => {
+const SingUp: React.FC = () => {
 	const state = useAppSelector(state => state.singup);
 	const alert = useAppSelector(state => state.alert);
 
@@ -28,6 +35,8 @@ const SingUp = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const db = getDatabase();
+	const auth = getAuth();
 
 	const handleSingUp = (): void => {
 		const isFullInfo = firstName && lastName && email && password;
@@ -36,6 +45,7 @@ const SingUp = () => {
 			dispatch(setVarianError());
 			dispatch(setMessage(alert.require));
 			dispatch(showAlert(true));
+
 			setTimeout((): void => {
 				dispatch(showAlert(false));
 				dispatch(setVarianMess());
@@ -43,19 +53,17 @@ const SingUp = () => {
 			return
 		}
 
-		dispatch(setCurrentReg({ firstName, lastName, email, password }))
-
-		const auth = getAuth();
+		// dispatch(setCurrentReg({ firstName, lastName, email, password }))
 
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(userCredential => {
 				const user = userCredential.user;
+				const userRef = ref(db, `users/${user.uid}`);
+				const userData: ISingUpState = { firstName, lastName, email };
 
-				const additionalData: IAdditionalData = {
-					displayName: `${firstName} ${lastName}`
-				}
+				set(userRef, userData);
+				dispatch(setCurrentUID(user.uid))
 
-				updateProfile(auth.currentUser, additionalData);
 
 				navigate('/auth/personal');
 				dispatch(setMessage(alert.success))
@@ -69,7 +77,7 @@ const SingUp = () => {
 				dispatch(setVarianError());
 				dispatch(setMessage(getClearMessage(error.code)));
 				dispatch(showAlert(true));
-				
+
 				setTimeout((): void => {
 					dispatch(showAlert(false));
 					dispatch(setVarianMess());

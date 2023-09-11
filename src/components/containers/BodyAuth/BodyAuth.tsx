@@ -25,12 +25,24 @@ export const BodyAuth = () => {
 					<div className="body-auth__form-body">
 
 						<Routes>
-							<Route index element={<SingIn />} />
-							<Route path="reg" element={<SingUp />} />
-							<Route path="forgot" element={<ForgotPassword setRestoreEmail={setRestoreEmail} />} />
-							<Route path="restore" element={<RestorePassword />} />
-							<Route path="check" element={<CheckEmail email={restoreEmail} />} />
-							<Route path="personal" element={<PersonalAuth />}/>
+							<Route
+								index
+								element={<SingIn />} />
+							<Route
+								path="reg"
+								element={<SingUp />} />
+							<Route
+								path="forgot"
+								element={<ForgotPassword setRestoreEmail={setRestoreEmail} />} />
+							<Route
+								path="restore"
+								element={<RestorePassword />} />
+							<Route
+								path="check"
+								element={<CheckEmail email={restoreEmail} />} />
+							<Route
+								path="personal"
+								element={<PersonalAuth />} />
 						</Routes>
 					</div>
 				</React.Suspense>

@@ -9,6 +9,7 @@ export type alertType = {
 	needReg: string,
 	welcome: string,
 	photo: string,
+	singin: string,
 }
 
 
@@ -20,7 +21,8 @@ const initialState: alertType = {
 	require: 'All fields are required',
 	needReg: 'First you need to Sing Up',
 	welcome: 'Welcome! Make yourself at home',
-	photo: 'Photo uploaded successfully'
+	photo: 'Photo uploaded successfully',
+	singin: 'Your information has been successfully added'
 }
 
 const alertSlice = createSlice({
