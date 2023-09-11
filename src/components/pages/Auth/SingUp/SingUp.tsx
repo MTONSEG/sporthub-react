@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentUID } from "../../../../redux/slices/auth/singupSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { get, getDatabase, onValue, ref, set } from "firebase/database";
+import {getDatabase, ref, set } from "firebase/database";
+import { AUTH_DATA_ROUTE } from "../../../../routes/routes";
 
 
 export interface IAdditionalData {
@@ -53,8 +54,6 @@ const SingUp: React.FC = () => {
 			return
 		}
 
-		// dispatch(setCurrentReg({ firstName, lastName, email, password }))
-
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(userCredential => {
 				const user = userCredential.user;
@@ -65,7 +64,7 @@ const SingUp: React.FC = () => {
 				dispatch(setCurrentUID(user.uid))
 
 
-				navigate('/auth/personal');
+				navigate(AUTH_DATA_ROUTE);
 				dispatch(setMessage(alert.success))
 				dispatch(showAlert(true));
 

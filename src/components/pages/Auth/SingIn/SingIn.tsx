@@ -11,11 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE } from "../../../../routes/routes";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { get } from "firebase/database";
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);
 	const state = useAppSelector(state => state.singin);
-	
+
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
@@ -38,7 +39,15 @@ const SingIn = () => {
 		}
 
 		signInWithEmailAndPassword(auth, email, password)
-			.then(() => {
+			.then((userCredential) => {
+				let user = userCredential.user;
+				let data = JSON.stringify({
+					uid: user.uid,
+					email,
+					password
+				});
+				localStorage.setItem('sporthub-user', data);
+
 				navigate('/')
 				dispatch(setMessage(alert.welcome))
 				dispatch(showAlert(true));

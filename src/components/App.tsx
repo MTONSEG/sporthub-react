@@ -8,6 +8,9 @@ import { Alert } from "./ui/atoms/Alert/Alert";
 const PersonalAuth = React.lazy(() => import('./pages/Auth/PersonalAuth/PersonalAuth'));
 
 const App = () => {
+	console.log(localStorage.getItem('sporthub-user'));
+	
+
 	return (
 		<div className="wrapper">
 			<Routes>

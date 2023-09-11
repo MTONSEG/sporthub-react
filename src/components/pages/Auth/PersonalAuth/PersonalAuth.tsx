@@ -10,8 +10,8 @@ import { Button } from "../../../ui/atoms/Button/Button";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, onValue, set, get, update } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, update } from "firebase/database";
 
 type propsType = {
 	email?: string
