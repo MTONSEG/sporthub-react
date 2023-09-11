@@ -1,16 +1,99 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './RestorePassword.scss';
 import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
-import { useAppSelector } from "../../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
+import { useNavigate } from "react-router-dom";
+import { get, getDatabase, ref } from "firebase/database";
+import { fetchSignInMethodsForEmail, getAuth, signInWithEmailAndPassword, updatePassword } from "firebase/auth";
+import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
+import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { AUTH_ROUTE } from "../../../../routes/routes";
+import { setCurrentRestorePass } from "../../../../redux/slices/auth/restoreSlice";
 
+interface RestoreObject {
+	uid: string,
+	email: string
+}
 
+type CurrentRestoreType = RestoreObject | null;
 
 const RestorePassword = () => {
 	const state = useAppSelector(state => state.restore);
+	const alert = useAppSelector(state => state.alert);
+
 	const [password, setPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const db = getDatabase();
+	const auth = getAuth();
+
+	const current: CurrentRestoreType = JSON.parse(localStorage.getItem('sporthub-restore-uid'));
+
+	useEffect(() => {
+		const userRef = ref(db, `users/${current.uid}`)
+
+		get(userRef).then(async res => {
+			const user = await res.val();
+			dispatch(setCurrentRestorePass(user.password));
+		})
+
+		console.log(current);
+	}, [])
+
+	const handleSave = () => {
+		const isConfirm = password === confirmPassword;
+		const isLength = password.length > 5;
+		console.log(state.currentPass);
+
+		if (!isConfirm) {
+			dispatch(setVarianError());
+			dispatch(setMessage(alert.confirmPass));
+			dispatch(showAlert(true));
+
+			setTimeout((): void => {
+				dispatch(showAlert(false));
+				dispatch(setVarianMess());
+			}, 3000)
+		}
+		if (!isLength) {
+			dispatch(setVarianError());
+			dispatch(setMessage(alert.weekPass));
+			dispatch(showAlert(true));
+
+			setTimeout((): void => {
+				dispatch(showAlert(false));
+				dispatch(setVarianMess());
+			}, 3000)
+		}
+
+		signInWithEmailAndPassword(auth, current.email, state.currentPass)
+			.then((userCredential) => {
+				updatePassword(userCredential.user, password).then(() => {
+					dispatch(setMessage(alert.updatePass))
+					dispatch(showAlert(true));
+
+					setTimeout((): void => {
+						dispatch(showAlert(false));
+					}, 4000)
+
+					navigate(AUTH_ROUTE);
+				})
+			})
+			.catch(error => {
+				dispatch(setVarianError());
+				dispatch(setMessage(getClearMessage(error.code)));
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+					dispatch(setVarianMess());
+				}, 3000)
+			})
+	}
 
 	return (
 		<>
@@ -34,7 +117,7 @@ const RestorePassword = () => {
 					/>
 				</div>
 				<div className="sing-in__footer">
-					<Button maxWidth="180px" centered={true}>{state.btn}</Button>
+					<Button maxWidth="180px" centered={true} onClickHandler={handleSave}>{state.btn}</Button>
 				</div>
 			</div>
 		</>

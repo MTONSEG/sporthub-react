@@ -10,6 +10,9 @@ export type alertType = {
 	welcome: string,
 	photo: string,
 	singin: string,
+	weekPass: string,
+	confirmPass: string,
+	updatePass: string
 }
 
 
@@ -22,7 +25,10 @@ const initialState: alertType = {
 	needReg: 'First you need to Sing Up',
 	welcome: 'Welcome! Make yourself at home',
 	photo: 'Photo uploaded successfully',
-	singin: 'Your information has been successfully added'
+	singin: 'Your information has been successfully added',
+	weekPass: 'Week password',
+	confirmPass: 'Password mismatch',
+	updatePass: 'Password is updated. Please Sing In with new password'
 }
 
 const alertSlice = createSlice({

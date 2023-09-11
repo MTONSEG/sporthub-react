@@ -19,9 +19,10 @@ export interface IAdditionalData {
 }
 
 export interface ISingUpState {
-	firstName: string;
-	lastName: string;
-	email: string;
+	firstName: string,
+	lastName: string,
+	email: string,
+	password: string
 }
 
 const SingUp: React.FC = () => {
@@ -57,7 +58,7 @@ const SingUp: React.FC = () => {
 			.then(userCredential => {
 				const user = userCredential.user;
 				const userRef = ref(db, `users/${user.uid}`);
-				const userData: ISingUpState = { firstName, lastName, email };
+				const userData: ISingUpState = { firstName, lastName, email, password };
 
 				updateProfile(auth.currentUser, {
 					displayName: firstName

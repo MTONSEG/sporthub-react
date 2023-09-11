@@ -6,6 +6,7 @@ export type forgotType = {
 	text: string
 	btn: string,
 	current: string,
+	url: string,
 	email: inputType
 }
 
@@ -18,6 +19,7 @@ const initialState: forgotType = {
 		placeholder: 'Your Email'
 	},
 	current: '',
+	url: 'https://spaceteam.pp.ua/#/restore'
 }
 
 const forgotSlice = createSlice({

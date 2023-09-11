@@ -21,7 +21,7 @@ const App = () => {
 
 			setTimeout((): void => {
 				dispatch(showAlert(false));
-			}, 5000)
+			}, 1000)
 		}
 	});
 

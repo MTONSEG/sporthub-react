@@ -4,12 +4,13 @@ import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { fetchSignInMethodsForEmail, getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { AUTH_CHECK_ROUTE } from "../../../../routes/routes";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { setCurrentForgotEmail } from "../../../../redux/slices/auth/forgotSlice";
+import { get, getDatabase, ref } from "firebase/database";
 
 
 const ForgotPassword = () => {
@@ -19,6 +20,7 @@ const ForgotPassword = () => {
 
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
+	const db = getDatabase();
 	const auth = getAuth();
 
 	const handlerClickBtn = (): void => {
@@ -27,6 +29,20 @@ const ForgotPassword = () => {
 		sendPasswordResetEmail(auth, email)
 			.then(() => {
 				navigate(AUTH_CHECK_ROUTE);
+
+				const usersRef = ref(db, 'users');
+
+				get(usersRef).then((snapshot) => {
+					let users = snapshot.val();
+
+					for (let uid in users) {
+						if (users[uid].email === email) {
+							let obj = { uid, email };
+
+							localStorage.setItem('sporthub-restore-uid', JSON.stringify(obj));
+						}
+					}
+				})
 			})
 			.catch(error => {
 				dispatch(setVarianError());
