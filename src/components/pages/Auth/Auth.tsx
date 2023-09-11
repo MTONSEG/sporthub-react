@@ -16,7 +16,11 @@ const Auth = () => {
 	return (
 		<div ref={ref} className="auth">
 			<ContainerAuth>
-				<SliderAuth />
+				{
+					widthScreen > 992
+						? <SliderAuth />
+						: <></>
+				}
 				<BodyAuth />
 			</ContainerAuth>
 		</div>

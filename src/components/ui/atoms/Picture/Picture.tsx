@@ -27,9 +27,7 @@ const Picture: React.FC<picturePropsType> = ({ className, img, webp, ...rest }) 
 	}
 
 	const alt = rest.alt ? rest.alt : 'image';
-	const style = {
-
-	}
+	console.log(img, webp);
 
 	return (
 		<picture>
@@ -62,7 +60,6 @@ const Picture: React.FC<picturePropsType> = ({ className, img, webp, ...rest }) 
 				className={className ? className : ''}
 				src={img}
 				alt={alt}
-				style={style}
 				loading={rest.lazy ? 'lazy' : 'eager'}
 				width={rest.width ? rest.width : ''}
 				height={rest.height ? rest.height : ''}
