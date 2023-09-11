@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { get, getDatabase, ref } from "firebase/database";
-import { fetchSignInMethodsForEmail, getAuth, signInWithEmailAndPassword, updatePassword } from "firebase/auth";
+import { get, getDatabase, ref, update } from "firebase/database";
+import { getAuth, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { AUTH_ROUTE } from "../../../../routes/routes";
@@ -36,12 +36,10 @@ const RestorePassword = () => {
 	useEffect(() => {
 		const userRef = ref(db, `users/${current.uid}`)
 
-		get(userRef).then(async res => {
-			const user = await res.val();
+		get(userRef).then(res => {
+			const user = res.val();
 			dispatch(setCurrentRestorePass(user.password));
 		})
-
-		console.log(current);
 	}, [])
 
 	const handleSave = () => {
@@ -58,6 +56,8 @@ const RestorePassword = () => {
 				dispatch(showAlert(false));
 				dispatch(setVarianMess());
 			}, 3000)
+
+			return
 		}
 		if (!isLength) {
 			dispatch(setVarianError());
@@ -68,6 +68,8 @@ const RestorePassword = () => {
 				dispatch(showAlert(false));
 				dispatch(setVarianMess());
 			}, 3000)
+
+			return
 		}
 
 		signInWithEmailAndPassword(auth, current.email, state.currentPass)
@@ -79,6 +81,10 @@ const RestorePassword = () => {
 					setTimeout((): void => {
 						dispatch(showAlert(false));
 					}, 4000)
+
+					update(ref(db, `users/${current.uid}`), {password});
+
+					signOut(auth);
 
 					navigate(AUTH_ROUTE);
 				})

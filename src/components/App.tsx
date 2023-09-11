@@ -1,27 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './App.scss';
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Main from "./containers/Main/Main";
 import Auth from "./pages/Auth/Auth";
 import { Alert } from "./ui/atoms/Alert/Alert";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useAppDispatch} from "../hooks/hooks";
+import { useAppDispatch } from "../hooks/hooks";
 import { setMessage, showAlert } from "../redux/slices/alert/alertSlice";
 
-const PersonalAuth = React.lazy(() => import('./pages/Auth/PersonalAuth/PersonalAuth'));
-
 const App = () => {
+	const params = useParams();
 	const auth = getAuth();
 	const dispatch = useAppDispatch();
 
+	console.log(params);
+
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			dispatch(setMessage(`Welcome ${user.displayName}`))
-			dispatch(showAlert(true));
+			if (!sessionStorage.getItem('welcome')) {
+				dispatch(setMessage(`Welcome ${user.displayName}`))
+				dispatch(showAlert(true));
 
-			setTimeout((): void => {
-				dispatch(showAlert(false));
-			}, 1000)
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+				}, 1000)
+
+			}
+
+			window.sessionStorage.setItem('welcome', 'true');
 		}
 	});
 
