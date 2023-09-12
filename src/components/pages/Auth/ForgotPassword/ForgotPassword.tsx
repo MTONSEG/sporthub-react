@@ -4,7 +4,7 @@ import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { getAuth, sendPasswordResetEmail, signOut } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail} from "firebase/auth";
 import { AUTH_CHECK_ROUTE } from "../../../../routes/routes";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";

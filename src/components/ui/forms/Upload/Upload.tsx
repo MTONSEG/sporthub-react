@@ -1,13 +1,11 @@
-import React, { CSSProperties, ChangeEvent, ChangeEventHandler, useState } from "react";
+import React, { CSSProperties, ChangeEvent, useState } from "react";
 import './Upload.scss';
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
-import { useNavigate } from "react-router-dom";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
-import { Auth, updateProfile } from "firebase/auth";
+import { Auth } from "firebase/auth";
 import { update, ref as databaseRef } from "firebase/database";
 import { getDownloadURL, getStorage, ref, ref as storageRef, uploadBytes } from "firebase/storage";
-import { ICurrent } from "../../../../redux/slices/auth/singupSlice";
 
 
 interface uploadType {
@@ -17,7 +15,6 @@ interface uploadType {
 	img?: string | null,
 	accept?: string,
 	auth?: Auth,
-	current?:ICurrent,
 	userRef?: any
 }
 export interface IAdditionalData {
@@ -34,7 +31,6 @@ const Upload: React.FC<uploadType> = ({
 	mb = '0',
 	accept = '',
 	userRef,
-	current
 }) => {
 
 	const alert = useAppSelector(state => state.alert);
@@ -44,8 +40,6 @@ const Upload: React.FC<uploadType> = ({
 
 	const storage = getStorage();
 	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
-
 
 	const onChangeHandler = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (!e.target.files?.length) return;
@@ -70,8 +64,6 @@ const Upload: React.FC<uploadType> = ({
 				setImageUrl(downloadURL);
 				setLoading(false);
 				update(userRef, { imageUrl: downloadURL });
-				
-				// console.log(current);
 
 			} catch (error) {
 				dispatch(setVarianError());
@@ -84,9 +76,6 @@ const Upload: React.FC<uploadType> = ({
 				}, 3000)
 			}
 		}
-
-
-		
 	}
 
 	const style: CSSProperties = {

@@ -39,12 +39,6 @@ const SingIn = () => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				let user = userCredential.user;
-				// let data = JSON.stringify({
-				// 	uid: user.uid,
-				// 	email,
-				// 	password
-				// });
-				// localStorage.setItem('sporthub-user', data);
 
 				navigate('/')
 				dispatch(setMessage(alert.welcome))

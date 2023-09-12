@@ -1,4 +1,4 @@
-import React, { CSSProperties, MouseEventHandler } from "react";
+import React from "react";
 import './VerticalSlider.scss';
 import SlickSlider from "react-slick";
 import { Settings } from "react-slick";

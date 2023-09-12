@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import './Auth.scss';
-import { Route, Routes } from "react-router-dom";
 import { ContainerAuth } from "../../containers/ContainerAuth/ContainerAuth";
 import { BodyAuth } from "../../containers/BodyAuth/BodyAuth";
 import SliderAuth from "../../containers/SliderAuth/SliderAuth";

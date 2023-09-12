@@ -13,17 +13,8 @@ import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, update } from "firebase/database";
 
-type propsType = {
-	email?: string
-}
 
-
-interface IAdditionalData {
-	displayName: string
-}
-
-
-const PersonalAuth: React.FC<propsType> = ({ email }) => {
+const PersonalAuth: React.FC = () => {
 	const singup = useAppSelector(state => state.singup);
 	const alert = useAppSelector(state => state.alert);
 
@@ -74,7 +65,6 @@ const PersonalAuth: React.FC<propsType> = ({ email }) => {
 		<>
 			<TitleAuth title={state.title} mb="39px" />
 			<Upload
-				current={singup.current}
 				userRef={userRef}
 				title={upload.title}
 				text={upload.text}

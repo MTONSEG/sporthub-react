@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import './App.scss';
-import { Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import Main from "./containers/Main/Main";
 import Auth from "./pages/Auth/Auth";
 import { Alert } from "./ui/atoms/Alert/Alert";
@@ -9,11 +9,8 @@ import { useAppDispatch } from "../hooks/hooks";
 import { setMessage, showAlert } from "../redux/slices/alert/alertSlice";
 
 const App = () => {
-	const params = useParams();
 	const auth = getAuth();
 	const dispatch = useAppDispatch();
-
-	console.log(params);
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {

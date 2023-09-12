@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React from "react";
 import './BodyAuth.scss';
 import Logo from "../../ui/atoms/Logo/Logo";
 import { Route, Routes } from "react-router-dom";

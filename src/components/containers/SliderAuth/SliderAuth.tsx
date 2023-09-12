@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import './SliderAuth.scss';
-// import VerticalSlider from "../../ui/sliders/VerticalSlider/VerticalSlider";
 import { useAppSelector } from "../../../hooks/hooks";
 import Loading from "../../ui/atoms/Loading/Loading";
 
