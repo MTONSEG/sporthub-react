@@ -3,7 +3,7 @@ import './Upload.scss';
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
-import { Auth } from "firebase/auth";
+import { Auth, getAuth, updateCurrentUser, updateProfile } from "firebase/auth";
 import { update, ref as databaseRef } from "firebase/database";
 import { getDownloadURL, getStorage, ref, ref as storageRef, uploadBytes } from "firebase/storage";
 
@@ -38,6 +38,7 @@ const Upload: React.FC<uploadType> = ({
 	const [imageUrl, setImageUrl] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 
+	const auth = getAuth();
 	const storage = getStorage();
 	const dispatch = useAppDispatch();
 
@@ -64,6 +65,7 @@ const Upload: React.FC<uploadType> = ({
 				setImageUrl(downloadURL);
 				setLoading(false);
 				update(userRef, { imageUrl: downloadURL });
+				updateProfile(auth.currentUser, { photoURL: downloadURL });
 
 			} catch (error) {
 				dispatch(setVarianError());

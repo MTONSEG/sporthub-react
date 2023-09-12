@@ -68,8 +68,8 @@ const SingUp: React.FC = () => {
 				dispatch(setCurrentUID(user.uid))
 
 
-				navigate(AUTH_DATA_ROUTE);
-				dispatch(setMessage(alert.success))
+				navigate('/');
+				dispatch(setMessage(alert.welcome))
 				dispatch(showAlert(true));
 
 				setTimeout((): void => {

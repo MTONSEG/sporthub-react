@@ -1,9 +1,18 @@
 import React from "react";
 import './Header.scss';
+import Container from "../Container/Container";
+import Logo from "../../ui/atoms/Logo/Logo";
+import MenuHeader from "./MenuHeader/MenuHeader";
 
 const Header = () => {
 	return (
-		<div>
+		<div className="header">
+			<Container>
+				<div className="header__row">
+					<Logo />
+					<MenuHeader/>
+				</div>
+			</Container>
 		</div>
 	)
 }

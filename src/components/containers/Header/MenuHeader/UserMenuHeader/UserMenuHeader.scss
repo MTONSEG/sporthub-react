@@ -1,0 +1,41 @@
+.profile-header {
+	display: flex;
+	align-items: center;
+	padding: 7px 10px;
+	border-radius: 8px;
+	cursor: pointer;
+	&:hover {
+		box-shadow: 0 0 3px #AD7955;
+	}
+	&.active {
+		background: #222;
+	}
+	&__avatar-wrap {
+		flex: 0 0 24px;
+		height: 24px;
+		background: grey;
+		overflow: hidden;
+		border-radius: 50%;
+		margin: 0 10px 0 0;
+	}
+	&__avatar {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	&__name {
+		font-size: 16px;
+		color: #bbb;
+	}
+	@media (max-width: 767px) {
+		order: 2;
+		width: 100%;
+		padding: 14px 26px;
+		border-radius: 0;
+		margin-bottom: 30px;
+		&:hover {
+			background: rgba(173, 122, 85, 0.2);
+			box-shadow: none;
+		}
+	}
+}

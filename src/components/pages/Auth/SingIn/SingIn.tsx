@@ -10,6 +10,7 @@ import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../.
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
+import { setLogin } from "../../../../redux/slices/header/headerSlice";
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);
@@ -40,6 +41,7 @@ const SingIn = () => {
 			.then((userCredential) => {
 				let user = userCredential.user;
 
+				dispatch(setLogin(true))
 				navigate('/')
 				dispatch(setMessage(alert.welcome))
 				dispatch(showAlert(true));

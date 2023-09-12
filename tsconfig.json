@@ -10,7 +10,6 @@
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
 		"paths": {
-			"components/": ["components/*"],
 			"@reduxjs/toolkit": [
 				"node_modules/@reduxjs/toolkit/dist"
 			]

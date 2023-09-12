@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import headerSlice from "./slices/headerSlice";
+import headerSlice from "./slices/header/headerSlice";
 import singinSlice from "./slices/auth/singinSlice";
 import singupSlice from "./slices/auth/singupSlice";
 import forgotSlice from "./slices/auth/forgotSlice";

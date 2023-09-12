@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, update } from "firebase/database";
+import { setCurrentUser } from "../../../../redux/slices/auth/singinSlice";
 
 
 const PersonalAuth: React.FC = () => {
@@ -45,6 +46,7 @@ const PersonalAuth: React.FC = () => {
 
 	const handlerFinishBtn = (): void => {
 		const dataRef = { gender, bod };
+		const user = auth.currentUser;
 
 		update(userRef, dataRef)
 			.then(() => {
@@ -59,6 +61,7 @@ const PersonalAuth: React.FC = () => {
 				navigate(AUTH_ROUTE);
 			})
 
+		dispatch(setCurrentUser({ name: user.displayName, imageURL: user.photoURL }));
 	}
 
 	return (

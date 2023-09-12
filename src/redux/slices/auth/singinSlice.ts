@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE } from "../../../routes/routes";
 
+export interface ICurrentUser {
+	name: string,
+	imageURL: string
+}
+
 type forgotType = {
 	title: string,
 	link: string
@@ -16,6 +21,7 @@ export type subtextType = {
 }
 
 export type singInType = {
+	currentUser: ICurrentUser,
 	title: string,
 	forgot: forgotType,
 	btn: string,
@@ -45,14 +51,22 @@ const initialState: singInType = {
 		linkTitle: 'Sign up',
 		link: AUTH_REG_ROUTE
 	},
-	terms: 'By proceeding, you agree to our Terms of Use and Privacy Policy'
+	terms: 'By proceeding, you agree to our Terms of Use and Privacy Policy',
+	currentUser: {
+		name: '',
+		imageURL: ''
+	}
 }
 
 const singinSlice = createSlice({
 	name: 'singIn',
 	initialState,
-	reducers: {}
+	reducers: {
+		setCurrentUser(state, action: PayloadAction<ICurrentUser>) {
+			state.currentUser = action.payload;
+		}
+	}
 })
 
-// export const { test } = singinSlice.actions;
+export const { setCurrentUser } = singinSlice.actions;
 export default singinSlice.reducer;
