@@ -1,48 +1,37 @@
-import React, { useEffect } from "react";
+import React from "react";
 import './App.scss';
 import { Route, Routes } from "react-router-dom";
 import Main from "./containers/Main/Main";
 import Auth from "./pages/Auth/Auth";
 import { Alert } from "./ui/atoms/Alert/Alert";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { setMessage, showAlert } from "../redux/slices/alert/alertSlice";
-import { setLogin } from "../redux/slices/header/headerSlice";
-import { setCurrentUser } from "../redux/slices/auth/singinSlice";
-
-export interface BaseUser {
-	uid: string | number,
-	name: string,
-	email: string,
-	photoURL: string,
-}
 
 const App = () => {
-	const dispatch = useAppDispatch();
-	const { currentUser } = useAppSelector(state => state.singin);
+	// const dispatch = useAppDispatch();
+	// const { currentUser } = useAppSelector(state => state.singin);
 
-	useEffect(() => {
-		const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'))
-		// signOut(auth);
-		// sessionStorage.removeItem('welcome')
-		if (user) {
-			dispatch(setLogin(true));
+	// useEffect(() => {
+	// 	const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'))
+	// 	// signOut(auth);
+	// 	// sessionStorage.removeItem('welcome')
+	// 	if (user) {
+	// 		dispatch(setLogin(true));
 
-			if (user.name) {
-				dispatch(setCurrentUser({ name: user.name, photoURL: user.photoURL }));
-			}
+	// 		if (user.name) {
+	// 			dispatch(setCurrentUser({ name: user.name, photoURL: user.photoURL }));
+	// 		}
 
-			if (!sessionStorage.getItem('welcome')) {
-				dispatch(setMessage(`Welcome ${user.name}`))
-				dispatch(showAlert(true));
+	// 		if (!sessionStorage.getItem('welcome')) {
+	// 			dispatch(setMessage(`Welcome ${user.name}`))
+	// 			dispatch(showAlert(true));
 
-				setTimeout((): void => {
-					dispatch(showAlert(false));
-				}, 1000)
-			}
+	// 			setTimeout((): void => {
+	// 				dispatch(showAlert(false));
+	// 			}, 1000)
+	// 		}
 
-			window.sessionStorage.setItem('welcome', 'true');
-		}
-	}, [])
+	// 		window.sessionStorage.setItem('welcome', 'true');
+	// 	}
+	// }, [])
 
 	return (
 		<div className="wrapper">

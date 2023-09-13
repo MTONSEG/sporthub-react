@@ -1,19 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './Main.scss';
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE } from "../../../routes/routes";
 import { Auth } from "firebase/auth";
 import Loading from "../../ui/atoms/Loading/Loading";
+import Navbar from "../Navbar/Navbar";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
+import { setLogin } from "../../../redux/slices/header/headerSlice";
+import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
 
-interface MainPropsType {
-	auth?:Auth
+
+export interface BaseUser {
+	uid: string | number,
+	name: string,
+	email: string,
+	photoURL: string,
 }
 
-const Main = () => {
+const Main: React.FC = () => {
+	const dispatch = useAppDispatch();
+	const { currentUser } = useAppSelector(state => state.singin);
+
+	useEffect(() => {
+		const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'))
+		// signOut(auth);
+		// sessionStorage.removeItem('welcome')
+		if (user) {
+			dispatch(setLogin(true));
+
+			if (user.name) {
+				dispatch(setCurrentUser({ name: user.name, photoURL: user.photoURL }));
+			}
+
+			if (!sessionStorage.getItem('welcome')) {
+				dispatch(setMessage(`Welcome ${user.name}`))
+				dispatch(showAlert(true));
+
+				setTimeout((): void => {
+					dispatch(showAlert(false));
+				}, 1000)
+			}
+
+			window.sessionStorage.setItem('welcome', 'true');
+		}
+	}, [])
+
+
 	return (
-		<React.Suspense fallback={<Loading/>}>
+		<React.Suspense fallback={<Loading />}>
 			<Header />
+			<div className="main">
+				<Navbar />
+
+				<Routes>
+					<Route index />
+					<Route index />
+					<Route index />
+					<Route index />
+					<Route index />
+					<Route index />
+					<Route index />
+					<Route index />
+				</Routes>
+			</div>
+
+
+
 			{/* <Link style={{fontSize: '40px'}} to={AUTH_ROUTE}>SingIn</Link>
 			<Link style={{fontSize: '40px'}} to={AUTH_REG_ROUTE}>SingUp</Link>
 			<Link style={{fontSize: '40px'}} to={AUTH_FORGOT_ROUTE}>Forogot</Link>
