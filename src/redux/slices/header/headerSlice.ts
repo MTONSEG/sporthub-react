@@ -18,7 +18,8 @@ type headerLinks = {
 	links: ILink[],
 	menuLinks: ILinkWithIcon[],
 	logout: ILinkWithIcon,
-	notify: ILinkWithIcon
+	notify: ILinkWithIcon,
+	activeMenu: boolean
 }
 
 const initialState: headerLinks = {
@@ -66,6 +67,7 @@ const initialState: headerLinks = {
 		path: '',
 		iconID: 'logout'
 	},
+	activeMenu: false
 }
 
 const headerSlice = createSlice({
@@ -74,9 +76,12 @@ const headerSlice = createSlice({
 	reducers: {
 		setLogin(state, action: PayloadAction<boolean>) {
 			state.login = action.payload;
+		},
+		toggleMenu(state) {
+			state.activeMenu = !state.activeMenu
 		}
 	}
 })
 
-export const { setLogin } = headerSlice.actions;
+export const { setLogin, toggleMenu } = headerSlice.actions;
 export default headerSlice.reducer;

@@ -3,7 +3,7 @@ import { AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE } from "../../../routes/routes";
 
 export interface ICurrentUser {
 	name: string,
-	imageURL: string
+	photoURL: string
 }
 
 type forgotType = {
@@ -54,7 +54,7 @@ const initialState: singInType = {
 	terms: 'By proceeding, you agree to our Terms of Use and Privacy Policy',
 	currentUser: {
 		name: '',
-		imageURL: ''
+		photoURL: ''
 	}
 }
 

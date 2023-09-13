@@ -12,14 +12,11 @@ interface MenuPropsType {
 }
 
 const MenuHeader: React.FC<MenuPropsType> = () => {
-	const { login, links, titleBtn, ...data } = useAppSelector(state => state.header);
+	const { login, links, titleBtn, activeMenu, ...data } = useAppSelector(state => state.header);
 	const { currentUser } = useAppSelector(state => state.singin)
 	const btnStyles: CSSProperties = {
 		width: '120px'
 	}
-
-
-	// useEffect(() => { console.log(login) }, [])
 
 	return (
 		<div className={`menu-header${login ? ' login' : ''}`}>
@@ -27,10 +24,10 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 				<Icon id="search" className="menu-header__icon-btn" />
 			</Link>
 
-			<div className="menu-header__burger-menu">
+			<div className={`menu-header__burger-menu${activeMenu ? ' active' : ''}`}>
 				<Link to={data.notify.path} className="menu-header__btn menu-header__btn_notify">
 					<Icon id={data.notify.iconID} className="menu-header__icon-btn" />
-					<p className="menu-header__btn-text">{data.notify.title }</p>
+					<p className="menu-header__btn-text">{data.notify.title}</p>
 				</Link>
 
 				<ul className="menu-header__list">
@@ -47,14 +44,16 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 					}
 				</ul>
 				{
-					login ? <></> : <Button
-						path={titleBtn.path}
-						style={btnStyles}
-						className="menu-header__sing-btn"
-					>{titleBtn.title}</Button>
+					login
+						? <UserMenuHeader photoURL={currentUser.photoURL} name={currentUser.name} />
+						: <Button
+							path={titleBtn.path}
+							style={btnStyles}
+							className="menu-header__sing-btn"
+						>{titleBtn.title}</Button>
 				}
 
-				<UserMenuHeader photoURL={currentUser.imageURL} name={currentUser.name} />
+
 			</div>
 		</div>
 	)

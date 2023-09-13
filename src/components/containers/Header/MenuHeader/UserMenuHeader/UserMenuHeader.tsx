@@ -15,7 +15,7 @@ const UserMenuHeader: React.FC<UserMenuPropsType> = ({ name, photoURL }) => {
 	return (
 		<div className="profile-header">
 			<div className="profile-header__avatar-wrap">
-				<img src={photoURL} alt="photo" className="profile-header__avatar" />
+				<img src={photoURL} alt="" className="profile-header__avatar" />
 			</div>
 
 			<p className="profile-header__name">{name}</p>

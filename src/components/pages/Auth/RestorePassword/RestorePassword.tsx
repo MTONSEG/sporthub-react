@@ -87,6 +87,8 @@ const RestorePassword = () => {
 					signOut(auth);
 
 					navigate(AUTH_ROUTE);
+
+					localStorage.removeItem('sporthub-restore-uid')
 				})
 			})
 			.catch(error => {

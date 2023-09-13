@@ -48,6 +48,13 @@ const PersonalAuth: React.FC = () => {
 		const dataRef = { gender, bod };
 		const user = auth.currentUser;
 
+		localStorage.setItem('sh-current', JSON.stringify({
+			uid: user.uid,
+			name: user.displayName,
+			email: user.email,
+			photoURL: user.photoURL
+		}))
+
 		update(userRef, dataRef)
 			.then(() => {
 				dispatch(setMessage(alert.singin))
@@ -61,7 +68,7 @@ const PersonalAuth: React.FC = () => {
 				navigate(AUTH_ROUTE);
 			})
 
-		dispatch(setCurrentUser({ name: user.displayName, imageURL: user.photoURL }));
+		dispatch(setCurrentUser({ name: user.displayName, photoURL: user.photoURL }));
 	}
 
 	return (

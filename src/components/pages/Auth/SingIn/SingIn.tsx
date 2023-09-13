@@ -41,6 +41,13 @@ const SingIn = () => {
 			.then((userCredential) => {
 				let user = userCredential.user;
 
+				localStorage.setItem('sh-current', JSON.stringify({
+					uid: user.uid,
+					name: user.displayName,
+					email: user.email,
+					photoURL: user.photoURL
+				}))
+
 				dispatch(setLogin(true))
 				navigate('/')
 				dispatch(setMessage(alert.welcome))
