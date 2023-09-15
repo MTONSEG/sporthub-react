@@ -11,3 +11,8 @@ export const VIDEO_ROUTE: string = '/video';
 export const STORE_ROUTE: string = '/store';
 export const PROFILE_ROUTE: string = '/profile';
 export const NOTIFY_ROUTE: string = '';
+
+//navbar
+export const HOME_ROUTE: string = '/';
+export const LATEST_ROUTE: string = '/latest';
+export const VIEW_LATER_ROUTE: string = '/later';

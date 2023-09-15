@@ -3,13 +3,14 @@ import './Main.scss';
 import Header from "../Header/Header";
 import { Link, Route, Routes } from "react-router-dom";
 import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE } from "../../../routes/routes";
-import { Auth } from "firebase/auth";
+import { Auth, getAuth, signOut } from "firebase/auth";
 import Loading from "../../ui/atoms/Loading/Loading";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../../pages/Home/Navbar/Navbar";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
+import Home from "../../pages/Home/Home";
 
 
 export interface BaseUser {
@@ -21,6 +22,9 @@ export interface BaseUser {
 
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
+	// const auth = getAuth();
+	// localStorage.removeItem('sh-current');
+
 	const { currentUser } = useAppSelector(state => state.singin);
 
 	useEffect(() => {
@@ -52,18 +56,18 @@ const Main: React.FC = () => {
 		<React.Suspense fallback={<Loading />}>
 			<Header />
 			<div className="main">
-				<Navbar />
+					<Navbar />
 
-				<Routes>
-					<Route index />
-					<Route index />
-					<Route index />
-					<Route index />
-					<Route index />
-					<Route index />
-					<Route index />
-					<Route index />
-				</Routes>
+					<Routes>
+						<Route index element={<Home />} />
+						<Route index />
+						<Route index />
+						<Route index />
+						<Route index />
+						<Route index />
+						<Route index />
+						<Route index />
+					</Routes>
 			</div>
 
 

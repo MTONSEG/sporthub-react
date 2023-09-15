@@ -49,8 +49,10 @@
 		line-height: normal;
 		padding: 8.5px 10px;
 		border-radius: 8px;
+		border-bottom: 2px solid transparent;
+		border-top: 2px solid transparent;
 		&:hover {
-			box-shadow: 0 0 3px #ad7955;
+			border-color: #ad7955;
 		}
 	}
 

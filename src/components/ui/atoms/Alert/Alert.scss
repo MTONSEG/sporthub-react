@@ -11,6 +11,7 @@
 	align-items: center;
 	top: -200px;
 	transition: all .2s;
+	z-index: 20;
 	&__icon {
 		background: #fff;
 		flex: 0 0 24px;
