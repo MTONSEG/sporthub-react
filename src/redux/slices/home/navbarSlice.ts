@@ -1,14 +1,38 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
 import { ILink } from "../header/headerSlice";
-import { HOME_ROUTE, LATEST_ROUTE } from "../../../routes/routes";
+import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 
 type navBarType = {
-	links:ILink[]
+	loading: boolean,
+	links: ILink[],
+	users: UserObject | null,
+	subscribers: Subscriber[] | null,
+}
+
+interface User {
+	bod: string,
+	email: string,
+	firstName: string,
+	gender: string,
+	imageUrl: string,
+	lastName: string,
+	password: string
+}
+
+interface Subscriber extends User {
+	uid: string
+}
+
+type UserObject = {
+	[key: string]: User
 }
 
 
-const initialState = {
+const initialState: navBarType = {
+	loading: false,
+	users: null,
+	subscribers: [],
 	links: [
 		{
 			id: uuid(),
@@ -23,21 +47,48 @@ const initialState = {
 		{
 			id: uuid(),
 			title: 'View later ',
-			path: LATEST_ROUTE
+			path: VIEW_LATER_ROUTE
 		},
 	],
-
 }
 
-// export const getSubscriptions = createAsyncThunk()
+export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string }>(
+	'users/getUsers',
+	async function (_, { rejectWithValue }) {
+		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
+
+		const data = await res.json();
+
+		if (!res.ok) {
+			return rejectWithValue('Server Error');
+		}
+
+		return data;
+	}
+)
 
 
 const navbarSlice = createSlice({
 	name: 'navbar',
 	initialState,
-	reducers: {
-		
+	reducers: {},
+	extraReducers: builder => {
+		builder
+			.addCase(getUsers.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(getUsers.fulfilled, (state, action) => {
+				state.users = action.payload;
+
+				for (let item in action.payload) {
+					let obj: Subscriber = {
+						...action.payload[item],
+						uid: item,
+					}
+					state.subscribers.push(obj)
+				}
+			})
 	}
 })
-
-export default navbarSlice.actions
+// export const { test } = navbarSlice.actions;
+export default navbarSlice.reducer;

@@ -8,6 +8,7 @@ import checkSlice from "./slices/auth/checkSlice";
 import sliderAuthSlice from "./slices/auth/sliderAuthSlice";
 import personalSlice from "./slices/auth/personalSlice";
 import alertSlice from "./slices/alert/alertSlice";
+import navbarSlice from "./slices/home/navbarSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
 		check: checkSlice,
 		sliderAuth: sliderAuthSlice,
 		personalAuth: personalSlice,
-		alert: alertSlice
+		alert: alertSlice,
+		navbar: navbarSlice
 	},
 
 })

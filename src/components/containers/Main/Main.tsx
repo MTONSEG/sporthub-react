@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import './Main.scss';
 import Header from "../Header/Header";
 import { Link, Route, Routes } from "react-router-dom";
-import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE } from "../../../routes/routes";
+import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { Auth, getAuth, signOut } from "firebase/auth";
 import Loading from "../../ui/atoms/Loading/Loading";
 import Navbar from "../../pages/Home/Navbar/Navbar";
@@ -60,13 +60,8 @@ const Main: React.FC = () => {
 
 					<Routes>
 						<Route index element={<Home />} />
-						<Route index />
-						<Route index />
-						<Route index />
-						<Route index />
-						<Route index />
-						<Route index />
-						<Route index />
+						<Route path="/latest" element={<>latest</>} />
+						<Route path='/later' element={<>later</>} />
 					</Routes>
 			</div>
 
