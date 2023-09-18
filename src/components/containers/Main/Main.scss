@@ -1,5 +1,11 @@
 .main {
 	padding: 62px 0 0;
-	display: flex;
-	
+	display: grid;
+	grid-template-columns: 260px 1fr;
+	&__body {
+		padding: 24px 0;
+	}
+	@media (max-width: 767px) {
+		display: block;
+	}
 }

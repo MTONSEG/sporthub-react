@@ -8,6 +8,7 @@ import { Button } from "../../../ui/atoms/Button/Button";
 import UserMenuHeader from "./UserMenuHeader/UserMenuHeader";
 import PopupMenuHeader from "./PopupMenuHeader/PopupMenuHeader";
 import { toggleHeaderPopup } from "../../../../redux/slices/header/headerSlice";
+import LinksNavbar from "../../../pages/Home/Navbar/LinksNavbar/LinksNavbar";
 
 interface MenuPropsType {
 
@@ -29,8 +30,11 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 			</Link>
 
 			<div className={`menu-header__burger-menu${activeMenu ? ' active' : ''}`}>
-
-
+				{
+					window.innerWidth < 768
+						? <LinksNavbar login={login} />
+						: <></>
+				}
 
 				{
 					login

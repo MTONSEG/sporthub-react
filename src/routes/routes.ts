@@ -16,3 +16,8 @@ export const NOTIFY_ROUTE: string = '';
 export const HOME_ROUTE: string = '/';
 export const LATEST_ROUTE: string = '/latest';
 export const VIEW_LATER_ROUTE: string = '/later';
+
+//Home category slides
+export const MIND_VIDEO_ROUTE: string = '/video/mind';
+export const BODY_VIDEO_ROUTE: string = '/video/body';
+export const SOUL_VIDEO_ROUTE: string = '/video/soul';

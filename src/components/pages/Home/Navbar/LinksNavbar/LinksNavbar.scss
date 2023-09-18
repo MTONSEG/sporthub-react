@@ -12,4 +12,23 @@
 			color: #fff;
 		}
 	}
+	@media (max-width: 767px) {
+		width: 100%;
+		padding: 0;
+		&__link {
+			padding: 14px 26px;
+			line-height: normal;
+			border-radius: 0;
+			&:hover {
+				color: #bbb;
+			}
+			&.active {
+				background: #333;
+				color: #fff;
+				&:hover {
+					color: #fff;
+				}
+			}
+		}
+	}
 }

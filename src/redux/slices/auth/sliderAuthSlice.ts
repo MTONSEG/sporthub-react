@@ -17,7 +17,7 @@ import uuid from "react-uuid";
 
 export type variantAuthSlideType = 'big' | 'small' 
 
-type imageType = {
+export type imageType = {
 	img: string,
 	webp: string
 }

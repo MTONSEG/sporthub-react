@@ -9,6 +9,7 @@ import sliderAuthSlice from "./slices/auth/sliderAuthSlice";
 import personalSlice from "./slices/auth/personalSlice";
 import alertSlice from "./slices/alert/alertSlice";
 import navbarSlice from "./slices/home/navbarSlice";
+import categorySliderSlice from "./slices/home/categorySliderSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
 		sliderAuth: sliderAuthSlice,
 		personalAuth: personalSlice,
 		alert: alertSlice,
-		navbar: navbarSlice
+		navbar: navbarSlice,
+		sliderCat:categorySliderSlice
 	},
 
 })

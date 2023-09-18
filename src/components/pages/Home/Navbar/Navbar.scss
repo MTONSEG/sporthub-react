@@ -1,4 +1,6 @@
 .navbar {
-	flex: 0 0 260px;
-	padding: 24px 24px;
+	padding: 24px 24px 24px 0;
+	@media (max-width: 767px) {
+		display: none;
+	}
 }
