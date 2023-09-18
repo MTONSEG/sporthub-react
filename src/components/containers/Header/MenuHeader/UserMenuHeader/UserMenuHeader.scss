@@ -4,12 +4,11 @@
 	padding: 7px 10px;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: all .2s;
+	transition: all 0.2s;
+	border: 1px solid transparent;
+	position: relative;
 	&:hover {
-		background: #ad7955;
-	}
-	&:hover .profile-header__name{
-		color: #222;
+		border: 1px solid #222;
 	}
 	&.active {
 		background: #222;
@@ -38,8 +37,14 @@
 		border-radius: 0;
 		margin-bottom: 30px;
 		&:hover {
-			background: rgba(173, 122, 85, 0.2);
+			background: #222;
 			box-shadow: none;
+		}
+		&.active {
+			background: #111;
+			&:hover {
+				background: #111;
+			}
 		}
 		&__name {
 			color: #fff;

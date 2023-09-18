@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
-import { AUTH_ROUTE, NOTIFY_ROUTE, STORE_ROUTE, VIDEO_ROUTE } from "../../../routes/routes";
+import { AUTH_ROUTE, NOTIFY_ROUTE, PROFILE_ROUTE, STORE_ROUTE, VIDEO_ROUTE } from "../../../routes/routes";
 
 export interface ILink {
 	id: number | string,
@@ -19,11 +19,14 @@ type headerLinks = {
 	menuLinks: ILinkWithIcon[],
 	logout: ILinkWithIcon,
 	notify: ILinkWithIcon,
-	activeMenu: boolean
+	activeMenu: boolean,
+	activePopup: boolean,
 }
 
 const initialState: headerLinks = {
 	login: false,
+	activePopup: false,
+	activeMenu: false,
 	titleBtn: {
 		id: uuid(),
 		title: 'Sign in',
@@ -51,7 +54,7 @@ const initialState: headerLinks = {
 		{
 			id: uuid(),
 			title: 'Edit profile',
-			path: VIDEO_ROUTE,
+			path: PROFILE_ROUTE,
 			iconID: 'edit'
 		},
 		{
@@ -64,10 +67,9 @@ const initialState: headerLinks = {
 	logout: {
 		id: uuid(),
 		title: 'Log out',
-		path: '',
+		path: '/',
 		iconID: 'logout'
 	},
-	activeMenu: false
 }
 
 const headerSlice = createSlice({
@@ -79,9 +81,12 @@ const headerSlice = createSlice({
 		},
 		toggleMenu(state) {
 			state.activeMenu = !state.activeMenu
+		},
+		toggleHeaderPopup(state) {
+			state.activePopup = !state.activePopup
 		}
 	}
 })
 
-export const { setLogin, toggleMenu } = headerSlice.actions;
+export const { setLogin, toggleMenu, toggleHeaderPopup } = headerSlice.actions;
 export default headerSlice.reducer;

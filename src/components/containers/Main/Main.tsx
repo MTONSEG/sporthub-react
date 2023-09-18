@@ -22,8 +22,6 @@ export interface BaseUser {
 
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
-	// const auth = getAuth();
-	// localStorage.removeItem('sh-current');
 
 	const { currentUser } = useAppSelector(state => state.singin);
 
