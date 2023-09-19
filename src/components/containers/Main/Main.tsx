@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import './Main.scss';
 import Header from "../Header/Header";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { Auth, getAuth, signOut } from "firebase/auth";
 import Loading from "../../ui/atoms/Loading/Loading";
@@ -23,6 +23,8 @@ export interface BaseUser {
 
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const auth = getAuth();
 
 	const { currentUser } = useAppSelector(state => state.singin);
 
@@ -47,6 +49,8 @@ const Main: React.FC = () => {
 			}
 
 			window.sessionStorage.setItem('welcome', 'true');
+		} else {
+			navigate(AUTH_ROUTE)
 		}
 	}, [])
 

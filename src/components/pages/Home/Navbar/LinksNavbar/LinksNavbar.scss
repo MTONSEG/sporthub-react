@@ -12,9 +12,15 @@
 			color: #fff;
 		}
 	}
+	&.dnone {
+		display: none;
+	}
 	@media (max-width: 767px) {
 		width: 100%;
 		padding: 0;
+		&.dnone {
+			display: block;
+		}
 		&__link {
 			padding: 14px 26px;
 			line-height: normal;

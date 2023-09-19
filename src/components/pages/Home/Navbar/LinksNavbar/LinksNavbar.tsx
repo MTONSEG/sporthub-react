@@ -4,16 +4,17 @@ import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../../../../../hooks/hooks";
 
 interface PropsType {
-	login?: boolean
+	login?: boolean,
+	display?: boolean
 }
 
 
-const LinksNavbar: React.FC<PropsType> = ({ login }) => {
+const LinksNavbar: React.FC<PropsType> = ({ login, display }) => {
 	const { links } = useAppSelector(state => state.navbar);
 
 
 	return (
-		<div className={`links-navbar${login ? '' : 'logout'}`}>
+		<div className={`links-navbar${login ? '' : 'logout'}${display? ' dnone':''}`}>
 			{
 				links?.map(el => (
 					<NavLink

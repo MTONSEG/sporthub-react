@@ -2,6 +2,32 @@
 	display: flex;
 	align-items: center;
 	padding: 8px;
+	position: relative;
+	&:not(:last-child) {
+		margin: 0 0 4px;
+	}
+	&::before {
+		content: "";
+		display: block;
+		width: 3px;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: #AD7955;
+		border-radius: 5px 0 0 5px;
+		opacity: 0;
+		transition: opacity .1s ease-in-out;
+	}
+	&:hover::before {
+		opacity: 1;
+	}
+	&.active {
+		background: #222;
+		&::before {
+			opacity: 1;
+		}
+	}
 	&__image-wrap{
 		background: #AD7955;
 		border-radius: 50%;
@@ -19,5 +45,11 @@
 	&__name {
 		line-height: normal;
 		color: #bbb;
+	}
+	@media (max-width: 767px) {
+		width: 100%;
+		&.active {
+			background-color: rgba(152, 82, 31, 0.168);
+		}
 	}
 }

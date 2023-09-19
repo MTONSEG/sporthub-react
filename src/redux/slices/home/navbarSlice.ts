@@ -3,12 +3,7 @@ import uuid from "react-uuid";
 import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 
-type navBarType = {
-	loading: boolean,
-	links: ILink[],
-	users: UserObject | null,
-	subscribers: Subscriber[] | null,
-}
+
 
 interface User {
 	bod: string,
@@ -28,6 +23,14 @@ type UserObject = {
 	[key: string]: User
 }
 
+type navBarType = {
+	loading: boolean,
+	links: ILink[],
+	users: UserObject | null,
+	subscribers: Subscriber[] | null,
+	titleSubs: string,
+	titleSubsBtn: string
+}
 
 const initialState: navBarType = {
 	loading: false,
@@ -50,6 +53,8 @@ const initialState: navBarType = {
 			path: VIEW_LATER_ROUTE
 		},
 	],
+	titleSubs: 'My subscription',
+	titleSubsBtn: 'Show more'
 }
 
 export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string }>(
@@ -87,6 +92,7 @@ const navbarSlice = createSlice({
 					}
 					state.subscribers.push(obj)
 				}
+				state.loading = false;
 			})
 	}
 })

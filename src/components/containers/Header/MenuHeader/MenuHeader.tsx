@@ -9,6 +9,7 @@ import UserMenuHeader from "./UserMenuHeader/UserMenuHeader";
 import PopupMenuHeader from "./PopupMenuHeader/PopupMenuHeader";
 import { toggleHeaderPopup } from "../../../../redux/slices/header/headerSlice";
 import LinksNavbar from "../../../pages/Home/Navbar/LinksNavbar/LinksNavbar";
+import SubscriptionsNavbar from "../../../pages/Home/Navbar/SubscriptionsNavbar/SubscriptionsNavbar";
 
 interface MenuPropsType {
 
@@ -32,7 +33,7 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 			<div className={`menu-header__burger-menu${activeMenu ? ' active' : ''}`}>
 				{
 					window.innerWidth < 768
-						? <LinksNavbar login={login} />
+						? <LinksNavbar login={login} display={true} />
 						: <></>
 				}
 
@@ -57,6 +58,7 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 								}
 							</ul>
 							<UserMenuHeader photoURL={currentUser.photoURL} name={currentUser.name} />
+							<SubscriptionsNavbar login={login} display={true} />
 						</>
 						: <Button
 							onClickHandler={handleSingUp}
@@ -64,9 +66,6 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 							className="menu-header__sing-btn"
 						>{titleBtn.title}</Button>
 				}
-
-
-
 			</div>
 
 		</div >

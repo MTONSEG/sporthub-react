@@ -1,6 +1,5 @@
 import React from "react";
 import './Navbar.scss';
-import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../../../../hooks/hooks";
 import LinksNavbar from "./LinksNavbar/LinksNavbar";
 import SubscriptionsNavbar from "./SubscriptionsNavbar/SubscriptionsNavbar";
