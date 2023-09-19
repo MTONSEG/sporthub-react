@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import './Main.scss';
 import Header from "../Header/Header";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import { AUTH_CHECK_ROUTE, AUTH_DATA_ROUTE, AUTH_FORGOT_ROUTE, AUTH_REG_ROUTE, AUTH_RESTORE_ROUTE, AUTH_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
-import { Auth, getAuth, signOut } from "firebase/auth";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { AUTH_ROUTE } from "../../../routes/routes";
+import { getAuth, signOut } from "firebase/auth";
 import Loading from "../../ui/atoms/Loading/Loading";
-import Navbar from "../../pages/Home/Navbar/Navbar";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
-import Home from "../../pages/Home/Home";
 import Container from "../Container/Container";
 
+
+const Home = React.lazy(() => import('../../pages/Home/Home'));
+const Navbar = React.lazy(() => import('../../pages/Home/Navbar/Navbar'));
 
 export interface BaseUser {
 	uid: string | number,
@@ -29,9 +30,8 @@ const Main: React.FC = () => {
 	const { currentUser } = useAppSelector(state => state.singin);
 
 	useEffect(() => {
-		const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'))
-		// signOut(auth);
-		// sessionStorage.removeItem('welcome')
+		const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
+
 		if (user) {
 			dispatch(setLogin(true));
 

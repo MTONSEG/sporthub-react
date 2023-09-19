@@ -4,6 +4,8 @@ import { useAppSelector } from "../../../hooks/hooks";
 import Slider from "../../ui/sliders/Slider/Slider";
 import { Settings } from "react-slick";
 import { SwiperOptions } from "swiper/types/swiper-options";
+import { Title } from "../../ui/atoms/Title/Title";
+import VideoList from "../../common/VideoList/VideoList";
 
 
 const Home: React.FC = () => {
@@ -30,6 +32,7 @@ const Home: React.FC = () => {
 				<Slider
 					settings={sliderSetting}
 					slides={slides} />
+				<VideoList/>
 			</div>
 		</div>
 	)
