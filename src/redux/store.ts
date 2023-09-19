@@ -25,7 +25,7 @@ export const store = configureStore({
 		alert: alertSlice,
 		navbar: navbarSlice,
 		sliderCat: categorySliderSlice,
-		homeList: homeListSlice
+		videoList: homeListSlice
 	},
 
 })

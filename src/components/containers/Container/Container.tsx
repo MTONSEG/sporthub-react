@@ -1,7 +1,7 @@
 import React from "react";
 import './Container.scss';
 
-const Container = ({ children, maxWidth = '1440px' }) => {
+const Container = ({ children, maxWidth = '1460px' }) => {
 	let styles = {
 		maxWidth,
 	}

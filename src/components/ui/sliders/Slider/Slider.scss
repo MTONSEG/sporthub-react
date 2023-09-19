@@ -721,7 +721,6 @@ button.swiper-pagination-bullet {
 .slider {
 	min-width: 0;
 	overflow: hidden;
-	touch-action: pan-y;
 	@media (max-width: 767px) {
 		overflow: visible;
 	}

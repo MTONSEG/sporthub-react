@@ -12,8 +12,9 @@ import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
 import Container from "../Container/Container";
 
 
-const Home = React.lazy(() => import('../../pages/Home/Home'));
 const Navbar = React.lazy(() => import('../../pages/Home/Navbar/Navbar'));
+const Home = React.lazy(() => import('../../pages/Home/Home'));
+const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome'));
 
 export interface BaseUser {
 	uid: string | number,
@@ -64,8 +65,8 @@ const Main: React.FC = () => {
 					<div className="main__body">
 						<Routes>
 							<Route index element={<Home />} />
-							<Route path="/latest" element={<>latest</>} />
-							<Route path='/later' element={<>later</>} />
+							<Route path="/latest" element={<Latest title='Lates Video' />} />
+							<Route path='/later' element={<Latest title='View later' />} />
 						</Routes>
 					</div>
 				</div>

@@ -10,6 +10,7 @@ import VideoList from "../../common/VideoList/VideoList";
 
 const Home: React.FC = () => {
 	const { slides } = useAppSelector(state => state.sliderCat);
+	const titleList = useAppSelector(state => state.videoList.title);
 
 	const sliderSetting: SwiperOptions = {
 		slidesPerView: 'auto',
@@ -32,8 +33,8 @@ const Home: React.FC = () => {
 				<Slider
 					settings={sliderSetting}
 					slides={slides} />
-				<VideoList/>
 			</div>
+			<VideoList title={titleList} />
 		</div>
 	)
 }
