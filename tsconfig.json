@@ -6,7 +6,7 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"moduleResolution": "Node",
-		"baseUrl": "src",
+		"baseUrl": "src/",
 		"allowSyntheticDefaultImports": true,
 		"isolatedModules": true,
 		"paths": {
