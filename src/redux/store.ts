@@ -8,7 +8,7 @@ import checkSlice from "./slices/auth/checkSlice";
 import sliderAuthSlice from "./slices/auth/sliderAuthSlice";
 import personalSlice from "./slices/auth/personalSlice";
 import alertSlice from "./slices/alert/alertSlice";
-import navbarSlice from "./slices/home/navbarSlice";
+import userSlice from "./slices/home/userSlice";
 import categorySliderSlice from "./slices/home/categorySliderSlice";
 import homeListSlice from "./slices/home/listVideoSlice";
 
@@ -23,7 +23,7 @@ export const store = configureStore({
 		sliderAuth: sliderAuthSlice,
 		personalAuth: personalSlice,
 		alert: alertSlice,
-		navbar: navbarSlice,
+		users: userSlice,
 		sliderCat: categorySliderSlice,
 		videoList: homeListSlice
 	},

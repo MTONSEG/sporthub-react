@@ -10,7 +10,7 @@ interface PropsType {
 
 
 const LinksNavbar: React.FC<PropsType> = ({ login, display }) => {
-	const { links } = useAppSelector(state => state.navbar);
+	const { links } = useAppSelector(state => state.users);
 
 
 	return (

@@ -27,7 +27,6 @@ const Picture: React.FC<picturePropsType> = ({ className, img, webp, ...rest }) 
 	}
 
 	const alt = rest.alt ? rest.alt : 'image';
-	console.log(img, webp);
 
 	return (
 		<picture>

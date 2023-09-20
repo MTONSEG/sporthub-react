@@ -3,9 +3,10 @@ import './Home.scss';
 import { useAppSelector } from "../../../hooks/hooks";
 import Slider from "../../ui/sliders/Slider/Slider";
 import { SwiperOptions } from "swiper/types/swiper-options";
-import VideoList from "../../common/VideoList/VideoList";
-import Navbar from './Navbar/Navbar';
 import ContainerMain from '../../containers/ContainerMain/ContainerMain';
+
+
+const VideoList = React.lazy(() => import('../../common/VideoList/VideoList'));
 
 
 const Home: React.FC = () => {

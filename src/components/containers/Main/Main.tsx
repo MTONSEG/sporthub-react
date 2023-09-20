@@ -9,6 +9,7 @@ import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
 import Container from "../Container/Container";
+import { User, getUsers, setUser } from '../../../redux/slices/home/userSlice';
 
 const Home = React.lazy(() => import('../../pages/Home/Home'));
 const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome'));
@@ -23,15 +24,18 @@ export interface BaseUser {
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const { users } = useAppSelector(state => state.users);
 
 	useEffect(() => {
+		dispatch(getUsers());
+
 		const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
 
 		if (user) {
 			dispatch(setLogin(true));
-
 			if (user.name) {
 				dispatch(setCurrentUser({ name: user.name, photoURL: user.photoURL }));
+				dispatch(setUser(user))
 			}
 
 			if (!sessionStorage.getItem('welcome')) {

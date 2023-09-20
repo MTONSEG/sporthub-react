@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setLogin } from "../../../../redux/slices/header/headerSlice";
+import { setUser } from '../../../../redux/slices/home/userSlice';
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);
@@ -40,14 +41,15 @@ const SingIn = () => {
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				let user = userCredential.user;
-
-				localStorage.setItem('sh-current', JSON.stringify({
+				let userObj = {
 					uid: user.uid,
 					name: user.displayName,
 					email: user.email,
 					photoURL: user.photoURL
-				}))
+				}
 
+				localStorage.setItem('sh-current', JSON.stringify(userObj))
+			
 				dispatch(setLogin(true))
 				navigate('/')
 				dispatch(setMessage(alert.welcome))

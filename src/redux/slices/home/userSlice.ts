@@ -1,22 +1,25 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
 import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
+import { NumStrNullType } from '../auth/singupSlice';
 
 
 
-interface User {
-	bod: string,
-	email: string,
-	firstName: string,
-	gender: string,
-	imageUrl: string,
-	lastName: string,
-	password: string
+export interface User {
+	uid?: NumStrNullType
+	bod?: string,
+	email?: string,
+	firstName?: string,
+	gender?: string,
+	imageUrl?: string,
+	lastName?: string,
+	password?: string,
+	subscribes?: Subscribe
 }
 
-interface Subscriber extends User {
-	uid: string
+export type Subscribe = {
+	[key: string]: boolean | null
 }
 
 type UserObject = {
@@ -27,15 +30,21 @@ type navBarType = {
 	loading: boolean,
 	links: ILink[],
 	users: UserObject | null,
-	subscribers: Subscriber[] | null,
+	subscribes: User[],
 	titleSubs: string,
-	titleSubsBtn: string
+	titleSubsBtn: string,
+	current: User,
+	list: any
 }
 
 const initialState: navBarType = {
 	loading: false,
 	users: null,
-	subscribers: [],
+	titleSubs: 'My subscription',
+	titleSubsBtn: 'Show more',
+	subscribes: [],
+	current: {},
+	list: [],
 	links: [
 		{
 			id: uuid(),
@@ -53,8 +62,6 @@ const initialState: navBarType = {
 			path: VIEW_LATER_ROUTE
 		},
 	],
-	titleSubs: 'My subscription',
-	titleSubsBtn: 'Show more'
 }
 
 export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string }>(
@@ -73,10 +80,14 @@ export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string
 )
 
 
-const navbarSlice = createSlice({
+const userSlice = createSlice({
 	name: 'navbar',
 	initialState,
-	reducers: {},
+	reducers: {
+		setUser(state, action: PayloadAction<User>) {
+			state.current = action.payload;
+		}
+	},
 	extraReducers: builder => {
 		builder
 			.addCase(getUsers.pending, (state) => {
@@ -85,16 +96,20 @@ const navbarSlice = createSlice({
 			.addCase(getUsers.fulfilled, (state, action) => {
 				state.users = action.payload;
 
-				for (let item in action.payload) {
-					let obj: Subscriber = {
-						...action.payload[item],
-						uid: item,
-					}
-					state.subscribers.push(obj)
+				let subscribesObj = {
+					...action.payload[state.current.uid].subscribes,
 				}
+
+				state.subscribes = Object.keys(subscribesObj).map(key => {
+					return {
+						uid: key,
+						...action.payload[key]
+					}
+				});
+
 				state.loading = false;
 			})
 	}
 })
-// export const { test } = navbarSlice.actions;
-export default navbarSlice.reducer;
+export const { setUser } = userSlice.actions;
+export default userSlice.reducer;

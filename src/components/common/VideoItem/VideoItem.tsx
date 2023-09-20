@@ -16,8 +16,6 @@ const VideoItem: React.FC<IVideoItem> = ({
 }) => {
 	const user = useAppSelector(state => state.singin.currentUser)
 
-	console.log(user);
-
 	return (
 		<div className={`video-item`}>
 			<div className="video-item__image-wrap">

@@ -2,11 +2,7 @@
 	padding: 24px 24px 24px 0;
 	width: 260px;
 	float: left;
-	// height: calc(100vh - 64px);
-	// overflow: auto;
-	// &::-webkit-scrollbar {
-	// 	width: 0;
-	// }
+	min-height: calc(100vh - 64px);
 	@media (max-width: 767px) {
 		display: none;
 	}

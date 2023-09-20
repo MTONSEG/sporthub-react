@@ -13,6 +13,7 @@ import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { AUTH_DATA_ROUTE } from "../../../../routes/routes";
+import { Subscribe } from '../../../../redux/slices/home/userSlice';
 
 export interface IAdditionalData {
 	displayName: string
@@ -23,6 +24,7 @@ export interface ISingUpState {
 	lastName: string,
 	email: string,
 	password: string
+	subscribes?: Subscribe
 }
 
 const SingUp: React.FC = () => {
