@@ -1,16 +1,17 @@
 import React from "react";
 import './LatestHome.scss';
 import VideoList from "../../..//common/VideoList/VideoList";
-import { useAppSelector } from "../../../../hooks/hooks";
+import ContainerMain from '../../../containers/ContainerMain/ContainerMain';
 
 type LatestPropsType = {
 	title: string
 }
 
-const LatestHome:React.FC<LatestPropsType> = ({title}) => {
-	const titleList = useAppSelector(state => state.videoList.title);
+const LatestHome: React.FC<LatestPropsType> = ({ title }) => {
 	return (
-		<VideoList title={title} />
+		<ContainerMain>
+			<VideoList title={title} />
+		</ContainerMain>
 	)
 }
 

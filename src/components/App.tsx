@@ -9,7 +9,7 @@ const App = () => {
 	return (
 		<div className="wrapper">
 			<Routes>
-				<Route path="/*" element={<Main />} />
+				<Route path='/*' element={<Main />} />
 				<Route path="/auth/*" element={<Auth />} />
 			</Routes>
 			<Alert />

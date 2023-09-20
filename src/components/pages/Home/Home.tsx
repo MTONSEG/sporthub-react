@@ -4,6 +4,8 @@ import { useAppSelector } from "../../../hooks/hooks";
 import Slider from "../../ui/sliders/Slider/Slider";
 import { SwiperOptions } from "swiper/types/swiper-options";
 import VideoList from "../../common/VideoList/VideoList";
+import Navbar from './Navbar/Navbar';
+import ContainerMain from '../../containers/ContainerMain/ContainerMain';
 
 
 const Home: React.FC = () => {
@@ -26,14 +28,16 @@ const Home: React.FC = () => {
 	}
 
 	return (
-		<div className='home'>
-			<div className="home__slider">
-				<Slider
-					settings={sliderSetting}
-					slides={slides} />
-			</div>
-			<VideoList title={titleList} />
-		</div>
+		<ContainerMain>
+			<>
+				<div className="home-slider">
+					<Slider
+						settings={sliderSetting}
+						slides={slides} />
+				</div>
+				<VideoList title={titleList} />
+			</>
+		</ContainerMain>
 	)
 }
 
