@@ -1,26 +1,42 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import './PopupMenuHeader.scss';
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
 import { Icon } from "../../../../ui/atoms/Icon/Icon";
 import { getAuth, signOut } from "firebase/auth";
-import { setLogin, toggleHeaderPopup } from "../../../../../redux/slices/header/headerSlice";
+import { setLogin, toggleHeaderPopup, toggleMenu } from "../../../../../redux/slices/header/headerSlice";
 import { AUTH_ROUTE } from '../../../../../routes/routes';
 
+type PopupPropsType = {
+	handleOutClick: (e: MouseEvent | TouchEvent) => void
+}
 
-const PopupMenuHeader: React.FC = () => {
+const PopupMenuHeader: React.FC<PopupPropsType> = ({ handleOutClick }) => {
 	const { menuLinks, logout, activePopup } = useAppSelector(state => state.header);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	// const popupRef = useRef<HTMLDivElement>();
 
 	const handleLogOut = () => {
 		const auth = getAuth();
 		signOut(auth).then(() => {
 			dispatch(setLogin(false));
-			navigate(AUTH_ROUTE)
+			dispatch(toggleHeaderPopup());
+			dispatch(toggleMenu());
+			navigate(AUTH_ROUTE);
 		});
 		localStorage.removeItem('sh-current');
 	}
+
+
+
+	useEffect(() => {
+		document.addEventListener('click', handleOutClick);
+
+		return () => {
+			document.removeEventListener('click', handleOutClick);
+		}
+	}, [activePopup])
 
 	return (
 		<div className={`popup-header${activePopup ? ' active' : ''}`}

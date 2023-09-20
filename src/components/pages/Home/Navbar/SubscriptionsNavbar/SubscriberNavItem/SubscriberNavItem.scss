@@ -48,6 +48,7 @@
 	}
 	@media (max-width: 767px) {
 		width: 100%;
+    padding: 8px 16px;
 		&.active {
 			background-color: rgba(152, 82, 31, 0.168);
 		}

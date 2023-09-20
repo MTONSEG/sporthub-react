@@ -40,7 +40,7 @@ type navBarType = {
 const initialState: navBarType = {
 	loading: false,
 	users: null,
-	titleSubs: 'My subscription',
+	titleSubs: 'My subscribes',
 	titleSubsBtn: 'Show more',
 	subscribes: [],
 	current: {},

@@ -3,6 +3,10 @@ import './Burger.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { toggleMenu } from '../../../../redux/slices/header/headerSlice';
 
+// type BurgerPropsType = {
+// 	ref: React.RefObject<HTMLDivElement>
+// }
+
 const Burger: React.FC = () => {
 	const active = useAppSelector(state => state.header.activeMenu);
 	const dispatch = useAppDispatch();

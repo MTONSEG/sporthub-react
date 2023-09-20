@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import './MenuHeader.scss';
 import { Link, NavLink } from "react-router-dom";
 import { Icon } from "../../../ui/atoms/Icon/Icon";
@@ -7,7 +7,7 @@ import { NOTIFY_ROUTE } from "../../../../routes/routes";
 import { Button } from "../../../ui/atoms/Button/Button";
 import UserMenuHeader from "./UserMenuHeader/UserMenuHeader";
 import PopupMenuHeader from "./PopupMenuHeader/PopupMenuHeader";
-import { toggleHeaderPopup } from "../../../../redux/slices/header/headerSlice";
+import { toggleHeaderPopup, toggleMenu } from "../../../../redux/slices/header/headerSlice";
 import LinksNavbar from "../../../pages/Home/Navbar/LinksNavbar/LinksNavbar";
 import SubscriptionsNavbar from "../../../pages/Home/Navbar/SubscriptionsNavbar/SubscriptionsNavbar";
 
@@ -15,14 +15,28 @@ interface MenuPropsType {
 
 }
 
-const MenuHeader: React.FC<MenuPropsType> = () => {
+const MenuHeader: React.FC = () => {
 	const { login, links, titleBtn, activeMenu, ...data } = useAppSelector(state => state.header);
 	const { currentUser } = useAppSelector(state => state.singin);
 	const dispatch = useAppDispatch();
+	const menuRef = useRef<HTMLDivElement>();
 
 	const handleSingUp = () => {
 		dispatch(toggleHeaderPopup())
 	}
+
+	const handleOutClick = (e: MouseEvent | TouchEvent): void => {
+		if (activeMenu && menuRef.current && !menuRef.current.contains(e.target as Node)) {
+			dispatch(toggleMenu())
+		}
+	}
+
+	useEffect(() => {
+		// document.addEventListener('click', handleOutClick);
+		// return () => {
+		// 	document.removeEventListener('click', handleOutClick);
+		// }
+	})
 
 	return (
 		<div className={`menu-header${login ? ' login' : ''}`}>
@@ -30,7 +44,7 @@ const MenuHeader: React.FC<MenuPropsType> = () => {
 				<Icon id="search" className="menu-header__icon-btn" />
 			</Link>
 
-			<div className={`menu-header__burger-menu${activeMenu ? ' active' : ''}`}>
+			<div ref={menuRef} className={`menu-header__burger-menu${activeMenu ? ' active' : ''}`}>
 				{
 					window.innerWidth < 768
 						? <LinksNavbar login={login} display={true} />

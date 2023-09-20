@@ -33,14 +33,31 @@
 	@media (max-width: 767px) {
 		order: 2;
 		width: 100%;
-		padding: 14px 26px;
+    padding: 14px 16px;
 		border-radius: 0;
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 44%;
+			right: 16px;
+			transform: translateY(-50%) rotate(45deg);
+			width: 8px;
+			height: 8px;
+			border: 2px solid #fff;
+			border-width: 0 2px 2px 0;
+			transition: all .2s;
+		}
 		&:hover {
 			background: #222;
 			box-shadow: none;
 		}
 		&.active {
 			background: #111;
+			&::after {
+				top: 50%;
+				transform: translateY(-50%) rotate(225deg);
+			}
 			&:hover {
 				background: #111;
 			}

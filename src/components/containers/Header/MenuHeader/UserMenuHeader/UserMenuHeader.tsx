@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import './UserMenuHeader.scss';
 import { Link } from "react-router-dom";
 import PopupMenuHeader from "../PopupMenuHeader/PopupMenuHeader";
@@ -15,16 +15,25 @@ interface UserMenuPropsType {
 const UserMenuHeader: React.FC<UserMenuPropsType> = ({ name, photoURL }) => {
 	const { activePopup } = useAppSelector(state => state.header);
 	const dispatch = useAppDispatch();
+	const popupRef = useRef<HTMLDivElement>()
+
+	const handleOutClick = (e: MouseEvent | TouchEvent) => {
+		if (activePopup && popupRef.current && !popupRef.current.contains(e.target as Node)) {
+			dispatch(toggleHeaderPopup());
+
+			console.log('click');
+		}
+	}
 
 	return (
-		<div className={`profile-header${activePopup ? ' active':''}`}
+		<div ref={popupRef} className={`profile-header${activePopup ? ' active' : ''}`}
 			onClick={() => { dispatch(toggleHeaderPopup()) }}
 		>
 			<div className="profile-header__avatar-wrap">
 				<img src={photoURL} alt="" className="profile-header__avatar" />
 			</div>
 			<p className="profile-header__name">{name}</p>
-			<PopupMenuHeader />
+			<PopupMenuHeader handleOutClick={handleOutClick} />
 		</div>
 	)
 }
