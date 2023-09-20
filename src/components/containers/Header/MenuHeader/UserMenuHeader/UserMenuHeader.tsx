@@ -1,10 +1,8 @@
 import React, { useRef } from "react";
 import './UserMenuHeader.scss';
-import { Link } from "react-router-dom";
 import PopupMenuHeader from "../PopupMenuHeader/PopupMenuHeader";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
 import { toggleHeaderPopup } from "../../../../../redux/slices/header/headerSlice";
-// import { useAppSelector } from "../../../../../hooks/hooks";
 
 
 interface UserMenuPropsType {

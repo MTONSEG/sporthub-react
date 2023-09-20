@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect} from "react";
 import './PopupMenuHeader.scss';
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
@@ -15,7 +15,6 @@ const PopupMenuHeader: React.FC<PopupPropsType> = ({ handleOutClick }) => {
 	const { menuLinks, logout, activePopup } = useAppSelector(state => state.header);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	// const popupRef = useRef<HTMLDivElement>();
 
 	const handleLogOut = () => {
 		const auth = getAuth();
@@ -27,8 +26,6 @@ const PopupMenuHeader: React.FC<PopupPropsType> = ({ handleOutClick }) => {
 		});
 		localStorage.removeItem('sh-current');
 	}
-
-
 
 	useEffect(() => {
 		document.addEventListener('click', handleOutClick);

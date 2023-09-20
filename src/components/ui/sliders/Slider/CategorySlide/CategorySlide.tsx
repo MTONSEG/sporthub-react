@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import './CategorySlide.scss';
 import Picture from '../../../../ui/atoms/Picture/Picture';
 import { Link } from 'react-router-dom';
