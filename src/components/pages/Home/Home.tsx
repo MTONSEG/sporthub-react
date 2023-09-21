@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 	}
 
 	return (
-		<ContainerMain>
+		<ContainerMain float={true}>
 			<>
 				<div className="home-slider">
 					<Slider

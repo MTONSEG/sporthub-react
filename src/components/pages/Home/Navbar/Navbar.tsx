@@ -5,14 +5,15 @@ import LinksNavbar from "./LinksNavbar/LinksNavbar";
 import SubscriptionsNavbar from "./SubscriptionsNavbar/SubscriptionsNavbar";
 
 interface PropsType {
-	login?: boolean
+	login?: boolean,
+	float?: boolean
 }
 
-const Navbar = () => {
+const Navbar: React.FC<PropsType> = ({ float }) => {
 	const { login } = useAppSelector(state => state.header);
 
 	return (
-		<div className="navbar">
+		<div className={`navbar ${float ? 'float' : ''}`}>
 			<LinksNavbar login={login} />
 			<SubscriptionsNavbar login={login} />
 		</div>

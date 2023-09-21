@@ -11,6 +11,7 @@ import alertSlice from "./slices/alert/alertSlice";
 import userSlice from "./slices/home/userSlice";
 import categorySliderSlice from "./slices/home/categorySliderSlice";
 import homeListSlice from "./slices/home/listVideoSlice";
+import subscriptionSlice from './slices/userInfo/userInfoSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -25,7 +26,8 @@ export const store = configureStore({
 		alert: alertSlice,
 		users: userSlice,
 		sliderCat: categorySliderSlice,
-		videoList: homeListSlice
+		videoList: homeListSlice,
+		userInfo: subscriptionSlice
 	},
 
 })

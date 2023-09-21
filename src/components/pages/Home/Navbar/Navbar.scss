@@ -1,8 +1,10 @@
 .navbar {
 	padding: 24px 24px 24px 0;
 	width: 260px;
-	float: left;
 	min-height: calc(100vh - 64px);
+	&.float {
+		float: left;
+	}
 	@media (max-width: 767px) {
 		display: none;
 	}

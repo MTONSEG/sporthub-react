@@ -1,0 +1,60 @@
+.info-subscription {
+	height: 480px;
+	position: relative;
+	padding: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	&__poster-wrap {
+		overflow: hidden;
+		border-radius: 20px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	&__poster {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	&__body {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 438px;
+	}
+	&__user,
+	&__list {
+		display: flex;
+		align-items: center;
+	}
+	&__user {
+		margin-bottom: 32px;
+	}
+	&__list {
+		justify-content: space-between;
+	}
+	&__photo-wrap {
+		width: 64px;
+		height: 64px;
+		overflow: hidden;
+		margin: 0 8px 0 0;
+		border-radius: 50%;
+		position: relative;
+	}
+	&__photo {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	&__user-name {
+		font-size: 32px;
+		font-weight: 600;
+		line-height: normal;
+	}
+	&__btn {
+		max-width: 180px;
+	}
+}

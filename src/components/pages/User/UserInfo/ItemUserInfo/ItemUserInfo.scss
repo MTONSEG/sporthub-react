@@ -1,0 +1,25 @@
+.item-info-subs {
+	display: flex;
+	align-items: center;
+	margin-bottom: 32px;
+	&__icon {
+		width: 44px;
+		height: 44px;
+		fill: #fff;
+		display: inline-block;
+		margin: 0 16px 0 0;
+	}
+	&__amount,
+	&__text {
+		line-height: normal;
+	}
+	&__amount {
+		font-size: 18px;
+		font-weight: 700;
+	}
+	&__text {
+		font-size: 12px;
+		font-weight: 300;
+		color: #bbb;
+	}
+}

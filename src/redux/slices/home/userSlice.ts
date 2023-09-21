@@ -22,7 +22,7 @@ export type Subscribe = {
 	[key: string]: boolean | null
 }
 
-type UserObject = {
+export type UserObject = {
 	[key: string]: User
 }
 

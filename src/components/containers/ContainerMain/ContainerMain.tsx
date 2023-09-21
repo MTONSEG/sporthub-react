@@ -4,17 +4,18 @@ import './ContainerMain.scss';
 const Navbar = React.lazy(() => import('../../pages/Home/Navbar/Navbar'));
 
 type ContainerMainPropsType = {
-	children: ReactElement
+	children: ReactElement,
+	float?: boolean
 }
 
-const ContainerMain: React.FC<ContainerMainPropsType> = ({ children }) => {
+const ContainerMain: React.FC<ContainerMainPropsType> = ({ children, float = false }) => {
 	return (
-		<div className="main">
-			<Navbar />
+		<main className={`main ${float ? '' : 'grid'}`}>
+			<Navbar float={float} />
 			<div className="main__body">
 				{children}
 			</div>
-		</div>
+		</main>
 	)
 }
 

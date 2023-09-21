@@ -21,3 +21,7 @@ export const VIEW_LATER_ROUTE: string = '/later';
 export const MIND_VIDEO_ROUTE: string = '/video/mind';
 export const BODY_VIDEO_ROUTE: string = '/video/body';
 export const SOUL_VIDEO_ROUTE: string = '/video/soul';
+
+//User Tabs
+export const USER_ROUTE: string = '/user';
+

@@ -1,21 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import './SubscriberNavItem.scss';
 import { NumStrNullType } from "../../../../../../redux/slices/auth/singupSlice";
-import { PROFILE_ROUTE } from "../../../../../../routes/routes";
+import { USER_ROUTE } from "../../../../../../routes/routes";
 import { NavLink } from "react-router-dom";
+import { fetchUserInfo } from '../../../../../../redux/slices/userInfo/userInfoSlice';
+import { useAppDispatch } from '../../../../../../hooks/hooks';
 
 
 interface PropsType {
 	imgSrc?: string,
 	name: string,
-	uid: NumStrNullType
+	uid: string | number
 }
 
 const SubscriberNavItem: React.FC<PropsType> = ({ imgSrc, name, uid }) => {
+	const dispatch = useAppDispatch();
 
+	const handleOnClick = () => {
+		dispatch(fetchUserInfo(uid));
+	}
 
 	return (
-		<NavLink to={`${PROFILE_ROUTE}/${uid}`} className="item-subscriber">
+		<NavLink to={`${USER_ROUTE}/${uid}`} className="item-subscriber" onClick={handleOnClick}>
 			<div className="item-subscriber__image-wrap">
 				<img src={imgSrc} alt="" className="item-subscriber__image" />
 			</div>
