@@ -21,4 +21,11 @@
 		font-weight: 300;
 		color: #bbb;
 	}
+	@media (max-width: 767px) {
+		display: block;
+		text-align: center;
+		&__icon {
+			display: none;
+		}
+	}
 }

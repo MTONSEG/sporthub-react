@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './UserInfo.scss';
 import Picture from '../../../ui/atoms/Picture/Picture';
-import ItemUserInfo from './ItemUserInfo/ItemUserInfo';
 import { Button } from '../../../ui/atoms/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
 import { fetchUserInfo } from '../../../../redux/slices/userInfo/userInfoSlice';
 import Loading from '../../../ui/atoms/Loading/Loading';
 import { BaseUser } from '../../../containers/Main/Main';
-import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe, getUsers } from '../../../../redux/slices/home/userSlice';
+import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe } from '../../../../redux/slices/home/userSlice';
+
+const ItemUserInfo = React.lazy(()=>import('./ItemUserInfo/ItemUserInfo'));
 
 const UserInfo: React.FC = () => {
 	const { user, ...state } = useAppSelector(state => state.userInfo);
@@ -39,7 +40,13 @@ const UserInfo: React.FC = () => {
 		<div className='info-subscription'>
 
 			<div className="info-subscription__poster-wrap">
-				<img src={state.poster.img} alt="poster" className="info-subscription__poster" />
+
+				{
+					window.innerWidth > 767
+						? <img src={state.poster.img} alt="poster" className="info-subscription__poster" />
+						: <img src={state.poster_mob.img} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
+				}
+
 			</div>
 
 			<div className="info-subscription__body">

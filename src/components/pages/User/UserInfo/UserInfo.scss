@@ -18,6 +18,9 @@
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+		&_mob {
+			display: none;
+		}
 	}
 	&__body {
 		position: relative;
@@ -25,7 +28,7 @@
 		width: 100%;
 		max-width: 438px;
 	}
-	&__user{
+	&__user {
 		display: flex;
 		align-items: center;
 	}
@@ -35,7 +38,7 @@
 	}
 	&__list {
 		display: grid;
-		grid-template-columns: repeat(3,1fr);
+		grid-template-columns: repeat(3, 1fr);
 		gap: 0 24px;
 	}
 	&__photo-wrap {
@@ -50,6 +53,7 @@
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+		aspect-ratio: 1/1;
 	}
 	&__user-name {
 		font-size: 32px;
@@ -58,5 +62,51 @@
 	}
 	&__btn {
 		max-width: 180px;
+	}
+	@media (max-width: 767px) {
+		padding: 0;
+		height: auto;
+		flex-direction: column;
+		margin: 0 -16px 31px;
+		&__poster-wrap {
+			position: relative;
+			border-radius: 0;
+			height: 150px;
+		}
+		&__poster {
+			display: none;
+			&_mob {
+				display: block;
+			}
+		}
+		&__body {
+			max-width: 100%;
+			padding: 0 16px;
+			margin-top: -38px;
+		}
+		&__user {
+			flex-direction: column;
+			margin: 0 0 16px;
+		}
+		&__photo-wrap {
+			border: 6px solid #111;
+			width: 72px;
+			height: 72px;
+			margin: 0 0 2px;
+		}
+		&__user-name {
+			font-size: 24px;
+		}
+		&__list {
+			background: #222;
+			border-radius: 8px;
+			padding: 8px;
+			gap: 8px;
+			margin-bottom: 16px;
+			justify-content: center;
+		}
+		&__btn {
+			max-width: 100%;
+		}
 	}
 }

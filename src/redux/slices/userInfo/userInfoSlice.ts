@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import img from '../../../assets/images/subscription/poster.jpg';
 import webp from '../../../assets/images/subscription/poster.jpg?as=webp';
+import img_m from '../../../assets/images/subscription/poster_mob.jpg';
+import webp_m from '../../../assets/images/subscription/poster_mob.jpg?as=webp';
 import { imageType } from '../auth/sliderAuthSlice';
 import uuid from 'react-uuid';
 import { User, UserObject } from '../home/userSlice';
@@ -25,6 +27,7 @@ type UserInfoType = {
 	videos: InfoSubs,
 	views: InfoSubs,
 	poster: imageType,
+	poster_mob: imageType,
 	user: User,
 	tabList: TabLink[]
 }
@@ -32,6 +35,7 @@ type UserInfoType = {
 const initialState: UserInfoType = {
 	loading: false,
 	poster: { img, webp },
+	poster_mob: { img: img_m, webp: webp_m },
 	subscribers: {
 		iconID: 'subscribers',
 		text: 'Subscribers'
