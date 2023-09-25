@@ -8,7 +8,7 @@ import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
 import Container from "../Container/Container";
-import { getUsers, setUser } from '../../../redux/slices/home/userSlice';
+import { getUsers, setLoggedUser } from '../../../redux/slices/home/userSlice';
 import User from '../../pages/User/User';
 
 const Home = React.lazy(() => import('../../pages/Home/Home'));
@@ -20,6 +20,8 @@ export interface BaseUser {
 	email: string,
 	photoURL: string,
 }
+
+
 
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -34,7 +36,7 @@ const Main: React.FC = () => {
 			dispatch(setLogin(true));
 			if (user.name) {
 				dispatch(setCurrentUser({ name: user.name, photoURL: user.photoURL }));
-				dispatch(setUser(user))
+				dispatch(setLoggedUser(user))
 			}
 
 			if (!sessionStorage.getItem('welcome')) {

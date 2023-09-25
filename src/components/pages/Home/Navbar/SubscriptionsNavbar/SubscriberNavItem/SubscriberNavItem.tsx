@@ -1,6 +1,5 @@
 import React from "react";
 import './SubscriberNavItem.scss';
-import { NumStrNullType } from "../../../../../../redux/slices/auth/singupSlice";
 import { USER_ROUTE } from "../../../../../../routes/routes";
 import { NavLink } from "react-router-dom";
 import { fetchUserInfo } from '../../../../../../redux/slices/userInfo/userInfoSlice';

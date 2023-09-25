@@ -1,25 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserInfo.scss';
 import Picture from '../../../ui/atoms/Picture/Picture';
 import ItemUserInfo from './ItemUserInfo/ItemUserInfo';
 import { Button } from '../../../ui/atoms/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
-import { getUsers } from '../../../../redux/slices/home/userSlice';
 import { fetchUserInfo } from '../../../../redux/slices/userInfo/userInfoSlice';
 import Loading from '../../../ui/atoms/Loading/Loading';
+import { BaseUser } from '../../../containers/Main/Main';
+import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe, getUsers } from '../../../../redux/slices/home/userSlice';
 
 const UserInfo: React.FC = () => {
 	const { user, ...state } = useAppSelector(state => state.userInfo);
+	const { users, logged } = useAppSelector(state => state.users);
 	const { uid } = useParams();
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		if(!user) dispatch(fetchUserInfo(uid));
-	}, []);
+		dispatch(fetchUserInfo(uid));
+	}, [users]);
 
+
+	const handleClickSubscribe = () => {
+		let localParse: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
+		let userUID: string | number = localParse.uid;
+		let params: SubscribeParameters = {
+			userUID,
+			subscriberUID: uid
+		}
+		if (users[logged.uid].subscribes[uid]) {
+			dispatch(fetchUnsubscribe(params));
+		} else {
+			dispatch(fetchSubscribe(params));
+		}
+	}
+	if (!users) return <Loading />
 	return (
 		<div className='info-subscription'>
+
 			<div className="info-subscription__poster-wrap">
 				<img src={state.poster.img} alt="poster" className="info-subscription__poster" />
 			</div>
@@ -54,7 +72,26 @@ const UserInfo: React.FC = () => {
 						amount='30' />
 				</ul>
 
-				<Button className='info-subscription__btn'>Unsubscribe</Button>
+				{
+					users[logged.uid].subscribes[uid]
+						?
+						(<Button
+							variant='brown'
+							className='info-subscription__btn'
+							onClickHandler={handleClickSubscribe}
+						>
+							Unsubscribe
+						</Button>)
+						:
+						(<Button
+							className='info-subscription__btn'
+							onClickHandler={handleClickSubscribe}
+						>
+							Subscribe
+						</Button>)
+				}
+
+
 			</div>
 
 		</div>

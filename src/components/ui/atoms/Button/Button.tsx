@@ -2,7 +2,7 @@ import React, { CSSProperties, MouseEventHandler } from "react";
 import './Button.scss';
 import { Link } from "react-router-dom";
 
-type variantType = 'black' | 'default'
+type variantType = 'black' | 'default' | 'brown'
 
 type propsType = {
 	children: any,

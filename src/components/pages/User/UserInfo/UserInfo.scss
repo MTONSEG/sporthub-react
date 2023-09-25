@@ -25,16 +25,18 @@
 		width: 100%;
 		max-width: 438px;
 	}
-	&__user,
-	&__list {
+	&__user{
 		display: flex;
 		align-items: center;
 	}
-	&__user {
+	&__user,
+	&__list {
 		margin-bottom: 32px;
 	}
 	&__list {
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: repeat(3,1fr);
+		gap: 0 24px;
 	}
 	&__photo-wrap {
 		width: 64px;

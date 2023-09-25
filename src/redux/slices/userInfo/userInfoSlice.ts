@@ -38,11 +38,11 @@ const initialState: UserInfoType = {
 	},
 	videos: {
 		iconID: 'videos',
-		text: 'Subscribers'
+		text: 'Videos'
 	},
 	views: {
 		iconID: 'views',
-		text: 'Subscribers'
+		text: 'Views'
 	},
 	user: null,
 	tabList: [
@@ -56,7 +56,7 @@ const initialState: UserInfoType = {
 
 export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rejectValue: string }>(
 	'users/fetchUserInfo',
-	async (_, { rejectWithValue }) => {
+	async (uid, { rejectWithValue }) => {
 		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
 
 		const data = await res.json();
@@ -68,6 +68,8 @@ export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rej
 		return data;
 	}
 )
+
+
 
 const userInfoSlice = createSlice({
 	name: 'subscription',
@@ -81,7 +83,6 @@ const userInfoSlice = createSlice({
 		builder
 			.addCase(fetchUserInfo.pending, state => {
 				state.loading = true;
-				console.log('pending');
 			})
 			.addCase(fetchUserInfo.fulfilled, (state, action) => {
 				state.user = action.payload[action.meta.arg];

@@ -15,7 +15,7 @@
 	&__list-inner {
 		height: auto;
 		overflow: hidden;
-		transition: all 0.2s linear;
+		transition: all 0.4s linear;
 		&.show + .subscription-navbar__show-btn span:after {
 			transform: translateY(4px) rotate(225deg);
 		}

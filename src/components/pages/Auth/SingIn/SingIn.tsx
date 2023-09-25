@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setLogin } from "../../../../redux/slices/header/headerSlice";
-import { setUser } from '../../../../redux/slices/home/userSlice';
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);

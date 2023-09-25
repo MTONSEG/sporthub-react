@@ -4,7 +4,10 @@ import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { NumStrNullType } from '../auth/singupSlice';
 
-
+export interface SubscribeParameters {
+	userUID: string | number,
+	subscriberUID: string | number
+}
 
 export interface User {
 	uid?: NumStrNullType
@@ -30,10 +33,10 @@ type navBarType = {
 	loading: boolean,
 	links: ILink[],
 	users: UserObject | null,
-	subscribes: User[],
+	subscribeList: User[],
 	titleSubs: string,
 	titleSubsBtn: string,
-	current: User,
+	logged: User,
 	list: any
 }
 
@@ -42,8 +45,8 @@ const initialState: navBarType = {
 	users: null,
 	titleSubs: 'My subscribes',
 	titleSubsBtn: 'Show more',
-	subscribes: [],
-	current: {},
+	subscribeList: [],
+	logged: {},
 	list: [],
 	links: [
 		{
@@ -70,7 +73,7 @@ export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string
 		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
 
 		const data = await res.json();
-
+		
 		if (!res.ok) {
 			return rejectWithValue('Server Error');
 		}
@@ -79,13 +82,82 @@ export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string
 	}
 )
 
+export const fetchSubscribe = createAsyncThunk<void, SubscribeParameters, { rejectValue: string }>(
+	'users/subscribe',
+	async (params, { rejectWithValue, dispatch }) => {
+		let { userUID, subscriberUID } = params;
+		let URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${userUID}/subscribes.json`;
+
+		let body = JSON.stringify({
+			[subscriberUID]: true
+		});
+
+		const res = await fetch(URL, {
+			method: 'PATCH',
+			body,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		let data = await res.json();
+
+		dispatch(subscribeUser(params));
+		if (!res.ok) {
+			rejectWithValue('Error');
+		}
+	}
+)
+
+export const fetchUnsubscribe = createAsyncThunk<void, SubscribeParameters, { rejectValue: string }>(
+	'users/unsubscribe',
+	async (params, { rejectWithValue, dispatch }) => {
+		let { userUID, subscriberUID } = params;
+		let URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${userUID}/subscribes.json`;
+
+		let body = JSON.stringify({
+			[subscriberUID]: false
+		});
+
+		const res = await fetch(URL, {
+			method: 'PATCH',
+			body,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		let data = await res.json();
+		dispatch(unsubscribeUser(params));
+
+		if (!res.ok) {
+			rejectWithValue('Error');
+		}
+	}
+)
 
 const userSlice = createSlice({
 	name: 'navbar',
 	initialState,
 	reducers: {
-		setUser(state, action: PayloadAction<User>) {
-			state.current = action.payload;
+		setLoggedUser(state, action: PayloadAction<User>) {
+			state.logged = action.payload;
+		},
+		subscribeUser(state, action: PayloadAction<SubscribeParameters>) {
+			let { userUID, subscriberUID } = action.payload;
+			state.users[userUID].subscribes[subscriberUID] = true;
+
+			let obj: User = {
+				uid: subscriberUID,
+				...state.users[subscriberUID]
+			}
+
+			state.subscribeList.push(obj)
+
+		},
+		unsubscribeUser(state, action: PayloadAction<SubscribeParameters>) {
+			let { userUID, subscriberUID } = action.payload;
+			state.users[userUID].subscribes[subscriberUID] = false;
+
+			state.subscribeList = state.subscribeList.filter(el => el.uid !== subscriberUID)
 		}
 	},
 	extraReducers: builder => {
@@ -97,10 +169,11 @@ const userSlice = createSlice({
 				state.users = action.payload;
 
 				let subscribesObj = {
-					...action.payload[state.current.uid].subscribes,
+					...action.payload[state.logged.uid].subscribes,
 				}
 
-				state.subscribes = Object.keys(subscribesObj).map(key => {
+
+				state.subscribeList = Object.keys(subscribesObj).map(key => {
 					return {
 						uid: key,
 						...action.payload[key]
@@ -109,7 +182,19 @@ const userSlice = createSlice({
 
 				state.loading = false;
 			})
+			.addCase(fetchSubscribe.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(fetchSubscribe.fulfilled, (state) => {
+				state.loading = false;
+			})
+			.addCase(fetchUnsubscribe.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(fetchUnsubscribe.fulfilled, (state) => {
+				state.loading = false;
+			})
 	}
 })
-export const { setUser } = userSlice.actions;
+export const { setLoggedUser, subscribeUser, unsubscribeUser } = userSlice.actions;
 export default userSlice.reducer;

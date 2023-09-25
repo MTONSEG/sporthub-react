@@ -1,11 +1,7 @@
-import React, { CSSProperties, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './SubscriptionsNavbar.scss';
-import { NavLink } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
-import { getUsers } from "../../../../../redux/slices/home/userSlice";
+import { useAppSelector } from "../../../../../hooks/hooks";
 import SubscriberNavItem from "./SubscriberNavItem/SubscriberNavItem";
-import Loading from "../../../../ui/atoms/Loading/Loading";
-import { list } from 'firebase/storage';
 
 
 interface PropsType {
@@ -19,17 +15,18 @@ const SubscriptionsNavbar: React.FC<PropsType> = ({ display }) => {
 	const [height, setHeight] = useState<string>('auto');
 	const listRef = useRef<HTMLDivElement | null>(null);
 
-	const { users, current, subscribes, ...state } = useAppSelector(state => state.users);
+	const { users, subscribeList, ...state } = useAppSelector(state => state.users);
 
 	const handleClickBtn = (): void => {
 		setShow(!show)
 	}
 
 	useEffect(() => {
-		if (subscribes.length > numSubscribes) {
-			setHeight('84px');
+		if (subscribeList.length > numSubscribes) {
+			setHeight(44*7+'px');
 		}
-	}, [subscribes])
+
+	}, [subscribeList])
 
 	return (
 		<div className={`subscription-navbar${display ? ' dnone' : ''}`}>
@@ -40,13 +37,13 @@ const SubscriptionsNavbar: React.FC<PropsType> = ({ display }) => {
 				ref={listRef}
 				className={`subscription-navbar__list-inner${show ? ' show' : ''}`}
 				style={
-					subscribes?.length > numSubscribes && show
+					subscribeList?.length > numSubscribes && show
 						? { maxHeight: listRef.current.scrollHeight }
-						: { maxHeight: height}
+						: { maxHeight: height }
 				}
 			>
 				{
-					subscribes?.map(el => (
+					subscribeList?.map(el => (
 						<SubscriberNavItem
 							key={el.uid}
 							uid={el.uid}
@@ -57,7 +54,7 @@ const SubscriptionsNavbar: React.FC<PropsType> = ({ display }) => {
 				}
 			</div>
 			{
-				subscribes?.length > numSubscribes
+				subscribeList?.length > numSubscribes
 					? (<button
 						className="subscription-navbar__show-btn"
 						onClick={handleClickBtn}
