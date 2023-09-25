@@ -24,4 +24,8 @@ export const SOUL_VIDEO_ROUTE: string = '/video/soul';
 
 //User Tabs
 export const USER_ROUTE: string = '/user';
+// export const USER_VIDEO_ROUTE: string = '/user';
+// export const USER_BIO_ROUTE: string = '/user';
+// export const USER_STORE_ROUTE: string = '/user';
+// export const USER_PLAYLIST_ROUTE: string = '/user';
 

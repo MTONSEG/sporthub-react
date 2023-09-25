@@ -1,0 +1,30 @@
+.header-user-tabs {
+	margin: 0 0 16px;
+	border-bottom: 1px solid #222;
+	&__list {
+		width: 100%;
+		max-width: 400px;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		position: relative;
+	}
+	&__link {
+		display: block;
+		padding: 10px 5px;
+		text-align: center;
+		color: #777;
+		font-size: 16px;
+		line-height: 1.5;
+		&.active {
+			color: #fff;
+		}
+	}
+	&__indicator {
+		position: absolute;
+		bottom: 0;
+		width: calc(100% / 4);
+		height: 1px;
+		background: #AD7955;
+		transition: left .3s;
+	}
+}

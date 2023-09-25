@@ -29,7 +29,7 @@ type UserInfoType = {
 	poster: imageType,
 	poster_mob: imageType,
 	user: User,
-	tabList: TabLink[]
+	tabList: TabLink[],
 }
 
 const initialState: UserInfoType = {
@@ -53,7 +53,22 @@ const initialState: UserInfoType = {
 		{
 			id: uuid(),
 			title: 'Video',
-			path: ''
+			path: 'video'
+		},
+		{
+			id: uuid(),
+			title: 'Bio',
+			path: 'bio'
+		},
+		{
+			id: uuid(),
+			title: 'Store',
+			path: 'store'
+		},
+		{
+			id: uuid(),
+			title: 'Playlists',
+			path: 'playlist'
 		}
 	]
 }

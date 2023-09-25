@@ -63,7 +63,7 @@ const Main: React.FC = () => {
 					<Route index element={<Home />} />
 					<Route path="/latest" element={<Latest title='Lates Video' />} />
 					<Route path='/later' element={<Latest title='View later' />} />
-					<Route path='/user/:uid' element={<User />} />
+					<Route path='/user/:uid/*' element={<User />}/>
 				</Routes>
 			</Container>
 		</React.Suspense>
