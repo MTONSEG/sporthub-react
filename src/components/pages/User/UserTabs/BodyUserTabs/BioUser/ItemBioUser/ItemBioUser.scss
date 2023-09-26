@@ -1,0 +1,13 @@
+.bio-item-title {
+	font-size: 12px;
+	line-height: normal;
+	color: #bbb;
+	margin-bottom: 4px;
+}
+.bio-item-value {
+	line-height: normal;
+	&.strong {
+		font-size: 16px;
+		font-weight: 500;
+	}
+}

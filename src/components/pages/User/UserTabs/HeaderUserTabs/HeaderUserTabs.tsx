@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './HeaderUserTabs.scss';
-import { useAppSelector } from '../../../../../../hooks/hooks';
+import { useAppSelector } from '../../../../../hooks/hooks';
 import { Link, useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
