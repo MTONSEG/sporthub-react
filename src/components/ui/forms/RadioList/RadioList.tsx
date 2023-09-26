@@ -8,7 +8,9 @@ interface radioListType {
 	list?: radioType[],
 	current: string,
 	mb?: string,
-	setCurrent: Function,
+	setCurrent?: Function,
+	setStateCurrent?: Function,
+	className?: string
 }
 
 const RadioList: React.FC<radioListType> = ({
@@ -16,14 +18,16 @@ const RadioList: React.FC<radioListType> = ({
 	title,
 	current,
 	setCurrent,
-	mb = '0'
+	mb = '0',
+	className,
+	setStateCurrent
 }) => {
 	const style: CSSProperties = {
 		marginBottom: mb
 	}
 
 	return (
-		<div className="radio-list" style={style}>
+		<div className={`radio-list${className ? ` ${className}` : ''}`} style={style}>
 			<p className="radio-list__title">{title}</p>
 			<div className="radio-list__radios-wrap">
 				{
@@ -35,6 +39,7 @@ const RadioList: React.FC<radioListType> = ({
 							value={el.value}
 							current={current}
 							setCurrent={setCurrent}
+							setStateCurrent={setStateCurrent}
 						/>
 					))
 				}

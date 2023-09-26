@@ -12,7 +12,8 @@ type forgotType = {
 }
 export type inputType = {
 	title: string,
-	placeholder: string
+	placeholder: string,
+	value?:string
 }
 export type subtextType = {
 	text: string,

@@ -1,7 +1,7 @@
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, ChangeEvent, useState } from "react";
 import './Input.scss';
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { Icon } from "../../atoms/Icon/Icon";
 import { isChecked } from "../../../../utils/addActiveClassFunctions";
 import InputDateMask from 'react-input-mask';
@@ -18,12 +18,14 @@ type inputType = {
 	placeholder?: string,
 	type?: string,
 	value: string,
-	setValue: Function,
+	setValue?: Function,
+	setStateValue?: Function,
 	maxWidth?: string,
 	mb?: string,
 	forgotLink?: boolean,
 	dateMask?: string,
 	maskChar?: string,
+	className?: string,
 }
 
 type passType = 'password' | 'text';
@@ -35,15 +37,19 @@ const Input: React.FC<inputType> = ({
 	type = 'text',
 	value,
 	setValue,
+	setStateValue,
 	maxWidth = '100%',
 	mb = '22px',
 	forgotLink = false,
 	dateMask,
-	maskChar
+	maskChar,
+	className
 }) => {
 	const [typePass, setTypePass] = useState<passType>('password');
 	const forgot = useAppSelector(state => state.singin.forgot);
 	const isPassword: boolean = type === 'password';
+	const dispatch = useAppDispatch();
+
 	const styles: CSSProperties = {
 		maxWidth,
 		marginBottom: mb
@@ -54,8 +60,18 @@ const Input: React.FC<inputType> = ({
 		if (typePass === 'text') setTypePass('password');
 	}
 
+	const handelOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+		console.log(e.currentTarget.value);
+		
+		if (setStateValue) {
+			dispatch(setStateValue(e.currentTarget.value));
+		} else {
+			setValue(e.currentTarget.value);
+		}
+	}
+
 	return (
-		<div className="input-field" style={styles}>
+		<div className={`input-field${className ? ` ${className}` : ''}`} style={styles}>
 			<div className="input-field__head">
 				<p className="input-field__title">{title}</p>
 				{
@@ -107,7 +123,7 @@ const Input: React.FC<inputType> = ({
 							aria-label={title}
 							value={value}
 							placeholder={placeholder}
-							onChange={(e: eventTarget) => { setValue(e.target.value) }}
+							onChange={(e: ChangeEvent<HTMLInputElement>) => { handelOnChange(e) }}
 						/>
 				}
 

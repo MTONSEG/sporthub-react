@@ -1,0 +1,23 @@
+.profile {
+	&__form {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 32px 48px;
+	}
+	&__description-field {
+		grid-column: span 2;
+	}
+	@media (max-width: 992px) {
+		&__form {
+			gap: 24px;
+		}
+	}
+	@media (max-width: 767px) {
+		&__form {
+			grid-template-columns: 1fr;
+		}
+		&__description-field {
+			grid-column: span 1;
+		}
+	}
+}

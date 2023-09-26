@@ -3,6 +3,7 @@ import uuid from "react-uuid";
 import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { NumStrNullType } from '../auth/singupSlice';
+import { genderType } from '../auth/personalSlice';
 
 export interface SubscribeParameters {
 	userUID: string | number,
@@ -14,11 +15,18 @@ export interface User {
 	bod?: string,
 	email?: string,
 	firstName?: string,
-	gender?: string,
+	gender?: genderType,
 	imageUrl?: string,
 	lastName?: string,
 	password?: string,
-	subscribes?: Subscribe
+	subscribes?: Subscribe,
+	address?:string,
+	description?: string,
+	vimeo?: string,
+	facebook?: string,
+	instagram?: string,
+	twitter?: string,
+	businessName?: string,
 }
 
 export type Subscribe = {
