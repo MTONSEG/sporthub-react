@@ -9,10 +9,12 @@ import { BaseUser } from '../../containers/Main/Main';
 import Loading from '../../ui/atoms/Loading/Loading';
 import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
 import { Button } from '../../ui/atoms/Button/Button';
+import { Title } from '../../ui/atoms/Title/Title';
+import Textarea from '../../ui/forms/Textarea/Textarea';
 
 const Profile: React.FC = () => {
 	const [uid, setUid] = useState<NumStrNullType>();
-	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading } = useAppSelector(state => state.personalAuth);
+	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading, ...state } = useAppSelector(state => state.personalAuth);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -31,7 +33,8 @@ const Profile: React.FC = () => {
 		<ContainerProfile>
 			<div className='profile'>
 				<div className="profile__head">
-					<Button onClickHandler={handleSave}>Save</Button>
+					<Title text={state.title} />
+					<Button className='profile__save-btn' onClickHandler={handleSave}>{state.btnProfile}</Button>
 				</div>
 				<div className="profile__image-load"></div>
 				<div className="profile__form">
@@ -74,7 +77,7 @@ const Profile: React.FC = () => {
 						placeholder={businessName.placeholder}
 						value={businessName.value}
 						setStateValue={setBusinessNameValue} />
-					<Input
+					<Textarea
 						mb='0'
 						className='profile__description-field'
 						title={description.title}

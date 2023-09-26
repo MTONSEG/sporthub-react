@@ -35,6 +35,7 @@ export type personalAuthType = {
 	title: string,
 	btnNext: string,
 	btnBack: string,
+	btnProfile:string,
 	upload: uploadType,
 	birthday: birthdayType,
 	firstName: inputType,
@@ -62,6 +63,7 @@ const initialState: personalAuthType = {
 	},
 	btnNext: 'Finish',
 	btnBack: 'Back',
+	btnProfile: 'Save',
 	birthday: {
 		value: '',
 		title: 'Date of birthday',

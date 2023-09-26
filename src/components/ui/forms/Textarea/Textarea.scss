@@ -1,0 +1,30 @@
+.input-field {
+	&__title {
+		margin-bottom: 4px;
+	}
+	&__input {
+		display: block;
+		width: 100%;
+		font-size: 16px;
+		padding: 12.5px 16px;
+		color: #fff;
+		line-height: normal;
+		border-radius: 8px;
+		background: #222;
+		border: 1px solid transparent;
+		height: 48px;
+		&::placeholder {
+			color: #999999;
+		}
+		&:hover {
+			border-color: rgba(173, 122, 85, 0.5);
+		}
+		&:focus {
+			border-color: #ad7955;
+		}
+	}
+	textarea {
+		resize: none;
+		overflow: hidden;
+	}
+}

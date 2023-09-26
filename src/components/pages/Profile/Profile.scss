@@ -1,4 +1,5 @@
 .profile {
+
 	&__form {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -6,6 +7,15 @@
 	}
 	&__description-field {
 		grid-column: span 2;
+	}
+	&__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 32px;
+	}
+	&__save-btn {
+		flex: 0 1 180px;
 	}
 	@media (max-width: 992px) {
 		&__form {
