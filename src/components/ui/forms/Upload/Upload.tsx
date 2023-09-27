@@ -47,7 +47,7 @@ const Upload: React.FC<uploadType> = ({
 
 		setLoading(true);
 
-		const selectedFile = e.target.files[0];
+		const selectedFile: File = e.target.files[0];
 
 		if (selectedFile) {
 			try {

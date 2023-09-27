@@ -35,8 +35,9 @@ export type personalAuthType = {
 	title: string,
 	btnNext: string,
 	btnBack: string,
-	btnProfile:string,
+	btnProfile: string,
 	upload: uploadType,
+	uploadPoster: uploadType,
 	birthday: birthdayType,
 	firstName: inputType,
 	lastName: inputType,
@@ -59,6 +60,11 @@ const initialState: personalAuthType = {
 	upload: {
 		accept: '.jpg, .png, .jpeg',
 		title: 'Information about adding photo',
+		text: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
+	},
+	uploadPoster: {
+		accept: '.jpg, .png, .jpeg',
+		title: 'Information about adding cover',
 		text: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.',
 	},
 	btnNext: 'Finish',

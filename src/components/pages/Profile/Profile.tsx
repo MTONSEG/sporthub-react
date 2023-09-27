@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import './Profile.scss';
 import Input from '../../ui/forms/Input/Input';
 import ContainerProfile from '../../containers/ContainerProfile/ContainerProfile';
@@ -11,20 +11,62 @@ import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
 import { Button } from '../../ui/atoms/Button/Button';
 import { Title } from '../../ui/atoms/Title/Title';
 import Textarea from '../../ui/forms/Textarea/Textarea';
+import Upload from '../../ui/forms/Upload/Upload';
+import UploadPoster from '../../ui/forms/UploadPoster/UploadPoster';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDatabase, update, ref as dbRef } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
 const Profile: React.FC = () => {
 	const [uid, setUid] = useState<NumStrNullType>();
+	const [posterFile, setPosterFile] = useState<File | null>();
+	const [posterFileName, setPosterFileName] = useState<string>();
+	const [posterPreviewURL, setPosterPreviewURL] = useState<string>();
 	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading, ...state } = useAppSelector(state => state.personalAuth);
 	const dispatch = useAppDispatch();
+	const storage = getStorage();
+	const db = getDatabase();
 
 	useEffect(() => {
 		let base: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
 		setUid(base.uid);
 		dispatch(fetchPersonalData(base.uid));
+
 	}, [])
 
 	const handleSave = () => {
-		dispatch(setPersonalData(uid))
+		dispatch(setPersonalData(uid));
+
+		const uploadPoster = async () => {
+			const storageRef = ref(storage, `images/${uid}/${posterFile.name}`);
+			const snapshot = await uploadBytes(storageRef, posterFile);
+			const downloadURL = await getDownloadURL(storageRef);
+			const userRef = dbRef(db, `users/${uid}`);
+
+			update(userRef, { posterURL: downloadURL });
+		}
+
+		uploadPoster();
+	}
+
+	const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
+		if (!e.currentTarget.files?.length) return;
+		
+		let file: File = e.currentTarget.files[0];
+		
+		setPosterFile(file);
+		setPosterFileName(file.name)
+
+		console.log(file);
+
+		const reader = new FileReader();
+
+		reader.onload = (e) => {
+			setPosterPreviewURL(e.target.result as string);
+			console.log('load complete')
+		}	
+
+		reader.readAsDataURL(file);
 	}
 
 	if (loading) return <Loading />
@@ -36,7 +78,13 @@ const Profile: React.FC = () => {
 					<Title text={state.title} />
 					<Button className='profile__save-btn' onClickHandler={handleSave}>{state.btnProfile}</Button>
 				</div>
-				<div className="profile__image-load"></div>
+				<div className="profile__image-load">
+					<UploadPoster
+						fileName={posterFileName}
+						previewURL={posterPreviewURL}
+						handleChange={handleChangeFile}
+					/>
+				</div>
 				<div className="profile__form">
 					<Input
 						mb='0'

@@ -1,0 +1,111 @@
+.upload-poster {
+	display: grid;
+	align-items: center;
+	grid-template-columns: 120px 1fr;
+	gap: 0 24px;
+	&__input {
+		position: absolute;
+		opacity: 0;
+		z-index: -1;
+		visibility: hidden;
+		pointer-events: none;
+	}
+	&__label {
+		background: #222;
+		border-radius: 12px;
+		padding: 10px;
+		height: 120px;
+		cursor: pointer;
+		border: 2px solid transparent;
+		transition: border 0.2s;
+		position: relative;
+		&:hover {
+			border: 2px solid rgba(173, 122, 85, 0.1);
+		}
+	}
+	&__image-wrap {
+		border-radius: 8px;
+		background: #ad7955;
+		overflow: hidden;
+		height: 60px;
+		margin-bottom: 10px;
+		position: relative;
+	}
+	&__icon {
+		display: block;
+		background: url('../../../../assets/icons/upload-poster.svg') center/cover no-repeat;
+		width: 25px;
+		height: 25px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(0);
+		pointer-events: none;
+	}
+	&__image {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		z-index: 1;
+	}
+	&__placeholder {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: 8px 19px;
+		gap: 4px;
+		span {
+			background: #111;
+			border-radius: 2px;
+			&:first-child {
+				grid-column: span 3;
+			}
+		}
+	}
+	&__title {
+		font-size: 16px;
+		line-height: normal;
+		margin-bottom: 8px;
+		&_name {
+			display: flex;
+			align-items: center;
+		}
+	}
+	&__title-icon {
+		display: block;
+		width: 24px;
+		height: 24px;
+		flex: 0 0 24px;
+		border-radius: 50%;
+		margin: 0 8px 0 0;
+		background: #55AD73;
+		position: relative;
+		&::before {
+			content: "";
+			display: block;
+			width: 6px;
+			height: 10px;
+			border: 2px solid #111;
+			border-width: 0 2px 2px 0;
+			transform: translate(-50%,-50%) rotate(45deg);
+			position: absolute;
+			top: 43%;
+			left: 50%;
+		}
+	}
+	&__text {
+		color: #999;
+		line-height: normal;
+		font-size: 12px;
+	}
+	&.loaded {
+		& .upload-poster__label {
+			pointer-events: none;
+		}
+		& .upload-poster__placeholder {
+			span {
+				background: #323232;
+			}
+		}
+	}
+}
