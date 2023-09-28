@@ -17,9 +17,6 @@ const HeaderUserTabs: React.FC = () => {
 		if (currentParams === 'playlist') setTabIndex(3);
 
 	}, [params]);
-
-	console.log(tabIndex)
-
 	return (
 		<div className='header-user-tabs'>
 			<div className="header-user-tabs__list">

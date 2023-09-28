@@ -4,49 +4,54 @@ import Picture from '../../../ui/atoms/Picture/Picture';
 import { Button } from '../../../ui/atoms/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
-import { fetchUserInfo } from '../../../../redux/slices/userInfo/userInfoSlice';
 import Loading from '../../../ui/atoms/Loading/Loading';
 import { BaseUser } from '../../../containers/Main/Main';
 import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe } from '../../../../redux/slices/home/userSlice';
 
-const ItemUserInfo = React.lazy(()=>import('./ItemUserInfo/ItemUserInfo'));
+const ItemUserInfo = React.lazy(() => import('./ItemUserInfo/ItemUserInfo'));
 
 const UserInfo: React.FC = () => {
-	const { user, ...state } = useAppSelector(state => state.userInfo);
-	const { users, logged } = useAppSelector(state => state.users);
+	const { user, loggedUID, ...state } = useAppSelector(state => state.userInfo);
+	const { users } = useAppSelector(state => state.users);
 	const { uid } = useParams();
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		dispatch(fetchUserInfo(uid));
-	}, [users]);
+	const { subscribeList } = useAppSelector(state => state.users);
 
+	useEffect(() => {
+		console.log(subscribeList)
+	}, [])
 
 	const handleClickSubscribe = () => {
-		let localParse: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
-		let userUID: string | number = localParse.uid;
 		let params: SubscribeParameters = {
-			userUID,
+			userUID: loggedUID,
 			subscriberUID: uid
 		}
-		if (users[logged.uid].subscribes[uid]) {
+
+		if (users[loggedUID].subscribes[uid]) {
 			dispatch(fetchUnsubscribe(params));
+			console.log(subscribeList)
 		} else {
 			dispatch(fetchSubscribe(params));
+			console.log(subscribeList)
 		}
 	}
-	if (!users) return <Loading />
+	if (!loggedUID) return <Loading />
 	return (
 		<div className='info-subscription'>
 
 			<div className="info-subscription__poster-wrap">
-
 				{
-					window.innerWidth > 767
-						? <img src={state.poster.img} alt="poster" className="info-subscription__poster" />
-						: <img src={state.poster_mob.img} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
+					user.posterURL
+						? <>
+							<img src={user.posterURL} alt="poster" className="info-subscription__poster" />
+							<img src={user.posterURL} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
+						</>
+						: <>
+							<img src={state.poster.img} alt="poster" className="info-subscription__poster" />
+							<img src={state.poster_mob.img} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
+						</>
 				}
-
 			</div>
 
 			<div className="info-subscription__body">
@@ -55,7 +60,7 @@ const UserInfo: React.FC = () => {
 						{
 							state.loading
 								? <Loading />
-								: <img src={user?.imageUrl} alt='image' className='info-subscription__photo' />
+								: <img src={user?.photoURL} alt='image' className='info-subscription__photo' />
 						}
 
 					</div>
@@ -78,29 +83,29 @@ const UserInfo: React.FC = () => {
 						text={state.views.text}
 						amount='30' />
 				</ul>
-
-				{
-					users[logged.uid].subscribes[uid]
-						?
-						(<Button
-							variant='brown'
-							className='info-subscription__btn'
-							onClickHandler={handleClickSubscribe}
-						>
-							Unsubscribe
-						</Button>)
-						:
-						(<Button
-							className='info-subscription__btn'
-							onClickHandler={handleClickSubscribe}
-						>
-							Subscribe
-						</Button>)
-				}
-
-
+				<div
+					className="info-subscription__button-wrap"
+					style={loggedUID === uid ? { display: 'none' } : {}}>
+					{
+						users[loggedUID].subscribes[uid]
+							?
+							(<Button
+								variant='brown'
+								className='info-subscription__btn'
+								onClickHandler={handleClickSubscribe}
+							>
+								Unsubscribe
+							</Button>)
+							:
+							(<Button
+								className='info-subscription__btn'
+								onClickHandler={handleClickSubscribe}
+							>
+								Subscribe
+							</Button>)
+					}
+				</div>
 			</div>
-
 		</div>
 	)
 }

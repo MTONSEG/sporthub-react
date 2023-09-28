@@ -48,7 +48,7 @@ const SubscriptionsNavbar: React.FC<PropsType> = ({ display }) => {
 							key={el.uid}
 							uid={el.uid}
 							name={`${el.firstName} ${el.lastName}`}
-							imgSrc={el.imageUrl}
+							imgSrc={el.photoURL}
 						/>
 					))
 				}

@@ -6,6 +6,8 @@ import webp_m from '../../../assets/images/subscription/poster_mob.jpg?as=webp';
 import { imageType } from '../auth/sliderAuthSlice';
 import uuid from 'react-uuid';
 import { User, UserObject } from '../home/userSlice';
+import { NumStrNullType } from '../auth/singupSlice';
+import { BaseUser } from '../../../components/containers/Main/Main';
 
 type TabLink = {
 	id: string,
@@ -29,11 +31,14 @@ type UserInfoType = {
 	poster: imageType,
 	poster_mob: imageType,
 	user: User,
+	users: UserObject,
 	tabList: TabLink[],
+	loggedUID:NumStrNullType
 }
 
 const initialState: UserInfoType = {
 	loading: false,
+	loggedUID: '',
 	poster: { img, webp },
 	poster_mob: { img: img_m, webp: webp_m },
 	subscribers: {
@@ -49,6 +54,7 @@ const initialState: UserInfoType = {
 		text: 'Views'
 	},
 	user: null,
+	users: null,
 	tabList: [
 		{
 			id: uuid(),
@@ -93,17 +99,17 @@ export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rej
 const userInfoSlice = createSlice({
 	name: 'subscription',
 	initialState,
-	reducers: {
-		setUserInfo(state, action: PayloadAction<User>) {
-
-		}
-	},
+	reducers: {},
 	extraReducers: builder => {
 		builder
 			.addCase(fetchUserInfo.pending, state => {
 				state.loading = true;
 			})
 			.addCase(fetchUserInfo.fulfilled, (state, action) => {
+				const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
+
+				state.loggedUID = user.uid;
+				state.users = action.payload;
 				state.user = action.payload[action.meta.arg];
 				state.loading = false;
 			})
