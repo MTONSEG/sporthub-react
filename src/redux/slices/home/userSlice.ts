@@ -27,6 +27,10 @@ export interface User {
 	instagram?: string,
 	twitter?: string,
 	businessName?: string,
+	photoURL?: string,
+	photoName?: string,
+	posterURL?: string,
+	posterName?: string,
 }
 
 export type Subscribe = {

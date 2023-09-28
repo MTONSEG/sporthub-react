@@ -13,9 +13,14 @@ import { Title } from '../../ui/atoms/Title/Title';
 import Textarea from '../../ui/forms/Textarea/Textarea';
 import UploadImage from '../../ui/forms/UploadImage/UploadImage';
 import { uploadImage } from '../../../utils/handleUploadImage';
+import { setCurrentUser, updatePhotoURL } from '../../../redux/slices/auth/singinSlice';
 
 const Profile: React.FC = () => {
 	const [uid, setUid] = useState<NumStrNullType>();
+	const [photoFile, setPhotoFile] = useState<File | null>();
+	const [photoURL, setPhotoURL] = useState<string>();
+	const [posterURL, setPosterURL] = useState<string>();
+	const [posterFile, setPosterFile] = useState<File | null>();
 	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading, ...state } = useAppSelector(state => state.personalAuth);
 	const dispatch = useAppDispatch();
 
@@ -28,9 +33,18 @@ const Profile: React.FC = () => {
 
 	const handleSave = () => {
 		dispatch(setPersonalData(uid));
+		console.log(localStorage.getItem('sh-current'));
 
-		if (state.posterFile) uploadImage(uid, state.posterFile, state.posterFile.name);
-		if (state.photoFile) uploadImage(uid, state.photoFile, state.photoFile.name);
+		if (posterFile)
+			uploadImage(uid, posterFile, posterFile.name);
+
+		if (photoFile)
+			uploadImage(uid, photoFile, photoFile.name, true)
+				.then(res => {
+					dispatch(setCurrentUser({ name: firstName.value, photoURL: res }))
+				});
+
+		console.log(localStorage.getItem('sh-current'));
 	}
 
 	if (loading) return <Loading />
@@ -47,10 +61,12 @@ const Profile: React.FC = () => {
 						type='photo'
 						fileName={state.photoFileName}
 						previewURL={state.photoPreviewURL}
+						setFile={setPhotoFile}
 					/>
 					<UploadImage
 						fileName={state.posterFileName}
 						previewURL={state.posterPreviewURL}
+						setFile={setPosterFile}
 					/>
 				</div>
 				<div className="profile__form">

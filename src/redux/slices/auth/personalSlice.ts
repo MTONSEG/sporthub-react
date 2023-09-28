@@ -37,11 +37,9 @@ export type personalAuthType = {
 	btnBack: string,
 	btnProfile: string,
 	btnChange: string,
-	posterFile: File | null,
 	posterFileName: string,
 	posterURL: string,
 	posterPreviewURL: string
-	photoFile: File | null,
 	photoFileName: string,
 	photoURL: string,
 	photoPreviewURL: string,
@@ -141,11 +139,9 @@ const initialState: personalAuthType = {
 			{ id: uuid(), title: 'None', value: 'none' },
 		]
 	},
-	photoFile: null,
-	photoFileName:'',
+	photoFileName: '',
 	photoURL: '',
 	photoPreviewURL: '',
-	posterFile: null,
 	posterFileName: '',
 	posterURL: '',
 	posterPreviewURL: '',
@@ -246,9 +242,6 @@ const personalSlice = createSlice({
 		setGenderValue(state, action: PayloadAction<genderType>) {
 			state.radio.value = action.payload;
 		},
-		setPosterFile(state, action: PayloadAction<File | null>) {
-			state.posterFile = action.payload;
-		},
 		setPosterFileName(state, action: PayloadAction<string>) {
 			state.posterFileName = action.payload;
 		},
@@ -257,9 +250,6 @@ const personalSlice = createSlice({
 		},
 		setPosterPreviewURL(state, action: PayloadAction<string>) {
 			state.posterPreviewURL = action.payload;
-		},
-		setPhotoFile(state, action: PayloadAction<File | null>) {
-			state.photoFile = action.payload;
 		},
 		setPhotoFileName(state, action: PayloadAction<string>) {
 			state.photoFileName = action.payload;
@@ -273,12 +263,10 @@ const personalSlice = createSlice({
 		clearPoster(state) {
 			state.posterPreviewURL = '';
 			state.posterFileName = '';
-			state.posterFile = null;
 		},
 		clearPhoto(state) {
 			state.photoPreviewURL = '';
 			state.photoFileName = '';
-			state.photoFile = null;
 		}
 	},
 	extraReducers: builder => {
@@ -301,6 +289,10 @@ const personalSlice = createSlice({
 				if (action.payload.businessName) state.businessName.value = action.payload.businessName;
 				if (action.payload.bod) state.birthday.value = action.payload.bod;
 				if (action.payload.gender) state.radio.value = action.payload.gender;
+				if (action.payload.photoURL) state.photoPreviewURL = action.payload.photoURL;
+				if (action.payload.posterURL) state.posterPreviewURL = action.payload.posterURL;
+				if (action.payload.photoName) state.photoFileName = action.payload.photoName;
+				if (action.payload.posterName) state.posterFileName = action.payload.posterName;
 
 				state.loading = false;
 			})
@@ -312,5 +304,5 @@ const personalSlice = createSlice({
 			})
 	}
 })
-export const { setFirstNameValue, setLastNameValue, setAddressValue, setBusinessNameValue, setBodValue, setDescriptionValue, setFacebookValue, setGenderValue, setInstagramValue, setTwitterValue, setVimeoValue,setPhotoFile,setPhotoFileName,setPhotoPreviewURL,setPhotoURL,setPosterFile,setPosterFileName,setPosterPreviewURL,setPosterURL,clearPhoto,clearPoster } = personalSlice.actions;
+export const { setFirstNameValue, setLastNameValue, setAddressValue, setBusinessNameValue, setBodValue, setDescriptionValue, setFacebookValue, setGenderValue, setInstagramValue, setTwitterValue, setVimeoValue, setPhotoFileName, setPhotoPreviewURL, setPhotoURL, setPosterFileName, setPosterPreviewURL, setPosterURL, clearPhoto, clearPoster } = personalSlice.actions;
 export default personalSlice.reducer;

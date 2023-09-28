@@ -5,15 +5,16 @@ import { BaseUser } from '../../../containers/Main/Main';
 import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
 import EmptyFile from './EmptyFile/EmptyFile';
 import UploadedFile from './UploadedFile/UploadedFile';
-import { clearPhoto, clearPoster, setPhotoFile, setPhotoFileName, setPhotoPreviewURL, setPosterFile, setPosterFileName, setPosterPreviewURL } from '../../../../redux/slices/auth/personalSlice';
+import { clearPhoto, clearPoster, setPhotoFileName, setPhotoPreviewURL, setPosterFileName, setPosterPreviewURL } from '../../../../redux/slices/auth/personalSlice';
 
 type UploadImagePropsType = {
 	previewURL: string,
 	fileName: string,
-	type?: 'photo' | 'poster';
+	type?: 'photo' | 'poster',
+	setFile: Function,
 }
 
-const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, type = 'poster' }) => {
+const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, type = 'poster',setFile }) => {
 	const [uid, setUID] = useState<NumStrNullType>();
 	const { uploadPoster, ...state } = useAppSelector(state => state.personalAuth);
 	const inputRef = useRef<HTMLInputElement>();
@@ -43,7 +44,7 @@ const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, typ
 		const file: File = e.currentTarget.files[0];
 
 		if (type === 'photo') {
-			dispatch(setPhotoFile(file));
+			setFile(file);
 			dispatch(setPhotoFileName(file.name));
 
 			reader.onload = (e) => {
@@ -52,7 +53,7 @@ const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, typ
 		}
 
 		if (type === 'poster') {
-			dispatch(setPosterFile(file));
+			setFile(file);
 			dispatch(setPosterFileName(file.name));
 
 			reader.onload = (e) => {

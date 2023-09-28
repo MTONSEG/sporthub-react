@@ -13,7 +13,7 @@ type forgotType = {
 export type inputType = {
 	title: string,
 	placeholder: string,
-	value?:string
+	value?: string
 }
 export type subtextType = {
 	text: string,
@@ -65,9 +65,12 @@ const singinSlice = createSlice({
 	reducers: {
 		setCurrentUser(state, action: PayloadAction<ICurrentUser>) {
 			state.currentUser = action.payload;
-		}
+		},
+		updatePhotoURL(state, action: PayloadAction<string>) {
+			state.currentUser.photoURL = action.payload;
+		},
 	}
 })
 
-export const { setCurrentUser } = singinSlice.actions;
+export const { setCurrentUser, updatePhotoURL } = singinSlice.actions;
 export default singinSlice.reducer;
