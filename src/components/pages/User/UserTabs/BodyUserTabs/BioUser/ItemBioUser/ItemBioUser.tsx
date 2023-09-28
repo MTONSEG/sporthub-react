@@ -13,7 +13,9 @@ const ItemBioUser: React.FC<ItemBioUserPropsTyps> = ({ title, text, strong, clas
 	return (
 		<div className={className}>
 			<p className='bio-item-title'>{title}</p>
-			<p className={`bio-item-value${strong ? ' strong' : ''}`}>{text}</p>
+			<p className={`bio-item-value${strong ? ' strong' : ''}`}>
+				{text}
+			</p>
 		</div>
 	)
 }
