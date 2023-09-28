@@ -36,6 +36,15 @@ export type personalAuthType = {
 	btnNext: string,
 	btnBack: string,
 	btnProfile: string,
+	btnChange: string,
+	posterFile: File | null,
+	posterFileName: string,
+	posterURL: string,
+	posterPreviewURL: string
+	photoFile: File | null,
+	photoFileName: string,
+	photoURL: string,
+	photoPreviewURL: string,
 	upload: uploadType,
 	uploadPoster: uploadType,
 	birthday: birthdayType,
@@ -70,6 +79,7 @@ const initialState: personalAuthType = {
 	btnNext: 'Finish',
 	btnBack: 'Back',
 	btnProfile: 'Save',
+	btnChange: 'Change file',
 	birthday: {
 		value: '',
 		title: 'Date of birthday',
@@ -131,6 +141,14 @@ const initialState: personalAuthType = {
 			{ id: uuid(), title: 'None', value: 'none' },
 		]
 	},
+	photoFile: null,
+	photoFileName:'',
+	photoURL: '',
+	photoPreviewURL: '',
+	posterFile: null,
+	posterFileName: '',
+	posterURL: '',
+	posterPreviewURL: '',
 	user: null
 }
 
@@ -228,6 +246,40 @@ const personalSlice = createSlice({
 		setGenderValue(state, action: PayloadAction<genderType>) {
 			state.radio.value = action.payload;
 		},
+		setPosterFile(state, action: PayloadAction<File | null>) {
+			state.posterFile = action.payload;
+		},
+		setPosterFileName(state, action: PayloadAction<string>) {
+			state.posterFileName = action.payload;
+		},
+		setPosterURL(state, action: PayloadAction<string>) {
+			state.posterURL = action.payload;
+		},
+		setPosterPreviewURL(state, action: PayloadAction<string>) {
+			state.posterPreviewURL = action.payload;
+		},
+		setPhotoFile(state, action: PayloadAction<File | null>) {
+			state.photoFile = action.payload;
+		},
+		setPhotoFileName(state, action: PayloadAction<string>) {
+			state.photoFileName = action.payload;
+		},
+		setPhotoURL(state, action: PayloadAction<string>) {
+			state.photoURL = action.payload;
+		},
+		setPhotoPreviewURL(state, action: PayloadAction<string>) {
+			state.photoPreviewURL = action.payload;
+		},
+		clearPoster(state) {
+			state.posterPreviewURL = '';
+			state.posterFileName = '';
+			state.posterFile = null;
+		},
+		clearPhoto(state) {
+			state.photoPreviewURL = '';
+			state.photoFileName = '';
+			state.photoFile = null;
+		}
 	},
 	extraReducers: builder => {
 		builder
@@ -260,5 +312,5 @@ const personalSlice = createSlice({
 			})
 	}
 })
-export const { setFirstNameValue, setLastNameValue, setAddressValue, setBusinessNameValue, setBodValue, setDescriptionValue, setFacebookValue, setGenderValue, setInstagramValue, setTwitterValue, setVimeoValue } = personalSlice.actions;
+export const { setFirstNameValue, setLastNameValue, setAddressValue, setBusinessNameValue, setBodValue, setDescriptionValue, setFacebookValue, setGenderValue, setInstagramValue, setTwitterValue, setVimeoValue,setPhotoFile,setPhotoFileName,setPhotoPreviewURL,setPhotoURL,setPosterFile,setPosterFileName,setPosterPreviewURL,setPosterURL,clearPhoto,clearPoster } = personalSlice.actions;
 export default personalSlice.reducer;

@@ -8,9 +8,10 @@ import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setLogin } from "../../../../redux/slices/header/headerSlice";
+import { auth } from '../../../../initializeFirebase';
 
 const SingIn = () => {
 	const alert = useAppSelector(state => state.alert);
@@ -21,7 +22,6 @@ const SingIn = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const auth = getAuth();
 
 	const handleSingIn = () => {
 		const isFullInfo = email && password;

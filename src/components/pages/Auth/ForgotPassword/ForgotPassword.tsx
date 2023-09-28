@@ -4,24 +4,21 @@ import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { getAuth, sendPasswordResetEmail} from "firebase/auth";
+import { sendPasswordResetEmail} from "firebase/auth";
 import { AUTH_CHECK_ROUTE } from "../../../../routes/routes";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { setCurrentForgotEmail } from "../../../../redux/slices/auth/forgotSlice";
-import { get, getDatabase, ref } from "firebase/database";
+import { get, ref } from "firebase/database";
+import { auth, db } from '../../../../initializeFirebase';
 
 
 const ForgotPassword = () => {
 	const state = useAppSelector(state => state.forgot);
-
 	const [email, setEmail] = useState<string>('');
-
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const db = getDatabase();
-	const auth = getAuth();
 
 	const handlerClickBtn = (): void => {
 		dispatch(setCurrentForgotEmail(email));

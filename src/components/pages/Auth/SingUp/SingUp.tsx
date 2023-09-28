@@ -10,10 +10,11 @@ import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../.
 import { useNavigate } from "react-router-dom";
 import { setCurrentUID } from "../../../../redux/slices/auth/singupSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ref, set } from "firebase/database";
 import { AUTH_DATA_ROUTE } from "../../../../routes/routes";
 import { Subscribe } from '../../../../redux/slices/home/userSlice';
+import { auth, db } from '../../../../initializeFirebase';
 
 export interface IAdditionalData {
 	displayName: string
@@ -38,8 +39,6 @@ const SingUp: React.FC = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const db = getDatabase();
-	const auth = getAuth();
 
 	const handleSingUp = (): void => {
 		const isFullInfo = firstName && lastName && email && password;

@@ -5,12 +5,13 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
 import { Button } from "../../../ui/atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { get, getDatabase, ref, update } from "firebase/database";
-import { getAuth, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
+import { get, ref, update } from "firebase/database";
+import {signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { AUTH_ROUTE } from "../../../../routes/routes";
 import { setCurrentRestorePass } from "../../../../redux/slices/auth/restoreSlice";
+import { auth, db } from '../../../../initializeFirebase';
 
 interface RestoreObject {
 	uid: string,
@@ -28,8 +29,6 @@ const RestorePassword = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const db = getDatabase();
-	const auth = getAuth();
 
 	const current: CurrentRestoreType = JSON.parse(localStorage.getItem('sporthub-restore-uid'));
 

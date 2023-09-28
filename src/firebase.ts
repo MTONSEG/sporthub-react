@@ -4,7 +4,7 @@ import { getDatabase } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
 import { fbconfig } from '../fb'
 
-const firebaseConfig = {
+export const firebaseConfig = {
 	apiKey: fbconfig.apiKey,
 	authDomain: fbconfig.authDomain,
 	databaseURL: fbconfig.databaseURL,

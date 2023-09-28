@@ -10,9 +10,9 @@ import { Button } from "../../../ui/atoms/Button/Button";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref, update } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { setCurrentUser } from "../../../../redux/slices/auth/singinSlice";
+import { auth, db } from '../../../../initializeFirebase';
 
 
 const PersonalAuth: React.FC = () => {
@@ -25,8 +25,6 @@ const PersonalAuth: React.FC = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const auth = getAuth();
-	const db = getDatabase();
 
 	const userRef = ref(db, `users/${singup.current.uid}`);
 
