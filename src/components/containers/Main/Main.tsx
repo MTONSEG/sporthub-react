@@ -11,6 +11,7 @@ import Container from "../Container/Container";
 import { getUsers, setLoggedUser } from '../../../redux/slices/home/userSlice';
 import User from '../../pages/User/User';
 import Profile from '../../pages/Profile/Profile';
+import Video from '../../pages/Video/Video';
 
 const Home = React.lazy(() => import('../../pages/Home/Home'));
 const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome'));
@@ -60,13 +61,14 @@ const Main: React.FC = () => {
 		<React.Suspense fallback={<Loading />}>
 			<Header />
 			<Container>
-					<Routes>
-						<Route index element={<Home />} />
-						<Route path="/latest" element={<Latest title='Lates Video' />} />
-						<Route path='/later' element={<Latest title='View later' />} />
-						<Route path='/user/:uid/*' element={<User />} />
-						<Route path='/profile' element={<Profile />} />
-					</Routes>
+				<Routes>
+					<Route index element={<Home />} />
+					<Route path="/latest" element={<Latest title='Lates Video' />} />
+					<Route path='/later' element={<Latest title='View later' />} />
+					<Route path='/user/:uid/*' element={<User />} />
+					<Route path='/profile' element={<Profile />} />
+					<Route path='/video' element={<Video />} />
+				</Routes>
 			</Container>
 		</React.Suspense>
 	)
