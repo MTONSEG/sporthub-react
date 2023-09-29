@@ -13,38 +13,49 @@ import { Title } from '../../ui/atoms/Title/Title';
 import Textarea from '../../ui/forms/Textarea/Textarea';
 import UploadImage from '../../ui/forms/UploadImage/UploadImage';
 import { uploadImage } from '../../../utils/handleUploadImage';
-import { setCurrentUser, updatePhotoURL } from '../../../redux/slices/auth/singinSlice';
+import { ICurrentUser, setCurrentUser, updatePhotoURL } from '../../../redux/slices/auth/singinSlice';
+import { setLSPhotoURL } from '../../../redux/slices/auth/setLocalStorage';
 
 const Profile: React.FC = () => {
-	const [uid, setUid] = useState<NumStrNullType>();
+	const [userLS, setUserLS] = useState<BaseUser>();
 	const [photoFile, setPhotoFile] = useState<File | null>();
-	const [photoURL, setPhotoURL] = useState<string>();
-	const [posterURL, setPosterURL] = useState<string>();
 	const [posterFile, setPosterFile] = useState<File | null>();
+	const { currentUser } = useAppSelector(state => state.singin);
 	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading, ...state } = useAppSelector(state => state.personalAuth);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		let base: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
-		setUid(base.uid);
-		dispatch(fetchPersonalData(base.uid));
-
+		let user: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
+		setUserLS(user);
+		dispatch(fetchPersonalData(user.uid));
 	}, [])
 
 	const handleSave = () => {
-		dispatch(setPersonalData(uid));
-		console.log(localStorage.getItem('sh-current'));
+		dispatch(setPersonalData(userLS.uid));
+
+		let newUserLS: BaseUser = {
+			...userLS,
+			name: firstName.value,
+
+		}
+
+		let newCurrentUser: ICurrentUser = {
+			...currentUser,
+			name: firstName.value
+		}
 
 		if (posterFile)
-			uploadImage(uid, posterFile, posterFile.name);
+			uploadImage(userLS.uid, posterFile, posterFile.name);
 
 		if (photoFile)
-			uploadImage(uid, photoFile, photoFile.name, true)
+			uploadImage(userLS.uid, photoFile, photoFile.name, true)
 				.then(res => {
-					dispatch(setCurrentUser({ name: firstName.value, photoURL: res }))
+					newCurrentUser.photoURL = res;
+					newUserLS.photoURL = res;
 				});
 
-		console.log(localStorage.getItem('sh-current'));
+		dispatch(setCurrentUser(newCurrentUser));
+		localStorage.setItem('sh-current', JSON.stringify(newUserLS));
 	}
 
 	if (loading) return <Loading />

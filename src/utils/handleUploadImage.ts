@@ -19,7 +19,6 @@ export const uploadImage = async (
 	if (photo) {
 		update(userRef, { photoURL: downloadURL, photoName: fileName });
 		updateProfile(auth.currentUser, { photoURL: downloadURL });
-		setLSPhotoURL(downloadURL);
 
 		return downloadURL;
 	} else {

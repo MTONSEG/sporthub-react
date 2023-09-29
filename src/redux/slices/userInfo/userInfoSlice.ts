@@ -9,10 +9,12 @@ import { User, UserObject } from '../home/userSlice';
 import { NumStrNullType } from '../auth/singupSlice';
 import { BaseUser } from '../../../components/containers/Main/Main';
 
-type TabLink = {
+export type UserTabPathTypes = 'video' | 'bio' | 'store' | 'playlist';
+
+export type TabLink = {
 	id: string,
 	title: string,
-	path: string
+	path: UserTabPathTypes
 }
 
 type IconSubsID = 'subscribers' | 'videos' | 'views';
@@ -33,7 +35,8 @@ type UserInfoType = {
 	user: User,
 	users: UserObject,
 	tabList: TabLink[],
-	loggedUID:NumStrNullType
+	loggedUID: NumStrNullType,
+	tabValue: UserTabPathTypes
 }
 
 const initialState: UserInfoType = {
@@ -55,6 +58,7 @@ const initialState: UserInfoType = {
 	},
 	user: null,
 	users: null,
+	tabValue: 'video',
 	tabList: [
 		{
 			id: uuid(),
@@ -99,7 +103,11 @@ export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rej
 const userInfoSlice = createSlice({
 	name: 'subscription',
 	initialState,
-	reducers: {},
+	reducers: {
+		setTabValue(state, action: PayloadAction<UserTabPathTypes>) {
+			state.tabValue = action.payload;
+		}
+	},
 	extraReducers: builder => {
 		builder
 			.addCase(fetchUserInfo.pending, state => {
@@ -115,5 +123,5 @@ const userInfoSlice = createSlice({
 			})
 	}
 })
-// export const {} = userInfoSlice.actions;
+export const {setTabValue} = userInfoSlice.actions;
 export default userInfoSlice.reducer;
