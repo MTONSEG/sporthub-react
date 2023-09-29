@@ -12,6 +12,7 @@ import userSlice from "./slices/home/userSlice";
 import categorySliderSlice from "./slices/home/categorySliderSlice";
 import homeListSlice from "./slices/home/listVideoSlice";
 import subscriptionSlice from './slices/userInfo/userInfoSlice';
+import videoSlice from './slices/video/videoSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -27,7 +28,8 @@ export const store = configureStore({
 		users: userSlice,
 		sliderCat: categorySliderSlice,
 		videoList: homeListSlice,
-		userInfo: subscriptionSlice
+		userInfo: subscriptionSlice,
+		videos: videoSlice
 	},
 
 })

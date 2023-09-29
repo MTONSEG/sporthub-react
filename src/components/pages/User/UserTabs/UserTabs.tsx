@@ -7,17 +7,18 @@ import { UserTabPathTypes, setTabValue } from '../../../../redux/slices/userInfo
 
 const UserTabs: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const { tabList } = useAppSelector(state => state.userInfo);
+	const { tabList,tabValue } = useAppSelector(state => state.userInfo);
 
-	const handleOnTabCLick = (value: UserTabPathTypes): void => {
+	const handlerTabClick = (value: UserTabPathTypes): void => {
 		dispatch(setTabValue(value))
 	}
 	return (
 		<div className='user-tabs'>
 			<HeaderUserTabs
+				tabValue={tabValue}
 				tabList={tabList}
 				tabWidth={100}
-				handlerUserTabClick={handleOnTabCLick}
+				handlerTabClick={handlerTabClick}
 			/>
 			<BodyUserTabs />
 		</div>

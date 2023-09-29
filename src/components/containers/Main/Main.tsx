@@ -12,6 +12,8 @@ import { getUsers, setLoggedUser } from '../../../redux/slices/home/userSlice';
 import User from '../../pages/User/User';
 import Profile from '../../pages/Profile/Profile';
 import Video from '../../pages/Video/Video';
+import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
+import AddVideo from '../../pages/Video/AddVideo/AddVideo';
 
 const Home = React.lazy(() => import('../../pages/Home/Home'));
 const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome'));
@@ -67,7 +69,8 @@ const Main: React.FC = () => {
 					<Route path='/later' element={<Latest title='View later' />} />
 					<Route path='/user/:uid/*' element={<User />} />
 					<Route path='/profile' element={<Profile />} />
-					<Route path='/video' element={<Video />} />
+					<Route path='/video/*' element={<Video />} />
+					<Route path='/video/add' element={<AddVideo/>} />
 				</Routes>
 			</Container>
 		</React.Suspense>

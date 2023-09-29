@@ -7,11 +7,13 @@ type HeaderUserTabsPropsType = {
 	tabList: TabLink[],
 	tabValue?: UserTabPathTypes,
 	tabWidth: number,
-	handlerUserTabClick?: (value: UserTabPathTypes) => void
+	tabMobWidth?: boolean,
+	handlerTabClick?: (value: UserTabPathTypes) => void
 }
 
-const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabValue, handlerUserTabClick }) => {
+const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabValue, handlerTabClick, tabMobWidth }) => {
 	const [tabIndex, setTabIndex] = useState<number>(0);
+	const [maxWidth, setMaxWidth] = useState<string>((tabWidth * tabList.length) + 'px');
 	const params = useParams();
 
 	const indicatorStyles: CSSProperties = {
@@ -20,15 +22,27 @@ const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabV
 	}
 	const listStyles: CSSProperties = {
 		gridTemplateColumns: `repeat(${tabList.length}, 1fr)`,
-		maxWidth: `${tabWidth * tabList.length}px`
-	}
+		maxWidth,
 
+	}
 
 	useEffect(() => {
 		let currentParams: string = params['*'];
 
+		if (tabMobWidth) {
+			window.addEventListener('resize', () => {
+				if (window.innerWidth > 576) {
+					setMaxWidth((tabWidth * tabList.length) + 'px');
+				} else {
+					setMaxWidth(100 + '%');
+				}
+			})
+		} else {
+			setMaxWidth((tabWidth * tabList.length) + 'px');
+		}
+
 		tabList.forEach((el, index) => {
-			if (currentParams === el.path) {
+			if (tabValue === el.value) {
 				setTabIndex(index);
 			}
 		})
@@ -36,14 +50,14 @@ const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabV
 
 	return (
 		<div className='header-user-tabs'>
-			<div className="header-user-tabs__list" style={listStyles}>
+			<ul className="header-user-tabs__list" style={listStyles}>
 				{
 					tabList.map((el, index) => (
 						<Link
-							to={el.path}
+							to={tabMobWidth ? '#' : el.value}
 							key={el.id}
 							className='header-user-tabs__link'
-							onClick={() => { handlerUserTabClick(el.path) }}
+							onClick={() => { handlerTabClick(el.value) }}
 							style={tabIndex === index ? { color: '#fff' } : { color: '#777' }}
 						>{el.title}</Link>
 					))
@@ -51,7 +65,7 @@ const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabV
 				<div
 					className="header-user-tabs__indicator"
 					style={indicatorStyles}></div>
-			</div>
+			</ul>
 
 		</div>
 	)

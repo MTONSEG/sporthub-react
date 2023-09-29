@@ -7,7 +7,8 @@ import { useAppSelector } from '../../../hooks/hooks';
 interface IVideoList {
 	text?: string,
 	title?: string,
-	style?: CSSProperties
+	style?: CSSProperties,
+	listVideo?: any
 }
 
 const VideoList: React.FC<IVideoList> = ({ text, title, style }) => {

@@ -4,10 +4,22 @@ import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { NumStrNullType } from '../auth/singupSlice';
 import { genderType } from '../auth/personalSlice';
+import { TabLink, UserTabPathTypes } from '../userInfo/userInfoSlice';
+
+type NumString = string | number;
 
 export interface SubscribeParameters {
 	userUID: string | number,
 	subscriberUID: string | number
+}
+export interface IVideo {
+	id: NumString,
+	fileURL: string,
+	category: string,
+	title: string,
+	author: NumStrNullType,
+	description: string,
+	shopifyURL: string
 }
 
 export interface User {
@@ -20,7 +32,7 @@ export interface User {
 	lastName?: string,
 	password?: string,
 	subscribes?: Subscribe,
-	address?:string,
+	address?: string,
 	description?: string,
 	vimeo?: string,
 	facebook?: string,
@@ -41,7 +53,7 @@ export type UserObject = {
 	[key: string]: User
 }
 
-type navBarType = {
+type UserType = {
 	loading: boolean,
 	links: ILink[],
 	users: UserObject | null,
@@ -49,17 +61,17 @@ type navBarType = {
 	titleSubs: string,
 	titleSubsBtn: string,
 	logged: User,
-	list: any
+	videoTabValue: UserTabPathTypes,
 }
 
-const initialState: navBarType = {
+const initialState: UserType = {
 	loading: false,
 	users: null,
+	videoTabValue: 'mind',
 	titleSubs: 'My subscribes',
 	titleSubsBtn: 'Show more',
 	subscribeList: [],
 	logged: {},
-	list: [],
 	links: [
 		{
 			id: uuid(),
@@ -85,7 +97,7 @@ export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string
 		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
 
 		const data = await res.json();
-		
+
 		if (!res.ok) {
 			return rejectWithValue('Server Error');
 		}
@@ -170,6 +182,9 @@ const userSlice = createSlice({
 			state.users[userUID].subscribes[subscriberUID] = false;
 
 			state.subscribeList = state.subscribeList.filter(el => el.uid !== subscriberUID)
+		},
+		setVideoTabValue(state, action: PayloadAction<UserTabPathTypes>) {
+			state.videoTabValue = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -208,5 +223,5 @@ const userSlice = createSlice({
 			})
 	}
 })
-export const { setLoggedUser, subscribeUser, unsubscribeUser } = userSlice.actions;
+export const { setLoggedUser, subscribeUser, unsubscribeUser, setVideoTabValue } = userSlice.actions;
 export default userSlice.reducer;

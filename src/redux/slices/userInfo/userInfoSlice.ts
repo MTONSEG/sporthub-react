@@ -9,12 +9,12 @@ import { User, UserObject } from '../home/userSlice';
 import { NumStrNullType } from '../auth/singupSlice';
 import { BaseUser } from '../../../components/containers/Main/Main';
 
-export type UserTabPathTypes = 'video' | 'bio' | 'store' | 'playlist';
+export type UserTabPathTypes = 'video' | 'bio' | 'store' | 'playlist'|'mind'|'body'|'soul';
 
 export type TabLink = {
 	id: string,
 	title: string,
-	path: UserTabPathTypes
+	value: UserTabPathTypes
 }
 
 type IconSubsID = 'subscribers' | 'videos' | 'views';
@@ -63,22 +63,22 @@ const initialState: UserInfoType = {
 		{
 			id: uuid(),
 			title: 'Video',
-			path: 'video'
+			value: 'video'
 		},
 		{
 			id: uuid(),
 			title: 'Bio',
-			path: 'bio'
+			value: 'bio'
 		},
 		{
 			id: uuid(),
 			title: 'Store',
-			path: 'store'
+			value: 'store'
 		},
 		{
 			id: uuid(),
 			title: 'Playlists',
-			path: 'playlist'
+			value: 'playlist'
 		}
 	]
 }
