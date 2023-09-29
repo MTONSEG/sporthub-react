@@ -3,9 +3,9 @@
 	border-bottom: 1px solid #222;
 	&__list {
 		width: 100%;
-		max-width: 400px;
+		// max-width: 400px;
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		// grid-template-columns: repeat(4, 1fr);
 		position: relative;
 	}
 	&__link {
@@ -22,7 +22,7 @@
 	&__indicator {
 		position: absolute;
 		bottom: 0;
-		width: calc(100% / 4);
+		// width: calc(100% / 4);
 		height: 1px;
 		background: #AD7955;
 		transition: left .3s;
