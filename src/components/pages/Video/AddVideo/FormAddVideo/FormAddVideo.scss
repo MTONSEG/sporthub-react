@@ -1,0 +1,16 @@
+.form-video {
+	display: grid;
+	grid-template-columns: 430px 1fr;
+	gap: 0 48px;
+	align-items: flex-start;
+	&__fields {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 32px 0;
+	}
+	@media (max-width: 767px) {
+		&__fields {
+			gap: 24px 0;
+		}
+	} 
+}

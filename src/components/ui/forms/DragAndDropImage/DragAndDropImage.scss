@@ -1,0 +1,73 @@
+.drag-drop {
+	position: relative;
+	padding: 0 0 57%;
+	background: #653012;
+	border-radius: 8px;
+	overflow: hidden;
+	&__input {
+		position: absolute;
+		opacity: 0;
+		z-index: -1;
+		visibility: hidden;
+		pointer-events: none;
+	}
+	&.drag {
+		box-shadow: 0 0 20px #9f7a60;
+	}
+	&.drop {
+		box-shadow: 0 0 20px #d26516;
+	}
+	&__body {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		line-height: normal;
+		text-align: center;
+	}
+	&__icon {
+		width: 38px;
+		height: 38px;
+		display: inline-block;
+		margin-bottom: 16px;
+	}
+	&__title {
+		font-size: 16px;
+		max-width: 220px;
+		margin-bottom: 8px;
+		&_mob {
+			display: none;
+			margin-bottom: 16px;
+		}
+	}
+	&__text {
+		max-width: 292px;
+		font-size: 12px;
+	}
+	&__choose-btn {
+		width: 172px;
+		display: none;
+	}
+	@media (max-width: 992px) {
+		
+	}
+	@media (max-width: 767px) {
+		&__title {
+			display: none;
+			&_mob {
+				display: block;
+			}
+		}
+		&__text {
+			display: none;
+		}
+		&__choose-btn {
+			display: block;
+		}
+	} 
+}

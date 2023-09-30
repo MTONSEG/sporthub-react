@@ -1,13 +1,13 @@
 import React from 'react';
 import './Video.scss';
-import { Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Loading from '../../ui/atoms/Loading/Loading';
 import HeaderTabs from '../../common/HeaderTabs/HeaderTabs';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import ContainerProfile from '../../containers/ContainerProfile/ContainerProfile';
 import { setVideoTabValue } from '../../../redux/slices/home/userSlice';
 import { UserTabPathTypes } from '../../../redux/slices/userInfo/userInfoSlice';
-import { Button } from '../../ui/atoms/Button/Button';
+import { Button } from '../../ui/buttons/Button/Button';
 import plusIcon from '../../../assets/icons/plus.svg';
 import { ADD_VIDEO_ROUTE } from '../../../routes/routes';
 import { Link } from 'react-router-dom';

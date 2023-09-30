@@ -8,7 +8,7 @@ import { fetchPersonalData, setAddressValue, setBodValue, setBusinessNameValue, 
 import { BaseUser } from '../../containers/Main/Main';
 import Loading from '../../ui/atoms/Loading/Loading';
 import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
-import { Button } from '../../ui/atoms/Button/Button';
+import { Button } from '../../ui/buttons/Button/Button';
 import { Title } from '../../ui/atoms/Title/Title';
 import Textarea from '../../ui/forms/Textarea/Textarea';
 import UploadImage from '../../ui/forms/UploadImage/UploadImage';

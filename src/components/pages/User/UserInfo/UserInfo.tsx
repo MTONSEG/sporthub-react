@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './UserInfo.scss';
 import Picture from '../../../ui/atoms/Picture/Picture';
-import { Button } from '../../../ui/atoms/Button/Button';
+import { Button } from '../../../ui/buttons/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
 import Loading from '../../../ui/atoms/Loading/Loading';

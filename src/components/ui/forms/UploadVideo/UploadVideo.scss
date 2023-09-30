@@ -1,0 +1,48 @@
+.upload-video {
+	height: 518px;
+	background: #222;
+	border-radius: 16px;
+	position: relative;
+	transition: box-shadow .3s;
+	margin-bottom: 32px;
+	&.drag {
+		box-shadow: 0 0 20px #98806f;
+	}
+	&.drop {
+		box-shadow: 0 0 20px #AD7955;
+	}
+	&__body {
+		height: 100%;
+		padding: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	&__icon {
+		width: 64px;
+		height: 64px;
+		margin-bottom: 40px;
+	}
+	&__placeholder-title {
+		font-size: 36px;
+		font-weight: 500;
+		line-height: normal;
+		margin-bottom: 40px;
+		max-width: 367px;
+		text-align: center;
+	}
+	&__choose-btn {
+		width: 180px;
+	}
+	&__input {
+		position: absolute;
+		opacity: 0;
+		z-index: -1;
+		visibility: hidden;
+		pointer-events: none;
+	}
+	@media (max-width: 767px) {
+		margin-bottom: 24px;
+	} 
+}

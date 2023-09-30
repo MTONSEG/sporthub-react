@@ -3,10 +3,10 @@ import './RestorePassword.scss';
 import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
-import { Button } from "../../../ui/atoms/Button/Button";
+import { Button } from "../../../ui/buttons/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { get, ref, update } from "firebase/database";
-import {signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { AUTH_ROUTE } from "../../../../routes/routes";
@@ -81,7 +81,7 @@ const RestorePassword = () => {
 						dispatch(showAlert(false));
 					}, 4000)
 
-					update(ref(db, `users/${current.uid}`), {password});
+					update(ref(db, `users/${current.uid}`), { password });
 
 					signOut(auth);
 

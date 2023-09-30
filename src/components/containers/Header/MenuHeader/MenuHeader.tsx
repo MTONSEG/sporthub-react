@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Icon } from "../../../ui/atoms/Icon/Icon";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { NOTIFY_ROUTE } from "../../../../routes/routes";
-import { Button } from "../../../ui/atoms/Button/Button";
+import { Button } from "../../../ui/buttons/Button/Button";
 import UserMenuHeader from "./UserMenuHeader/UserMenuHeader";
 import { toggleHeaderPopup } from "../../../../redux/slices/header/headerSlice";
 import LinksNavbar from "../../../pages/Home/Navbar/LinksNavbar/LinksNavbar";

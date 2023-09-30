@@ -15,8 +15,11 @@ type VideoStateType = {
 	titleAddVideo: string,
 	titleAddPlaylist: string,
 	titleViewAll: string,
+	titlePublishBtn: string,
 	titleProcessing: string,
 	titleUpload: string,
+	titleAdding: string,
+	titlePreviewMob: string,
 	textUpload: string,
 	linkList: ILinkWithActive[],
 	tabList: TabLink[],
@@ -27,15 +30,22 @@ type VideoStateType = {
 	videoFileName: string,
 	videoURL: string,
 	videoPoster: string,
-	videoPosterURL: string
+	videoPosterURL: string,
+	titleChooseBtn: string,
+	titleDrag:string,
 }
 
 const initialState: VideoStateType = {
 	titleAddVideo: 'Add new video',
 	titleAddPlaylist: 'Create new playlist',
 	titleViewAll: 'View all',
+	titlePublishBtn: 'Publish',
+	titleChooseBtn: 'Or choose files',
 	titleProcessing: 'Processing will begin shortly',
 	titleUpload: 'Drag and drop photo to upload',
+	titleAdding: 'Adding a new video',
+	titleDrag: 'Drag and drop videos to upload',
+	titlePreviewMob: 'Upload the image preview',
 	textUpload: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit',
 	linkList: [
 		{
@@ -91,7 +101,7 @@ const initialState: VideoStateType = {
 	videoFileName: '',
 	videoURL: '',
 	videoPoster: '',
-	videoPosterURL: ''
+	videoPosterURL: '',
 }
 
 const videoSlice = createSlice({

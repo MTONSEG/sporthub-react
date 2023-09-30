@@ -3,12 +3,12 @@ import './SingIn.scss';
 import TitleAuth from "../../../ui/atoms/TitleAuth/TitleAuth";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import Input from "../../../ui/forms/Input/Input";
-import { Button } from "../../../ui/atoms/Button/Button";
+import { Button } from "../../../ui/buttons/Button/Button";
 import { SubtextAuth } from "../SubtextAuth/SubtextAuth";
 import { TermsPolicyAuth } from "../TermsPolicyAuth/TermsPolicyAuth";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
-import {signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { getClearMessage } from "../../../../utils/getErrorMessage";
 import { setLogin } from "../../../../redux/slices/header/headerSlice";
 import { auth } from '../../../../initializeFirebase';
@@ -48,7 +48,7 @@ const SingIn = () => {
 				}
 
 				localStorage.setItem('sh-current', JSON.stringify(userObj))
-			
+
 				dispatch(setLogin(true))
 				navigate('/')
 				dispatch(setMessage(alert.welcome))

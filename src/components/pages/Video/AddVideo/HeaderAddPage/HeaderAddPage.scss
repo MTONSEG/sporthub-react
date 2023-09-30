@@ -1,0 +1,14 @@
+.header-add,
+.header-add__nav {
+	display: flex;
+	align-items: center;
+}
+
+.header-add {
+	justify-content: space-between;
+	margin-bottom: 24px;
+	&__btn {
+		width: 180px;
+		margin: 0 16px 0 0;
+	}
+}

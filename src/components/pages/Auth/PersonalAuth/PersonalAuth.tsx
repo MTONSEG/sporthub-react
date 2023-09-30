@@ -6,7 +6,7 @@ import { genderType } from "../../../../redux/slices/auth/personalSlice";
 import RadioList from "../../../ui/forms/RadioList/RadioList";
 import Upload from "../../../ui/forms/Upload/Upload";
 import Input from "../../../ui/forms/Input/Input";
-import { Button } from "../../../ui/atoms/Button/Button";
+import { Button } from "../../../ui/buttons/Button/Button";
 import { setMessage, setVarianError, setVarianMess, showAlert } from "../../../../redux/slices/alert/alertSlice";
 import { useNavigate } from "react-router-dom";
 import { AUTH_REG_ROUTE, AUTH_ROUTE } from "../../../../routes/routes";
