@@ -24,4 +24,8 @@
 	&_brown {
 		background: #653012;
 	}
+	&.disable {
+		pointer-events: none;
+		background-color: #777;
+	}
 }

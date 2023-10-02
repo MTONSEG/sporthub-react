@@ -1,5 +1,3 @@
-
-
 .upload-video {
 	background: #222;
 	border-radius: 16px;
@@ -7,8 +5,8 @@
 	transition: box-shadow 0.3s;
 	margin-bottom: 32px;
 	overflow: hidden;
-	// padding: 0 0 56%;
-	aspect-ratio: 16/9;
+	padding: 0 0 56.2%;
+	// aspect-ratio: 16/9;
 	&.drag {
 		box-shadow: 0 0 20px #98806f;
 	}
@@ -75,6 +73,16 @@
 	}
 	@media (max-width: 767px) {
 		margin-bottom: 24px;
+		&__placeholder-title,
+		&__loader-title {
+			font-size: 18px;
+			margin-bottom: 24px;
+		}
+		&__icon {
+			margin-bottom: 10px;
+			width: 50px;
+			height: 50px;
+		}
 	}
 	@media (max-width: 576px) {
 		border-radius: 8px;

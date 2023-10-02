@@ -12,7 +12,8 @@ export type alertType = {
 	singin: string,
 	weekPass: string,
 	confirmPass: string,
-	updatePass: string
+	updatePass: string,
+	successVideoUpload: string
 }
 
 
@@ -28,7 +29,8 @@ const initialState: alertType = {
 	singin: 'Your information has been successfully added',
 	weekPass: 'Week password',
 	confirmPass: 'Password mismatch',
-	updatePass: 'Password is updated. Please Sing In with new password'
+	updatePass: 'Password is updated. Please Sing In with new password',
+	successVideoUpload: 'Success. Already video in your list'
 }
 
 const alertSlice = createSlice({

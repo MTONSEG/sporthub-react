@@ -1,7 +1,7 @@
 import React, { useRef, DragEvent, useState, ChangeEvent, useEffect } from 'react';
 import './UploadVideo.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { setVideoFileName, setVideoURL } from '../../../../redux/slices/video/videoSlice';
+import { enableBtnSave, setVideoFileName, setVideoURL } from '../../../../redux/slices/video/videoSlice';
 import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../../initializeFirebase';
@@ -61,6 +61,7 @@ const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
 		});
 		await getDownloadURL(storageRef).then(url => {
 			dispatch(setVideoURL(url));
+			dispatch(enableBtnSave())
 		});
 	}
 
@@ -91,7 +92,7 @@ const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
 			}
 			{
 				state.videoURL
-					? <VideoPlayer src={state.videoURL} />
+					? <VideoPlayer videoSrc={state.videoURL} posterSrc={state.videoPosterURL} />
 					: <></>}
 		</div>
 	)

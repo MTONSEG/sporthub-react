@@ -3,15 +3,17 @@ import './HeaderAddPage.scss';
 import { Title } from '../../../../ui/atoms/Title/Title';
 import { Button } from '../../../../ui/buttons/Button/Button';
 import { ButtonPopup } from '../../../../ui/buttons/ButtonPopup/ButtonPopup';
+import { VIDEO_ROUTE } from '../../../../../routes/routes';
 
 type HeaderAddPage = {
 	title: string,
 	titleBtn: string,
+	disabledBtn: boolean,
 	handleSave: () => void
 }
 
 const HeaderAddPage: React.FC<HeaderAddPage> = ({
-	title, titleBtn, handleSave
+	title, titleBtn, disabledBtn, handleSave
 }) => {
 	const [activePopup, setActivePopup] = useState<boolean>(false);
 
@@ -24,10 +26,12 @@ const HeaderAddPage: React.FC<HeaderAddPage> = ({
 			<Title text={title} />
 			<div className="header-add__nav">
 				<Button
-					className='header-add__btn'
+					disabled={disabledBtn}
+					path={VIDEO_ROUTE}
+					className={`header-add__btn`}
 					onClickHandler={handleSave}
 				>{titleBtn}</Button>
-				<ButtonPopup handleClick={handleClickPopup} />
+				<ButtonPopup handleClick={handleClickPopup} disabled={disabledBtn} />
 			</div>
 		</div>
 	)
