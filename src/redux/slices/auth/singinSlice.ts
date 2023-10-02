@@ -10,7 +10,7 @@ type forgotType = {
 	title: string,
 	link: string
 }
-export type inputType = {
+export interface inputType {
 	title: string,
 	placeholder: string,
 	value?: string

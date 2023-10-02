@@ -11,6 +11,17 @@ type ILinkWithActive = {
 	active: boolean
 }
 
+export type ItemSelectType = {
+	id: string | number,
+	title: string,
+	value: string,
+	selected: boolean
+}
+
+export interface ISelect extends inputType  {
+	list: ItemSelectType[]
+}
+
 type VideoStateType = {
 	titleAddVideo: string,
 	titleAddPlaylist: string,
@@ -24,7 +35,7 @@ type VideoStateType = {
 	linkList: ILinkWithActive[],
 	tabList: TabLink[],
 	title: inputType,
-	category: inputType,
+	category: ISelect,
 	description: inputType,
 	shopifyURL: inputType,
 	videoFileName: string,
@@ -32,7 +43,7 @@ type VideoStateType = {
 	videoPoster: string,
 	videoPosterURL: string,
 	titleChooseBtn: string,
-	titleDrag:string,
+	titleDrag: string,
 }
 
 const initialState: VideoStateType = {
@@ -86,7 +97,27 @@ const initialState: VideoStateType = {
 	category: {
 		title: 'Category',
 		placeholder: 'Select category',
-		value: ''
+		value: '',
+		list: [
+			{
+				id: uuid(),
+				title: 'Mind',
+				value: 'mind',
+				selected: false,
+			},
+			{
+				id: uuid(),
+				title: 'Body',
+				value: 'body',
+				selected: false,
+			},
+			{
+				id: uuid(),
+				title: 'Soul',
+				value: 'soul',
+				selected: false,
+			}
+		]
 	},
 	description: {
 		title: 'Description',
@@ -120,8 +151,15 @@ const videoSlice = createSlice({
 		setTitleValue(state, action: PayloadAction<string>) {
 			state.title.value = action.payload;
 		},
-		setCategoryValue(state, action: PayloadAction<string>) {
-			state.category.value = action.payload;
+		setCategoryValue(state, action: PayloadAction<number|string>) {
+			state.category.list.forEach(el => {
+				if(el.id === action.payload) {
+					el.selected = true;
+					state.category.value = el.title;
+				} else {
+					el.selected = false;
+				}
+			})
 		},
 		setDescriptionVideoValue(state, action: PayloadAction<string>) {
 			state.description.value = action.payload;

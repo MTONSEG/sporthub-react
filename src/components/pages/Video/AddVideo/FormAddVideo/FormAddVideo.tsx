@@ -5,6 +5,7 @@ import Input from '../../../../ui/forms/Input/Input';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue } from '../../../../../redux/slices/video/videoSlice';
 import Textarea from '../../../../ui/forms/Textarea/Textarea';
+import Select from '../../../../ui/forms/Select/Select';
 
 const FormAddVideo: React.FC = () => {
 	const { ...state } = useAppSelector(state => state.videos);
@@ -19,14 +20,13 @@ const FormAddVideo: React.FC = () => {
 					value={state.title.value}
 					setStateValue={setTitleValue}
 				/>
-				<Input
-					mb='0'
+				<Select
 					title={state.category.title}
 					placeholder={state.category.placeholder}
 					value={state.category.value}
+					list={state.category.list}
 					setStateValue={setCategoryValue}
 				/>
-
 				<Textarea
 					title={state.description.title}
 					placeholder={state.description.placeholder}

@@ -18,8 +18,6 @@ const UserMenuHeader: React.FC<UserMenuPropsType> = ({ name, photoURL }) => {
 	const handleOutClick = (e: MouseEvent | TouchEvent) => {
 		if (activePopup && popupRef.current && !popupRef.current.contains(e.target as Node)) {
 			dispatch(toggleHeaderPopup());
-
-			console.log('click');
 		}
 	}
 
