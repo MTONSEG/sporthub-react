@@ -174,19 +174,19 @@ export const setPersonalData =
 		async (uid, { rejectWithValue, getState }) => {
 			try {
 				const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}.json`;
-				const stat = getState().personalAuth;
+				const state = getState().personalAuth;
 				const data: User = {
-					firstName: stat.firstName.value,
-					lastName: stat.lastName.value,
-					bod: stat.birthday.value,
-					address: stat.address.value,
-					businessName: stat.businessName.value,
-					description: stat.description.value,
-					vimeo: stat.vimeo.value,
-					instagram: stat.instagram.value,
-					facebook: stat.facebook.value,
-					twitter: stat.twitter.value,
-					gender: stat.radio.value
+					firstName: state.firstName.value,
+					lastName: state.lastName.value,
+					bod: state.birthday.value,
+					address: state.address.value,
+					businessName: state.businessName.value,
+					description: state.description.value,
+					vimeo: state.vimeo.value,
+					instagram: state.instagram.value,
+					facebook: state.facebook.value,
+					twitter: state.twitter.value,
+					gender: state.radio.value
 				}
 
 				let res = await fetch(URL, {

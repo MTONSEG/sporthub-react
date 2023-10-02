@@ -1,66 +1,98 @@
-import React, { useRef, DragEvent, useState, ChangeEvent } from 'react';
+import React, { useRef, DragEvent, useState, ChangeEvent, useEffect } from 'react';
 import './UploadVideo.scss';
-import icon from '../../../../assets/icons/upload-video.svg';
-import { Button } from '../../buttons/Button/Button';
-import { useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { setVideoFileName, setVideoURL } from '../../../../redux/slices/video/videoSlice';
+import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../../initializeFirebase';
+import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
 
-const UploadVideo: React.FC = () => {
+const LoaderUploadVideo = React.lazy(() => import('./LoaderUploadVideo/LoaderUploadVideo'));
+const VideoPlayer = React.lazy(() => import('../../../common/VideoPlayer/VideoPlayer'));
+const PlaceholderUploadVideo = React.lazy(() => import('./PlaceholderUploadVideo/PlaceholderUploadVideo'));
+
+type UploadVideoPropsType = {
+	// setVideoFile: Function
+}
+
+const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
 	const { ...state } = useAppSelector(state => state.videos);
 	const inputRef = useRef<HTMLInputElement>();
 	const [drag, setDrag] = useState<boolean>();
-	const [drop, setDrop] = useState<boolean>();
+	const [uid, setUID] = useState<NumStrNullType>();
+	const dispatch = useAppDispatch();
 
-	const handlerChooseClick = (): void => {
-		inputRef.current.click();
-	}
+	useEffect(() => {
+		setUID(getUserUID());
+	}, [])
 
 	const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
 		e.preventDefault();
 		setDrag(true);
-		console.log('grag and over');
 	}
 
 	const handleDragLeave = (e: DragEvent<HTMLDivElement>): void => {
 		e.preventDefault();
 		setDrag(false);
-		console.log('drag leave')
 	}
 
 	const handleDrop = (e: DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		setDrag(false);
-		setDrop(true);
-		console.log('drop');
+		if (!e.dataTransfer.files?.length) return;
+
+		const file: File = e.dataTransfer.files[0];
+		addVideoProcess(file);
 	}
 
-	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+		if (!e.currentTarget.files?.length) return;
 
+		const file: File = e.currentTarget.files[0];
+		addVideoProcess(file);
+	}
+
+	async function addVideoProcess(file: File) {
+		dispatch(setVideoFileName(file.name));
+
+		const storageRef = ref(storage, `videos/${uid}/${file.name}`);
+		await uploadBytes(storageRef, file).then(res => {
+
+		});
+		await getDownloadURL(storageRef).then(url => {
+			dispatch(setVideoURL(url));
+		});
 	}
 
 	return (
-		<div className={`upload-video${drag ? ' drag' : ''}${drop ? ' drop' : ''}`}
+		<div className={`upload-video${drag ? ' drag' : ''}`}
 			onDrop={handleDrop}
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
 		>
-			<div className="upload-video__body">
-				<img src={icon} alt="" className="upload-video__icon" />
-				<h2 className="upload-video__placeholder-title">
-					{state.titleDrag}
-				</h2>
-				<label className='upload-video__label'>
-					<input
-						ref={inputRef}
-						type="file"
-						className="upload-video__input"
-						onChange={handleChange}
+			{
+				!state.videoURL
+					? <PlaceholderUploadVideo
+						title={state.titleDrag}
+						titleBtn={state.titleChooseBtn}
+						inputRef={inputRef}
+						handleChange={handleChange}
 					/>
-					<Button
-						className='upload-video__choose-btn'
-						onClickHandler={handlerChooseClick}
-					>{state.titleChooseBtn}</Button>
-				</label>
-			</div>
+					:
+					<></>
+			}
+			{
+				state.videoFileName && !state.videoURL
+					? <LoaderUploadVideo
+						title={state.titleProcessing}
+						fileName={state.videoFileName}
+					/>
+					: <></>
+			}
+			{
+				state.videoURL
+					? <VideoPlayer src={state.videoURL} />
+					: <></>}
 		</div>
 	)
 }

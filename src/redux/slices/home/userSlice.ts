@@ -53,7 +53,7 @@ export type UserObject = {
 	[key: string]: User
 }
 
-type UserType = {
+export type UserType = {
 	loading: boolean,
 	links: ILink[],
 	users: UserObject | null,
@@ -157,6 +157,8 @@ export const fetchUnsubscribe = createAsyncThunk<void, SubscribeParameters, { re
 		}
 	}
 )
+
+
 
 const userSlice = createSlice({
 	name: 'navbar',

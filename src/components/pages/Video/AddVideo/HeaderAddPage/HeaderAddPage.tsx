@@ -7,10 +7,11 @@ import { ButtonPopup } from '../../../../ui/buttons/ButtonPopup/ButtonPopup';
 type HeaderAddPage = {
 	title: string,
 	titleBtn: string,
+	handleSave: () => void
 }
 
 const HeaderAddPage: React.FC<HeaderAddPage> = ({
-	title, titleBtn
+	title, titleBtn, handleSave
 }) => {
 	const [activePopup, setActivePopup] = useState<boolean>(false);
 
@@ -22,7 +23,10 @@ const HeaderAddPage: React.FC<HeaderAddPage> = ({
 		<div className='header-add'>
 			<Title text={title} />
 			<div className="header-add__nav">
-				<Button className='header-add__btn'>{titleBtn}</Button>
+				<Button
+					className='header-add__btn'
+					onClickHandler={handleSave}
+				>{titleBtn}</Button>
 				<ButtonPopup handleClick={handleClickPopup} />
 			</div>
 		</div>

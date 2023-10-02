@@ -1,14 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TabLink } from '../userInfo/userInfoSlice';
 import uuid from 'react-uuid';
-import { ONLY_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE} from '../../../routes/routes';
+import { ONLY_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE } from '../../../routes/routes';
 import { inputType } from '../auth/singinSlice';
+import { NumStrNullType } from '../auth/singupSlice';
+import { UserType } from '../home/userSlice';
 
 type ILinkWithActive = {
 	id: string | number,
 	title: string,
 	path: string,
 	active: boolean
+}
+export type VideoFileType = {
+	videoURL: string,
+	category: string,
+	title: string,
+	authorUID: NumStrNullType,
+	description: string,
+	shopifyLink: string
 }
 
 export type ItemSelectType = {
@@ -18,7 +28,7 @@ export type ItemSelectType = {
 	selected: boolean
 }
 
-export interface ISelect extends inputType  {
+export interface ISelect extends inputType {
 	list: ItemSelectType[]
 }
 
@@ -44,6 +54,7 @@ type VideoStateType = {
 	videoPosterURL: string,
 	titleChooseBtn: string,
 	titleDrag: string,
+	loading: boolean,
 }
 
 const initialState: VideoStateType = {
@@ -133,10 +144,45 @@ const initialState: VideoStateType = {
 	videoURL: '',
 	videoPoster: '',
 	videoPosterURL: '',
+	loading: false
 }
 
+export const uploadVideo =
+	createAsyncThunk<void, NumStrNullType, {
+		rejectValue: string,
+		state: { users: UserType, videos: VideoStateType }
+	}>(
+		'users/uploadVideo',
+		async (uid, { rejectWithValue, getState, dispatch }) => {
+			try {
+				const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/videos.json`
+				const state = getState().videos;
+
+				const video: VideoFileType = {
+					videoURL: state.videoURL,
+					title: state.title.value,
+					category: state.category.value,
+					authorUID: uid,
+					description: state.description.value,
+					shopifyLink: state.shopifyURL.value
+				}
+
+				let res = await fetch(URL, {
+					method: 'POST',
+					body: JSON.stringify(video),
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+
+				console.log(res.json())
+			} catch (error) {
+				rejectWithValue(error);
+			}
+		})
+
 const videoSlice = createSlice({
-	name: 'users/video',
+	name: 'users/videoSlice',
 	initialState,
 	reducers: {
 		setActiveVideoLink(state, action: PayloadAction<string | number>) {
@@ -151,9 +197,9 @@ const videoSlice = createSlice({
 		setTitleValue(state, action: PayloadAction<string>) {
 			state.title.value = action.payload;
 		},
-		setCategoryValue(state, action: PayloadAction<number|string>) {
+		setCategoryValue(state, action: PayloadAction<number | string>) {
 			state.category.list.forEach(el => {
-				if(el.id === action.payload) {
+				if (el.id === action.payload) {
 					el.selected = true;
 					state.category.value = el.title;
 				} else {
@@ -167,8 +213,30 @@ const videoSlice = createSlice({
 		setShopifyURLValue(state, action: PayloadAction<string>) {
 			state.shopifyURL.value = action.payload;
 		},
+		setVideoFileName(state, action: PayloadAction<string>) {
+			state.videoFileName = action.payload;
+		},
+		setVideoURL(state, action: PayloadAction<string>) {
+			state.videoURL = action.payload;
+		},
+		setVideoPoster(state, action: PayloadAction<string>) {
+			state.videoPoster = action.payload;
+		},
+		setVideoPosterURL(state, action: PayloadAction<string>) {
+			state.videoPosterURL = action.payload;
+		},
 	},
-	extraReducers: {}
+	extraReducers: builder => {
+		builder
+			.addCase(uploadVideo.pending, state => {
+				state.loading = true;
+			})
+			.addCase(uploadVideo.fulfilled, state => {
+				
+				
+				state.loading = false;
+		})
+	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL } = videoSlice.actions;
 export default videoSlice.reducer;
