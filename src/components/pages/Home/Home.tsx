@@ -13,32 +13,25 @@ const Home: React.FC = () => {
 
 	const sliderSetting: SwiperOptions = {
 		slidesPerView: 'auto',
-		spaceBetween: 16,
+		spaceBetween: 10,
 		resistance: false,
 		breakpoints: {
-			1440: {
-				slidesPerView: 3,
-				spaceBetween: 26
-			},
-			992: {
-				slidesPerView: "auto"
+			577: {
+				spaceBetween: 16,
 			}
 		}
 	}
 
 	return (
-		// <ContainerMain>
-		// 	<>
-		// 		{/* <div className="home-slider">
-		// 			<Slider
-		// 				settings={sliderSetting}
-		// 				slides={slides} />
-		// 		</div> */}
-		// 		<VideoList title={titleList} />
-		// 	</>
-		// </ContainerMain>
 		<ContainerMain>
-			<VideoList title={titleList} />
+			<>
+				<div className="home-slider">
+					<Slider
+						settings={sliderSetting}
+						slides={slides} />
+				</div>
+				<VideoList title={titleList} />
+			</>
 		</ContainerMain>
 	)
 }

@@ -1,3 +1,11 @@
+.slider {
+
+}
+
+
+
+// swiper
+
 :root {
 	--swiper-theme-color: #007aff;
 	/*
@@ -716,12 +724,4 @@ button.swiper-pagination-bullet {
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 	overflow: hidden;
-}
-
-.slider {
-	min-width: 0;
-	overflow: hidden;
-	@media (max-width: 767px) {
-		overflow: visible;
-	}
 }
