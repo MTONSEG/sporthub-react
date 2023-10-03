@@ -95,4 +95,17 @@
 			}
 		}
 	}
+	@media (max-width: 374px) {
+		&__body {
+			padding: 10px;
+		}
+		&__icon {
+			width: 40px;
+			height: 40px;
+		}
+		&__placeholder-title {
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+	}
 }

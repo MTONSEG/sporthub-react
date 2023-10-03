@@ -5,7 +5,7 @@ import { BaseUser } from '../../../containers/Main/Main';
 import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
 import EmptyFile from './EmptyFile/EmptyFile';
 import UploadedFile from './UploadedFile/UploadedFile';
-import { clearPhoto, clearPoster, setPhotoFileName, setPhotoPreviewURL, setPosterFileName, setPosterPreviewURL } from '../../../../redux/slices/auth/personalSlice';
+import { clearPhoto, clearPoster, deletePhoto, deletePoster, setPhotoFileName, setPhotoPreviewURL, setPosterFileName, setPosterPreviewURL } from '../../../../redux/slices/auth/personalSlice';
 
 type UploadImagePropsType = {
 	previewURL: string,
@@ -14,7 +14,7 @@ type UploadImagePropsType = {
 	setFile: Function,
 }
 
-const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, type = 'poster',setFile }) => {
+const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, type = 'poster', setFile }) => {
 	const [uid, setUID] = useState<NumStrNullType>();
 	const { uploadPoster, ...state } = useAppSelector(state => state.personalAuth);
 	const inputRef = useRef<HTMLInputElement>();
@@ -46,7 +46,6 @@ const UploadImage: React.FC<UploadImagePropsType> = ({ previewURL, fileName, typ
 		if (type === 'photo') {
 			setFile(file);
 			dispatch(setPhotoFileName(file.name));
-
 			reader.onload = (e) => {
 				dispatch(setPhotoPreviewURL(e.target.result as string));
 			}

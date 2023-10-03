@@ -62,7 +62,6 @@ const Main: React.FC = () => {
 	return (
 		<React.Suspense fallback={<Loading />}>
 			<Header />
-			<Container>
 				<Routes>
 					<Route index element={<Home />} />
 					<Route path="/latest" element={<Latest title='Lates Video' />} />
@@ -72,7 +71,6 @@ const Main: React.FC = () => {
 					<Route path='/video/*' element={<Video />} />
 					<Route path='/video/add' element={<AddVideo/>} />
 				</Routes>
-			</Container>
 		</React.Suspense>
 	)
 }

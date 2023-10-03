@@ -10,10 +10,12 @@ type ContainerMainPropsType = {
 
 const ContainerMain: React.FC<ContainerMainPropsType> = ({ children, float = false }) => {
 	return (
-		<main className={`main ${float ? '' : 'grid'}`}>
-			<Navbar float={float} />
-			<div className="main__body">
-				{children}
+		<main className={`main-container`}>
+			<div className="main-container__row">
+				<Navbar />
+				<div className="main-container__body">
+					{children}
+				</div>
 			</div>
 		</main>
 	)

@@ -66,11 +66,14 @@ const singinSlice = createSlice({
 		setCurrentUser(state, action: PayloadAction<ICurrentUser>) {
 			state.currentUser = action.payload;
 		},
-		updatePhotoURL(state, action: PayloadAction<string>) {
-			state.currentUser.photoURL = action.payload;
+		setNameCurrentUser(state, action: PayloadAction<string>) {
+			state.currentUser.name = action.payload;
 		},
+		setPhotoURLCurrentUser(state, action: PayloadAction<string>) {
+			state.currentUser.photoURL = action.payload;
+		}
 	}
 })
 
-export const { setCurrentUser, updatePhotoURL } = singinSlice.actions;
+export const { setCurrentUser, setNameCurrentUser, setPhotoURLCurrentUser } = singinSlice.actions;
 export default singinSlice.reducer;

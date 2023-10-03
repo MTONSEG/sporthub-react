@@ -6,15 +6,14 @@ const LinksNavbar = React.lazy(() => import('./LinksNavbar/LinksNavbar'));
 const SubscriptionsNavbar = React.lazy(() => import('./SubscriptionsNavbar/SubscriptionsNavbar'));
 
 interface PropsType {
-	login?: boolean,
-	float?: boolean
+
 }
 
-const Navbar: React.FC<PropsType> = ({ float }) => {
+const Navbar: React.FC<PropsType> = () => {
 	const { login } = useAppSelector(state => state.header);
 
 	return (
-		<div className={`navbar ${float ? 'float' : ''}`}>
+		<div className={`navbar`}>
 			<LinksNavbar login={login} />
 			<SubscriptionsNavbar login={login} />
 		</div>

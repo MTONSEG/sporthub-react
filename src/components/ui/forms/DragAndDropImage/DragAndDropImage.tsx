@@ -17,7 +17,7 @@ const DragAndDropImage: React.FC = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		setUID(getUserUID());
+		setUID(getUserUID().uid);
 	}, [])
 
 	const handlerChooseClick = (): void => {

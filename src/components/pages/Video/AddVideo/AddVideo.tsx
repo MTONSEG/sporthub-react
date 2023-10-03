@@ -11,12 +11,10 @@ import { disableBtnSave, uploadVideo } from '../../../../redux/slices/video/vide
 const AddVideo: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const { ...state } = useAppSelector(state => state.videos);
-	const alert = useAppSelector(state => state.alert);
-
 
 	const handleSave = (): void => {
 		if (state.videoURL) {
-			dispatch(uploadVideo(getUserUID()));
+			dispatch(uploadVideo(getUserUID().uid));
 			dispatch(disableBtnSave());
 		}
 	}

@@ -1,5 +1,4 @@
 .profile {
-
 	&__form {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -17,7 +16,7 @@
 	&__image-load {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap:  24px 48px;
+		gap: 24px 48px;
 		margin-bottom: 32px;
 		padding-bottom: 32px;
 		border-bottom: 1px solid #222;
@@ -29,6 +28,9 @@
 		&__form {
 			gap: 24px;
 		}
+		&__image-load {
+			grid-template-columns: 1fr;
+		}
 	}
 	@media (max-width: 767px) {
 		&__form {
@@ -36,6 +38,10 @@
 		}
 		&__description-field {
 			grid-column: span 1;
+		}
+		&__save-btn {
+			flex: 0 0 96px;
+			margin: 0 0 0 15px;
 		}
 	}
 }

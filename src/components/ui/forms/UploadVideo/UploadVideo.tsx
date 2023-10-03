@@ -23,7 +23,7 @@ const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		setUID(getUserUID());
+		setUID(getUserUID().uid);
 	}, [])
 
 	const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {

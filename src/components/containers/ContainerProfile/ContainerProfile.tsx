@@ -7,11 +7,11 @@ type ContainerPropsType = {
 }
 
 
-const ContainerProfile: React.FC<ContainerPropsType> = ({ children, maxWidth = '100%' }) => {
+const ContainerProfile: React.FC<ContainerPropsType> = ({ children, maxWidth }) => {
 	return (
-		<div className="container-profile" style={{maxWidth}}>
+		<div className="container-profile" style={maxWidth ? { maxWidth } : {}}>
 			{children}
-		</div>
+		</div >
 	)
 }
 

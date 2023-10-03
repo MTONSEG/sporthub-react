@@ -6,4 +6,11 @@
 		display: flex;
 		column-gap: 16px;
 	}
+	@media (max-width: 374px) {
+		&__radios-wrap {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 10px;
+		}
+	}
 }

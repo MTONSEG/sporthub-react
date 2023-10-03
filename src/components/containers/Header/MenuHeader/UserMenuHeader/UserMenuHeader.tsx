@@ -3,6 +3,7 @@ import './UserMenuHeader.scss';
 import PopupMenuHeader from "../PopupMenuHeader/PopupMenuHeader";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
 import { toggleHeaderPopup } from "../../../../../redux/slices/header/headerSlice";
+import icon from '../../../../../assets/icons/user.svg';
 
 
 interface UserMenuPropsType {
@@ -26,7 +27,12 @@ const UserMenuHeader: React.FC<UserMenuPropsType> = ({ name, photoURL }) => {
 			onClick={() => { dispatch(toggleHeaderPopup()) }}
 		>
 			<div className="profile-header__avatar-wrap">
-				<img src={photoURL} alt="" className="profile-header__avatar" />
+				{
+					photoURL
+						? <img src={photoURL} alt="" className="profile-header__avatar" />
+						: <img src={icon} alt="" className="profile-header__avatar" />
+				}
+
 			</div>
 			<p className="profile-header__name">{name}</p>
 			<PopupMenuHeader handleOutClick={handleOutClick} />

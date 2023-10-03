@@ -1,19 +1,13 @@
-.main {
-	padding: 62px 0 0;
-	&.grid {
+.main-container {
+	max-width: 1460px;
+	margin: 0 auto;
+	padding: 88px 24px 60px;
+	&__row {
 		display: grid;
 		grid-template-columns: 260px 1fr;
-	}
-	&__body {
-		padding: 24px 0;
+		gap: 0 24px;
 	}
 	@media (max-width: 767px) {
-		display: block;
-		&.grid {
-			grid-template-columns: 1fr;
-			& .main__body {
-				padding: 0 0 40px;
-			}
-		}
-	}
+		padding: 88px 16px 60px;
+	} 
 }

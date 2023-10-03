@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction, Store } from "@reduxjs/toolkit";
-import { inputType } from "./singinSlice";
+import { inputType, setPhotoURLCurrentUser, singInType } from "./singinSlice";
 import uuid from "react-uuid";
 import { User } from '../home/userSlice';
 import { NumStrNullType } from './singupSlice';
+import { getUserUID } from './getUserUID';
+import { BaseUser } from '../../../components/containers/Main/Main';
 
 export type uploadType = {
 	title: string,
@@ -205,6 +207,62 @@ export const setPersonalData =
 		}
 	)
 
+export const deletePhoto =
+	createAsyncThunk<void, NumStrNullType, { rejectValue: string, }>(
+		'users/deletePhoto',
+		async (uid, { rejectWithValue, dispatch }) => {
+			try {
+				const photoURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/photoURL.json`;
+				const photoNameURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/photoName.json`
+
+				await fetch(photoURL, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				}).then(res => {
+					dispatch(setPhotoURLCurrentUser(''));
+				})
+
+				await fetch(photoNameURL, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+
+			} catch (error) {
+				rejectWithValue(error)
+			}
+		}
+	)
+export const deletePoster =
+	createAsyncThunk<void, NumStrNullType, { rejectValue: string, }>(
+		'users/deletePoster',
+		async (uid, { rejectWithValue, dispatch }) => {
+			try {
+				const posterURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/posterURL.json`;
+				const posterNameURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/posterName.json`
+
+				await fetch(posterURL, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+
+				await fetch(posterNameURL, {
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+					}
+				})
+			} catch (error) {
+				rejectWithValue(error)
+			}
+		}
+	)
+
 const personalSlice = createSlice({
 	name: 'forgotPassword',
 	initialState,
@@ -300,6 +358,19 @@ const personalSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(setPersonalData.fulfilled, state => {
+				state.loading = false;
+			})
+			.addCase(deletePhoto.pending, state => {
+				state.loading = true;
+			})
+			.addCase(deletePhoto.fulfilled, state => {
+
+				state.loading = false;
+			})
+			.addCase(deletePoster.pending, state => {
+				state.loading = true;
+			})
+			.addCase(deletePoster.fulfilled, state => {
 				state.loading = false;
 			})
 	}

@@ -4,23 +4,19 @@ import Input from '../../ui/forms/Input/Input';
 import ContainerProfile from '../../containers/ContainerProfile/ContainerProfile';
 import RadioList from '../../ui/forms/RadioList/RadioList';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { fetchPersonalData, setAddressValue, setBodValue, setBusinessNameValue, setDescriptionValue, setFacebookValue, setFirstNameValue, setGenderValue, setInstagramValue, setLastNameValue, setPersonalData, setTwitterValue, setVimeoValue } from '../../../redux/slices/auth/personalSlice';
+import { deletePhoto, deletePoster, fetchPersonalData, setAddressValue, setBodValue, setBusinessNameValue, setDescriptionValue, setFacebookValue, setFirstNameValue, setGenderValue, setInstagramValue, setLastNameValue, setPersonalData, setTwitterValue, setVimeoValue } from '../../../redux/slices/auth/personalSlice';
 import { BaseUser } from '../../containers/Main/Main';
-import Loading from '../../ui/atoms/Loading/Loading';
-import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
 import { Button } from '../../ui/buttons/Button/Button';
 import { Title } from '../../ui/atoms/Title/Title';
 import Textarea from '../../ui/forms/Textarea/Textarea';
 import UploadImage from '../../ui/forms/UploadImage/UploadImage';
 import { uploadImage } from '../../../utils/handleUploadImage';
-import { ICurrentUser, setCurrentUser, updatePhotoURL } from '../../../redux/slices/auth/singinSlice';
-import { setLSPhotoURL } from '../../../redux/slices/auth/setLocalStorage';
+import { setNameCurrentUser, setPhotoURLCurrentUser } from '../../../redux/slices/auth/singinSlice';
 
 const Profile: React.FC = () => {
 	const [userLS, setUserLS] = useState<BaseUser>();
 	const [photoFile, setPhotoFile] = useState<File | null>();
 	const [posterFile, setPosterFile] = useState<File | null>();
-	const { currentUser } = useAppSelector(state => state.singin);
 	const { firstName, lastName, address, description, vimeo, facebook, instagram, twitter, businessName, birthday, radio, loading, ...state } = useAppSelector(state => state.personalAuth);
 	const dispatch = useAppDispatch();
 
@@ -31,34 +27,43 @@ const Profile: React.FC = () => {
 	}, [])
 
 	const handleSave = () => {
-		dispatch(setPersonalData(userLS.uid));
-
 		let newUserLS: BaseUser = {
 			...userLS,
 			name: firstName.value,
 
 		}
 
-		let newCurrentUser: ICurrentUser = {
-			...currentUser,
-			name: firstName.value
+		if (posterFile && state.posterPreviewURL) {
+			uploadImage(userLS.uid, posterFile, posterFile.name);
 		}
 
-		if (posterFile)
-			uploadImage(userLS.uid, posterFile, posterFile.name);
+		if (!state.posterPreviewURL) {
+			dispatch(deletePoster(userLS.uid));
+			setPosterFile(null);
+		}
 
-		if (photoFile)
+		if (photoFile && state.photoPreviewURL) {
 			uploadImage(userLS.uid, photoFile, photoFile.name, true)
 				.then(res => {
-					newCurrentUser.photoURL = res;
 					newUserLS.photoURL = res;
+					dispatch(setPhotoURLCurrentUser(res));
+					localStorage.setItem('sh-current', JSON.stringify(newUserLS));
 				});
+		}
 
-		dispatch(setCurrentUser(newCurrentUser));
-		localStorage.setItem('sh-current', JSON.stringify(newUserLS));
+		if (!state.photoPreviewURL) {
+			newUserLS.photoURL = '';
+			dispatch(deletePhoto(userLS.uid));
+			dispatch(setPhotoURLCurrentUser(''));
+			setPhotoFile(null);
+			localStorage.setItem('sh-current', JSON.stringify(newUserLS));
+		}
+
+		dispatch(setNameCurrentUser(firstName.value));
+		dispatch(setPersonalData(userLS.uid));
 	}
 
-	if (loading) return <Loading />
+	// if (loading) return <Loading />
 
 	return (
 		<ContainerProfile>
