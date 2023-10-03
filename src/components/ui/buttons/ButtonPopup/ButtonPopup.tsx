@@ -1,6 +1,7 @@
 import React, { CSSProperties, MouseEventHandler } from "react";
 import './ButtonPopup.scss';
 import icon from '../../../../assets/icons/popup-btn-points.svg';
+import { Icon } from '../../atoms/Icon/Icon';
 
 
 type propsType = {
@@ -14,7 +15,7 @@ export const ButtonPopup: React.FC<propsType> = ({
 
 	return (
 		<div className={`popup-btn${disabled ? ' disable' : ''}`} onClick={handleClick}>
-			<img src={icon} alt="" className='popup-btn__icon' />
+			<Icon id='points' className='popup-btn__icon'/>
 		</div>
 	)
 }
