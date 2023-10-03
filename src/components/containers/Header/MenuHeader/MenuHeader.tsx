@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/hooks";
 import { NOTIFY_ROUTE } from "../../../../routes/routes";
 import { Button } from "../../../ui/buttons/Button/Button";
 import UserMenuHeader from "./UserMenuHeader/UserMenuHeader";
-import { toggleHeaderPopup } from "../../../../redux/slices/header/headerSlice";
+import { toggleHeaderPopup, toggleMenu } from "../../../../redux/slices/header/headerSlice";
 import LinksNavbar from "../../../pages/Home/Navbar/LinksNavbar/LinksNavbar";
 import SubscriptionsNavbar from "../../../pages/Home/Navbar/SubscriptionsNavbar/SubscriptionsNavbar";
 
@@ -37,7 +37,11 @@ const MenuHeader: React.FC = () => {
 				{
 					login
 						? <>
-							<Link to={data.notify.path} className="menu-header__btn menu-header__btn_notify">
+							<Link
+								to={data.notify.path}
+								className="menu-header__btn menu-header__btn_notify"
+								onClick={(): void => { dispatch(toggleMenu()) }}
+							>
 								<Icon id={data.notify.iconID} className="menu-header__icon-btn" />
 								<p className="menu-header__btn-text">{data.notify.title}</p>
 							</Link>
@@ -47,7 +51,11 @@ const MenuHeader: React.FC = () => {
 										<li
 											key={el.id}
 											className="menu-header__item">
-											<NavLink to={el.path} className="menu-header__link">
+											<NavLink
+												to={el.path}
+												className="menu-header__link"
+												onClick={(): void => { dispatch(toggleMenu()) }}
+											>
 												{el.title}
 											</NavLink>
 										</li>

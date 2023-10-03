@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import './PopupMenuHeader.scss';
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
@@ -27,6 +27,11 @@ const PopupMenuHeader: React.FC<PopupPropsType> = ({ handleOutClick }) => {
 		localStorage.removeItem('sh-current');
 	}
 
+	const handleLinkClick = (): void => {
+		dispatch(toggleHeaderPopup());
+		dispatch(toggleMenu());
+	}
+
 	useEffect(() => {
 		document.addEventListener('click', handleOutClick);
 
@@ -43,7 +48,12 @@ const PopupMenuHeader: React.FC<PopupPropsType> = ({ handleOutClick }) => {
 				<div className="popup-header__list">
 					{
 						menuLinks?.map(el => (
-							<Link key={el.id} to={el.path} className="popup-header__link">
+							<Link
+								key={el.id}
+								to={el.path}
+								className="popup-header__link"
+								onClick={handleLinkClick}
+							>
 								<Icon id={el.iconID} className="popup-header__icon" />
 								<span>{el.title}</span>
 							</Link>

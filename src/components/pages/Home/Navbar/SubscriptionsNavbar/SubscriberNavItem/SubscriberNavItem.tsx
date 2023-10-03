@@ -4,6 +4,7 @@ import { USER_ROUTE } from "../../../../../../routes/routes";
 import { NavLink } from "react-router-dom";
 import { fetchUserInfo } from '../../../../../../redux/slices/userInfo/userInfoSlice';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
+import { toggleMenu } from '../../../../../../redux/slices/header/headerSlice';
 
 
 interface PropsType {
@@ -17,6 +18,7 @@ const SubscriberNavItem: React.FC<PropsType> = ({ imgSrc, name, uid }) => {
 
 	const handleOnClick = () => {
 		dispatch(fetchUserInfo(uid));
+		dispatch(toggleMenu())
 	}
 
 	return (
