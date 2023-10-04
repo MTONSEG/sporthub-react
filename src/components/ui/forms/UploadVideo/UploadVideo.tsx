@@ -6,10 +6,9 @@ import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../../initializeFirebase';
 import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
-
-const LoaderUploadVideo = React.lazy(() => import('./LoaderUploadVideo/LoaderUploadVideo'));
-const VideoPlayer = React.lazy(() => import('../../../common/VideoPlayer/VideoPlayer'));
-const PlaceholderUploadVideo = React.lazy(() => import('./PlaceholderUploadVideo/PlaceholderUploadVideo'));
+import  LoaderUploadVideo from './LoaderUploadVideo/LoaderUploadVideo';
+import  VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
+import  PlaceholderUploadVideo from './PlaceholderUploadVideo/PlaceholderUploadVideo';
 
 type UploadVideoPropsType = {
 	// setVideoFile: Function

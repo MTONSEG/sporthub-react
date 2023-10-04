@@ -7,10 +7,11 @@ import { VideoFileType } from '../../../redux/slices/video/videoSlice';
 
 interface IVideoList {
 	title?: string,
-	videos?: VideoFileType[]
+	videos?: VideoFileType[],
+	authorView?: boolean
 }
 
-const VideoList: React.FC<IVideoList> = ({ title, videos }) => {
+const VideoList: React.FC<IVideoList> = ({ title, videos,authorView }) => {
 	const { ...state } = useAppSelector(state => state.videoList);
 
 	useEffect((): void => {
@@ -30,7 +31,7 @@ const VideoList: React.FC<IVideoList> = ({ title, videos }) => {
 				{
 					videos
 						? videos.map((el, index) => (
-							<VideoItem key={index} video={el} />
+							<VideoItem key={index} video={el} authorView={authorView} />
 						))
 						: <></>
 

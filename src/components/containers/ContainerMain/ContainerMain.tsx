@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import './ContainerMain.scss';
-
-const Navbar = React.lazy(() => import('../../pages/Home/Navbar/Navbar'));
+import Navbar from '../../pages/Home/Navbar/Navbar';
 
 type ContainerMainPropsType = {
 	children: ReactElement,

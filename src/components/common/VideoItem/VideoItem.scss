@@ -1,5 +1,32 @@
 .video-item {
 	position: relative;
+	transition: all .2s;
+	cursor: pointer;
+	&::after {
+		content: "";
+		position: absolute;
+		top: calc(50% - 43px);
+		left: 50%;
+		transform: translate(-50%,-50%);
+		width: 60px;
+		height: 40px;
+		border-radius: 8px;
+		background: url('../../../assets/icons/play.svg') center/ 15px 15px no-repeat, rgba(34, 34, 34, 0.9);
+		opacity: 0;
+		z-index: -1;
+		transition: all .2s;
+	}
+	&:hover {
+		background: #222;
+		border-radius: 8px;
+	}
+	&:hover::after{
+		opacity: 1;
+		z-index: 1;
+	}
+	&:hover .video-item__poster-wrap{
+		border-radius: 8px 8px 0 0;
+	}
 	&__poster-wrap {
 		position: relative;
 		background:
@@ -8,6 +35,7 @@
 		border-radius: 8px;
 		overflow: hidden;
 		aspect-ratio: 16/9;
+		transition: border-radius .2s;
 	}
 	&__poster {
 		object-fit: cover;

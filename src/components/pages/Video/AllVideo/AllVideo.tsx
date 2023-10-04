@@ -11,7 +11,7 @@ const AllVideo: React.FC = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchUserVideos());
+		dispatch(fetchUserVideos(getUserUID().uid));
 	}, [])
 
 	// if (!users) return <Loading />

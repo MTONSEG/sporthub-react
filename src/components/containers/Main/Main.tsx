@@ -2,21 +2,18 @@ import React, { useEffect } from "react";
 import Header from "../Header/Header";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { AUTH_ROUTE } from "../../../routes/routes";
-import Loading from "../../ui/atoms/Loading/Loading";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
-import Container from "../Container/Container";
 import { getUsers, setLoggedUser } from '../../../redux/slices/home/userSlice';
 import User from '../../pages/User/User';
 import Profile from '../../pages/Profile/Profile';
 import Video from '../../pages/Video/Video';
 import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
 import AddVideo from '../../pages/Video/AddVideo/AddVideo';
-
-const Home = React.lazy(() => import('../../pages/Home/Home'));
-const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome'));
+import Home from '../../pages/Home/Home';
+import Latest from '../../pages/Home/LatestHome/LatestHome';
 
 export interface BaseUser {
 	uid: string | number,
@@ -63,9 +60,9 @@ const Main: React.FC = () => {
 		<>
 			<Header />
 			<Routes>
-				{/* <Route index element={<Home />} />
-					<Route path="/latest" element={<Latest title='Lates Video' />} />
-					<Route path='/later' element={<Latest title='View later' />} /> */}
+				<Route index element={<Home />} />
+				<Route path="/latest" element={<Latest title='Lates Video' />} />
+				<Route path='/later' element={<Latest title='View later' />} />
 				<Route path='/user/:uid/*' element={<User />} />
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/video/*' element={<Video />} />

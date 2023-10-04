@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './Home.scss';
-import { useAppSelector } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import Slider from "../../ui/sliders/Slider/Slider";
 import { SwiperOptions } from "swiper/types/swiper-options";
 import ContainerMain from '../../containers/ContainerMain/ContainerMain';
+import Loading from '../../ui/atoms/Loading/Loading';
+import { fetchVideos } from '../../../redux/slices/video/videoSlice';
 
 const VideoList = React.lazy(() => import('../../common/VideoList/VideoList'));
 
 const Home: React.FC = () => {
 	const { slides } = useAppSelector(state => state.sliderCat);
+	const { videosList } = useAppSelector(state => state.videos);
 	const titleList = useAppSelector(state => state.videoList.title);
+	const dispatch = useAppDispatch();
 
 	const sliderSetting: SwiperOptions = {
 		slidesPerView: 'auto',
@@ -22,6 +26,10 @@ const Home: React.FC = () => {
 		}
 	}
 
+	useEffect(() => {
+		dispatch(fetchVideos());
+	}, [])
+
 	return (
 		<ContainerMain>
 			<>
@@ -30,7 +38,9 @@ const Home: React.FC = () => {
 						settings={sliderSetting}
 						slides={slides} />
 				</div>
-				<VideoList title={titleList} />
+				<React.Suspense fallback={<Loading />} >
+					<VideoList title={titleList} videos={videosList} authorView={true} />
+				</React.Suspense>
 			</>
 		</ContainerMain>
 	)
