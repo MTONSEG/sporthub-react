@@ -45,6 +45,7 @@ const PlaceholderUploadVideo: React.FC<PlaceholderUploadVideoPropsType> = ({
 					type="file"
 					className="upload-video__input"
 					onChange={handleChange}
+					accept='.mp4, .avi, .mkv'
 				/>
 				<Button
 					className='upload-video__choose-btn'

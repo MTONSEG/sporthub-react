@@ -4,7 +4,7 @@ import { ILink } from "../header/headerSlice";
 import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { NumStrNullType } from '../auth/singupSlice';
 import { genderType } from '../auth/personalSlice';
-import { TabLink, UserTabPathTypes } from '../userInfo/userInfoSlice';
+import { VideoFileType } from '../video/videoSlice';
 
 type NumString = string | number;
 
@@ -61,13 +61,13 @@ export type UserType = {
 	titleSubs: string,
 	titleSubsBtn: string,
 	logged: User,
-	videoTabValue: UserTabPathTypes,
+	videos: { [key: string]: VideoFileType } | null,
 }
 
 const initialState: UserType = {
 	loading: false,
 	users: null,
-	videoTabValue: 'mind',
+	videos: null,
 	titleSubs: 'My subscribes',
 	titleSubsBtn: 'Show more',
 	subscribeList: [],
@@ -93,11 +93,11 @@ const initialState: UserType = {
 
 export const getUsers = createAsyncThunk<UserObject, null, { rejectValue: string }>(
 	'users/getUsers',
-	async function (_, { rejectWithValue }) {
+	async function (_, { rejectWithValue, dispatch }) {
 		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
 
 		const data = await res.json();
-
+	
 		if (!res.ok) {
 			return rejectWithValue('Server Error');
 		}
@@ -159,7 +159,6 @@ export const fetchUnsubscribe = createAsyncThunk<void, SubscribeParameters, { re
 )
 
 
-
 const userSlice = createSlice({
 	name: 'navbar',
 	initialState,
@@ -184,9 +183,6 @@ const userSlice = createSlice({
 			state.users[userUID].subscribes[subscriberUID] = false;
 
 			state.subscribeList = state.subscribeList.filter(el => el.uid !== subscriberUID)
-		},
-		setVideoTabValue(state, action: PayloadAction<UserTabPathTypes>) {
-			state.videoTabValue = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -225,5 +221,5 @@ const userSlice = createSlice({
 			})
 	}
 })
-export const { setLoggedUser, subscribeUser, unsubscribeUser, setVideoTabValue } = userSlice.actions;
+export const { setLoggedUser, subscribeUser, unsubscribeUser} = userSlice.actions;
 export default userSlice.reducer;

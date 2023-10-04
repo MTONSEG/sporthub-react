@@ -71,6 +71,7 @@ const DragAndDropImage: React.FC = () => {
 							ref={inputRef}
 							type="file" className="drag-drop__input"
 							onChange={handleChange}
+							accept='.jpg, .jpeg, .png'
 						/>
 						<img src={icon} alt="" className="drag-drop__icon" />
 						<h2 className="drag-drop__title">

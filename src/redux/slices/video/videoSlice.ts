@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TabLink } from '../userInfo/userInfoSlice';
+import { TabLink, UserTabPathTypes } from '../userInfo/userInfoSlice';
 import uuid from 'react-uuid';
 import { ONLY_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE } from '../../../routes/routes';
 import { inputType } from '../auth/singinSlice';
 import { NumStrNullType } from '../auth/singupSlice';
-import { UserType } from '../home/userSlice';
+import { User, UserType } from '../home/userSlice';
 import { alertType, setMessage, showAlert } from '../alert/alertSlice';
+import { getUserUID } from '../auth/getUserUID';
+import { BaseUser } from '../../../components/containers/Main/Main';
 
 type ILinkWithActive = {
 	id: string | number,
@@ -18,10 +20,12 @@ export type VideoFileType = {
 	posterURL: string | null,
 	category: string,
 	title: string,
-	authorUID: NumStrNullType,
+	author: BaseUser,
 	description: string,
 	shopifyLink: string,
+	created: Date
 }
+export type VideoFileObjectType = { [key: string]: VideoFileType }
 
 export type ItemSelectType = {
 	id: string | number,
@@ -57,7 +61,10 @@ type VideoStateType = {
 	titleChooseBtn: string,
 	titleDrag: string,
 	loading: boolean,
-	disabledBtn:boolean,
+	disabledBtn: boolean,
+	videoTabValue: UserTabPathTypes,
+	videosUser: { [key: string]: VideoFileType } | null,
+	videosUserList: VideoFileType[]
 }
 
 const initialState: VideoStateType = {
@@ -72,7 +79,7 @@ const initialState: VideoStateType = {
 	titleDrag: 'Drag and drop videos to upload',
 	titlePreviewMob: 'Upload the image preview',
 	textUpload: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit',
-	disabledBtn:true,
+	disabledBtn: true,
 	linkList: [
 		{
 			id: uuid(),
@@ -148,7 +155,10 @@ const initialState: VideoStateType = {
 	videoURL: '',
 	videoPoster: '',
 	videoPosterURL: '',
-	loading: false
+	loading: false,
+	videosUser: null,
+	videosUserList: [],
+	videoTabValue: 'mind'
 }
 
 export const uploadVideo =
@@ -163,16 +173,28 @@ export const uploadVideo =
 				const videosURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos.json`;
 				const state = getState();
 
+				const firstName: string = state.users.users[getUserUID().uid].firstName;
+				const lastName: string = state.users.users[getUserUID().uid].lastName;
+
+				const author: BaseUser = {
+					uid: getUserUID().uid,
+					photoURL: getUserUID().photoURL,
+					name: `${firstName} ${lastName}`,
+				}
+
+				const createDate: Date = new Date();
+
 				const video: VideoFileType = {
 					videoURL: state.videos.videoURL,
 					posterURL: state.videos.videoPosterURL,
 					title: state.videos.title.value,
 					category: state.videos.category.value,
-					authorUID: uid,
+					author: author,
 					description: state.videos.description.value,
-					shopifyLink: state.videos.shopifyURL.value
+					shopifyLink: state.videos.shopifyURL.value,
+					created: createDate
 				}
-
+				console.log(video);
 				await fetch(URL, {
 					method: 'POST',
 					body: JSON.stringify(video),
@@ -186,7 +208,7 @@ export const uploadVideo =
 						const videoItem: { [key: NumStrNullType]: VideoFileType } = {
 							[id]: video
 						}
-
+						console.log('fetch video');
 						await fetch(videosURL, {
 							method: 'PATCH',
 							body: JSON.stringify(videoItem),
@@ -203,11 +225,28 @@ export const uploadVideo =
 								}, 5000);
 							})
 					})
-
+				console.log('success');
 			} catch (error) {
 				rejectWithValue(error);
 			}
 		})
+
+export const fetchUserVideos = createAsyncThunk<VideoFileObjectType, null, { rejectValue: string }>(
+	'users/fetchVideosUser',
+	async (_, { rejectWithValue }) => {
+		try {
+			let uid: NumStrNullType = getUserUID().uid;
+
+			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/videos.json`);
+
+			return res.json();
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
 
 const videoSlice = createSlice({
 	name: 'users/videoSlice',
@@ -258,6 +297,15 @@ const videoSlice = createSlice({
 		},
 		disableBtnSave(state) {
 			state.disabledBtn = false;
+		},
+		setVideoTabValue(state, action: PayloadAction<UserTabPathTypes>) {
+			state.videoTabValue = action.payload;
+		},
+		sortVideoList(state) {
+			state.videosUserList =
+				Object.values(state.videosUser).filter(el => (
+					el.category === state.videoTabValue
+				))
 		}
 	},
 	extraReducers: builder => {
@@ -266,12 +314,29 @@ const videoSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(uploadVideo.fulfilled, state => {
+				state.title.value = '';
+				state.category.value = '';
+				state.description.value = '';
+				state.shopifyURL.value = '';
 				state.videoPosterURL = '';
 				state.videoURL = '';
 				state.videoFileName = '';
 				state.loading = false;
 			})
+			.addCase(fetchUserVideos.pending, state => {
+				state.loading = true;
+			})
+			.addCase(fetchUserVideos.fulfilled, (state, action) => {
+				if (action.payload) {
+					state.videosUser = action.payload;
+					state.videosUserList = Object.values(action.payload)
+						.filter(el =>(el.category === state.videoTabValue))
+				}
+
+				state.loading = false;
+			})
+
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL,enableBtnSave,disableBtnSave } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList } = videoSlice.actions;
 export default videoSlice.reducer;

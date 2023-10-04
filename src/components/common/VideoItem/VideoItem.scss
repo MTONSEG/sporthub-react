@@ -1,13 +1,19 @@
 .video-item {
 	position: relative;
-	&__image-wrap {
+	&__poster-wrap {
 		position: relative;
-		padding: 0 0 44.723%;
 		background:
 			url("../../../assets/icons/video.svg") center/32px 32px no-repeat,
 			#222;
 		border-radius: 8px;
 		overflow: hidden;
+		aspect-ratio: 16/9;
+	}
+	&__poster {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+		aspect-ratio: 16/9;
 	}
 	&__body {
 		padding: 8px;

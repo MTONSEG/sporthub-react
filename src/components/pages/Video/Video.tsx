@@ -5,13 +5,12 @@ import Loading from '../../ui/atoms/Loading/Loading';
 import HeaderTabs from '../../common/HeaderTabs/HeaderTabs';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import ContainerProfile from '../../containers/ContainerProfile/ContainerProfile';
-import { setVideoTabValue } from '../../../redux/slices/home/userSlice';
 import { UserTabPathTypes } from '../../../redux/slices/userInfo/userInfoSlice';
 import { Button } from '../../ui/buttons/Button/Button';
 import plusIcon from '../../../assets/icons/plus.svg';
 import { ADD_VIDEO_ROUTE } from '../../../routes/routes';
 import { Link } from 'react-router-dom';
-import { setActiveVideoLink } from '../../../redux/slices/video/videoSlice';
+import { setActiveVideoLink, setVideoTabValue, sortVideoList } from '../../../redux/slices/video/videoSlice';
 
 const AllVideo = React.lazy(() => import('./AllVideo/AllVideo'));
 const PlaylistVideo = React.lazy(() => import('./PlaylistVideo/PlaylistVideo'));
@@ -19,11 +18,11 @@ const ViewVideo = React.lazy(() => import('./ViewVideo/ViewVideo'));
 
 const Video: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const { tabList, linkList, ...state } = useAppSelector(state => state.videos);
-	const { videoTabValue } = useAppSelector(state => state.users);
+	const { tabList, linkList, videoTabValue, ...state } = useAppSelector(state => state.videos);
 
 	const handleTabCLick = (value: UserTabPathTypes): void => {
-		dispatch(setVideoTabValue(value))
+		dispatch(setVideoTabValue(value));
+		dispatch(sortVideoList());
 	}
 
 	return (

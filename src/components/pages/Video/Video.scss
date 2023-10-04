@@ -37,6 +37,7 @@
 	}
 	&__body {
 		position: relative;
+		min-height: 300px;
 	}
 
 	@media (max-width: 767px) {

@@ -21,7 +21,7 @@ const Latest = React.lazy(() => import('../../pages/Home/LatestHome/LatestHome')
 export interface BaseUser {
 	uid: string | number,
 	name: string,
-	email: string,
+	email?: string,
 	photoURL: string,
 }
 
@@ -60,18 +60,18 @@ const Main: React.FC = () => {
 
 
 	return (
-		<React.Suspense fallback={<Loading />}>
+		<>
 			<Header />
-				<Routes>
-					<Route index element={<Home />} />
+			<Routes>
+				{/* <Route index element={<Home />} />
 					<Route path="/latest" element={<Latest title='Lates Video' />} />
-					<Route path='/later' element={<Latest title='View later' />} />
-					<Route path='/user/:uid/*' element={<User />} />
-					<Route path='/profile' element={<Profile />} />
-					<Route path='/video/*' element={<Video />} />
-					<Route path='/video/add' element={<AddVideo/>} />
-				</Routes>
-		</React.Suspense>
+					<Route path='/later' element={<Latest title='View later' />} /> */}
+				<Route path='/user/:uid/*' element={<User />} />
+				<Route path='/profile' element={<Profile />} />
+				<Route path='/video/*' element={<Video />} />
+				<Route path='/video/add' element={<AddVideo />} />
+			</Routes>
+		</>
 	)
 }
 

@@ -1,4 +1,19 @@
+body {
+	&::-webkit-scrollbar {
+		width: 5px;
+		position: absolute;
+	}
+	&::-webkit-scrollbar-track {
+		background: #111;
+		width: 10px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #706f6f;
+	}
+}
+
 .wrapper {
 	min-height: 100vh;
 	overflow: hidden;
+
 }

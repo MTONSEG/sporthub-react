@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './Select.scss';
 import { ItemSelectType, setCategoryValue } from '../../../../redux/slices/video/videoSlice';
 import { useAppDispatch } from '../../../../hooks/hooks';
+import { upperFirstLetter } from '../../../../redux/slices/auth/upperFirstLetter';
 
 type selectType = {
 	list: ItemSelectType[],
@@ -52,7 +53,7 @@ const Select: React.FC<selectType> = ({
 					className="select-filed__header"
 					style={!value ? { color: '#999' } : { color: '#fff' }}>
 					{
-						value ? value : placeholder
+						value ? upperFirstLetter(value) : placeholder
 					}
 				</div>
 				<ul className="select-filed__list">
