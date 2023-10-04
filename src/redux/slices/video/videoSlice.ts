@@ -67,7 +67,8 @@ type VideoStateType = {
 	videosUser: { [key: string]: VideoFileType } | null,
 	videosUserList: VideoFileType[],
 	videos: { [key: string]: VideoFileType } | null,
-	videosList: VideoFileType[]
+	videosList: VideoFileType[],
+	video: VideoFileType | null
 }
 
 const initialState: VideoStateType = {
@@ -163,7 +164,8 @@ const initialState: VideoStateType = {
 	videosUserList: [],
 	videos: null,
 	videosList: [],
-	videoTabValue: 'mind'
+	videoTabValue: 'mind',
+	video: null
 }
 
 export const uploadVideo =
@@ -263,6 +265,21 @@ export const fetchVideos = createAsyncThunk<VideoFileObjectType, null, { rejectV
 		}
 	}
 )
+
+export const getVideo = createAsyncThunk<VideoFileObjectType, NumStrNullType, { rejectValue: string }>(
+	'users/getVideo',
+	async (id, { rejectWithValue }) => {
+		try {
+			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${id}.json`);
+
+			return res.json();
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
 
 
 const videoSlice = createSlice({
@@ -367,6 +384,24 @@ const videoSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchVideos.fulfilled, (state, action) => {
+				if (action.payload) {
+					state.videos = action.payload;
+
+					let list: VideoFileType[] = [];
+
+					for (let key in action.payload) {
+						list.push({ uid: key, ...action.payload[key] })
+					}
+
+					state.videosList = list;
+				}
+
+				state.loading = false;
+			})
+			.addCase(getVideo.pending, state => {
+				state.loading = true;
+			})
+			.addCase(getVideo.fulfilled, (state, action) => {
 				if (action.payload) {
 					state.videos = action.payload;
 

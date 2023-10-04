@@ -4,6 +4,7 @@ import { Title } from '../../../../ui/atoms/Title/Title';
 import { Button } from '../../../../ui/buttons/Button/Button';
 import { ButtonPopup } from '../../../../ui/buttons/ButtonPopup/ButtonPopup';
 import { VIDEO_ROUTE } from '../../../../../routes/routes';
+import PopupAddVideoMenu from '../../../../common/PopupAddVideoMenu/PopupAddVideoMenu';
 
 type HeaderAddPage = {
 	title: string,
@@ -32,6 +33,7 @@ const HeaderAddPage: React.FC<HeaderAddPage> = ({
 					onClickHandler={handleSave}
 				>{titleBtn}</Button>
 				<ButtonPopup handleClick={handleClickPopup} disabled={disabledBtn} />
+				<PopupAddVideoMenu/>
 			</div>
 		</div>
 	)
