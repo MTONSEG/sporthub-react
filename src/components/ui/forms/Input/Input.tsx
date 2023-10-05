@@ -110,7 +110,7 @@ const Input: React.FC<inputType> = ({
 								maskChar={maskChar}
 								placeholder={placeholder}
 								value={value}
-								onChange={(e: eventTarget) => { setValue(e.target.value) }}
+								onChange={(e: ChangeEvent<HTMLInputElement>) => { handelOnChange(e) }}
 							/>
 						</>
 

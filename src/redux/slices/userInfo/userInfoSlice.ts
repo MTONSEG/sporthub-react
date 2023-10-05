@@ -98,8 +98,6 @@ export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rej
 	}
 )
 
-
-
 const userInfoSlice = createSlice({
 	name: 'subscription',
 	initialState,
@@ -114,11 +112,13 @@ const userInfoSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchUserInfo.fulfilled, (state, action) => {
-				const user: BaseUser = JSON.parse(localStorage.getItem('sh-current'));
+				const user: User = action.payload[action.meta.arg];
+			
+				state.user = {
+					...user,
+					subscribes: {}
+				};
 
-				state.loggedUID = user.uid;
-				state.users = action.payload;
-				state.user = action.payload[action.meta.arg];
 				state.loading = false;
 			})
 	}

@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { fetchUserInfo } from '../../../../../../redux/slices/userInfo/userInfoSlice';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { toggleMenu } from '../../../../../../redux/slices/header/headerSlice';
+import { Icon } from '../../../../../ui/atoms/Icon/Icon';
 
 
 interface PropsType {
@@ -24,6 +25,11 @@ const SubscriberNavItem: React.FC<PropsType> = ({ imgSrc, name, uid }) => {
 	return (
 		<NavLink to={`${USER_ROUTE}/${uid}`} className="item-subscriber" onClick={handleOnClick}>
 			<div className="item-subscriber__image-wrap">
+				{
+					imgSrc 
+						? <img src={imgSrc} alt="" className="item-subscriber__image" />
+						: <Icon id='user' className='item-subscriber__image-placeholder'/>
+				}
 				<img src={imgSrc} alt="" className="item-subscriber__image" />
 			</div>
 			<p className="item-subscriber__name">{name}</p>

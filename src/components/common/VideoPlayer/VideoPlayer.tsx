@@ -4,12 +4,13 @@ import { BigPlayButton, ControlBar, ForwardControl, LoadingSpinner, Player, Repl
 
 type VideoPlayerPropsType = {
 	videoSrc: string,
-	posterSrc?: string
+	posterSrc?: string,
+	position?: 'static' | 'absolute';
 }
 
-const VideoPlayer: React.FC<VideoPlayerPropsType> = ({ videoSrc, posterSrc }) => {
+const VideoPlayer: React.FC<VideoPlayerPropsType> = ({ videoSrc, posterSrc, position = 'absolute' }) => {
 	return (
-		<div className="video-player">
+		<div className="video-player" style={{position}}>
 			<Player
 				src={videoSrc}
 				poster={posterSrc}

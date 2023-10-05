@@ -59,7 +59,7 @@ const SingUp: React.FC = () => {
 			.then(userCredential => {
 				const user = userCredential.user;
 				const userRef = ref(db, `users/${user.uid}`);
-				const userData: ISingUpState = { firstName, lastName, email, password };
+				const userData: ISingUpState = { firstName, lastName, email, password, subscribes: {} };
 
 				updateProfile(auth.currentUser, {
 					displayName: firstName

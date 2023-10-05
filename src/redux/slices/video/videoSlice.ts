@@ -68,7 +68,8 @@ type VideoStateType = {
 	videosUserList: VideoFileType[],
 	videos: { [key: string]: VideoFileType } | null,
 	videosList: VideoFileType[],
-	video: VideoFileType | null
+	video: VideoFileType | null,
+	previewPath: string
 }
 
 const initialState: VideoStateType = {
@@ -165,7 +166,8 @@ const initialState: VideoStateType = {
 	videos: null,
 	videosList: [],
 	videoTabValue: 'mind',
-	video: null
+	video: null,
+	previewPath: null
 }
 
 export const uploadVideo =
@@ -183,10 +185,15 @@ export const uploadVideo =
 				const firstName: string = state.users.users[getUserUID().uid].firstName;
 				const lastName: string = state.users.users[getUserUID().uid].lastName;
 
+				// const amountSubscribers: number = Object.keys(state.users.users[getUserUID().uid].subscribes).length;
+
+				// const subs = Object.keys
+
 				const author: BaseUser = {
 					uid: getUserUID().uid,
 					photoURL: getUserUID().photoURL,
 					name: `${firstName} ${lastName}`,
+					// amountSubscribers
 				}
 
 				const createDate: Date = new Date();
@@ -266,8 +273,8 @@ export const fetchVideos = createAsyncThunk<VideoFileObjectType, null, { rejectV
 	}
 )
 
-export const getVideo = createAsyncThunk<VideoFileObjectType, NumStrNullType, { rejectValue: string }>(
-	'users/getVideo',
+export const getVideoData = createAsyncThunk<VideoFileType, NumStrNullType, { rejectValue: string }>(
+	'users/getVideoData',
 	async (id, { rejectWithValue }) => {
 		try {
 			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${id}.json`);
@@ -345,6 +352,9 @@ const videoSlice = createSlice({
 
 			state.videosUserList = list
 				.filter(el => (el.category === state.videoTabValue));
+		},
+		setPreviewPath(state, action: PayloadAction<string>) {
+			state.previewPath = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -398,26 +408,16 @@ const videoSlice = createSlice({
 
 				state.loading = false;
 			})
-			.addCase(getVideo.pending, state => {
+			.addCase(getVideoData.pending, state => {
 				state.loading = true;
 			})
-			.addCase(getVideo.fulfilled, (state, action) => {
-				if (action.payload) {
-					state.videos = action.payload;
-
-					let list: VideoFileType[] = [];
-
-					for (let key in action.payload) {
-						list.push({ uid: key, ...action.payload[key] })
-					}
-
-					state.videosList = list;
-				}
+			.addCase(getVideoData.fulfilled, (state, action) => {
+				state.video = action.payload;
 
 				state.loading = false;
 			})
 
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath } = videoSlice.actions;
 export default videoSlice.reducer;

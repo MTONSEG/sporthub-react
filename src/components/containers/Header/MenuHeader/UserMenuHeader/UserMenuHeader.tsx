@@ -4,6 +4,7 @@ import PopupMenuHeader from "../PopupMenuHeader/PopupMenuHeader";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/hooks";
 import { toggleHeaderPopup } from "../../../../../redux/slices/header/headerSlice";
 import icon from '../../../../../assets/icons/user.svg';
+import { Icon } from '../../../../ui/atoms/Icon/Icon';
 
 
 interface UserMenuPropsType {
@@ -30,7 +31,7 @@ const UserMenuHeader: React.FC<UserMenuPropsType> = ({ name, photoURL }) => {
 				{
 					photoURL
 						? <img src={photoURL} alt="" className="profile-header__avatar" />
-						: <img src={icon} alt="" className="profile-header__avatar" />
+						: <Icon id='user' className='profile-header__avatar-placeholder' />
 				}
 
 			</div>

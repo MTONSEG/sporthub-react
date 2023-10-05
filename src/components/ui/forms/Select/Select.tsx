@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './Select.scss';
 import { ItemSelectType, setCategoryValue } from '../../../../redux/slices/video/videoSlice';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { upperFirstLetter } from '../../../../redux/slices/auth/upperFirstLetter';
+import { upperFirstLetter } from '../../../../utils/upperFirstLetter';
 
 type selectType = {
 	list: ItemSelectType[],

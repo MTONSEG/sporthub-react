@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import './UserInfo.scss';
-import Picture from '../../../ui/atoms/Picture/Picture';
 import { Button } from '../../../ui/buttons/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
 import Loading from '../../../ui/atoms/Loading/Loading';
-import { BaseUser } from '../../../containers/Main/Main';
 import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe } from '../../../../redux/slices/home/userSlice';
+import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
+import icon from '../../../../assets/icons/user.svg';
 
 const ItemUserInfo = React.lazy(() => import('./ItemUserInfo/ItemUserInfo'));
 
 const UserInfo: React.FC = () => {
-	const { user, loggedUID, ...state } = useAppSelector(state => state.userInfo);
+	const { user, ...state } = useAppSelector(state => state.userInfo);
 	const { users } = useAppSelector(state => state.users);
 	const { uid } = useParams();
+	const [subscribed, setSubscribed] = useState<boolean>();
 	const dispatch = useAppDispatch();
 
-	const { subscribeList } = useAppSelector(state => state.users);
-
 	useEffect(() => {
-		console.log(subscribeList)
-	}, [])
+		if (users[getUserUID().uid].subscribes) {
+			setSubscribed(users[getUserUID().uid].subscribes[uid]);
+		}
+	}, [users])
 
 	const handleClickSubscribe = () => {
 		let params: SubscribeParameters = {
-			userUID: loggedUID,
+			userUID: getUserUID().uid,
 			subscriberUID: uid
 		}
-
-		if (users[loggedUID].subscribes[uid]) {
-			dispatch(fetchUnsubscribe(params));
-			console.log(subscribeList)
-		} else {
+		if (!users[getUserUID().uid].subscribes) {
 			dispatch(fetchSubscribe(params));
-			console.log(subscribeList)
+		} else {
+			if (users[getUserUID().uid].subscribes[uid]) {
+				dispatch(fetchUnsubscribe(params));
+			} else {
+				dispatch(fetchSubscribe(params));
+			}
 		}
 	}
-	if (!loggedUID) return <Loading />
+
+	if (!users) return <Loading />
+
 	return (
 		<div className='info-subscription'>
 
@@ -47,10 +51,7 @@ const UserInfo: React.FC = () => {
 							<img src={user.posterURL} alt="poster" className="info-subscription__poster" />
 							<img src={user.posterURL} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
 						</>
-						: <>
-							<img src={state.poster.img} alt="poster" className="info-subscription__poster" />
-							<img src={state.poster_mob.img} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
-						</>
+						: <span></span>
 				}
 			</div>
 
@@ -58,11 +59,13 @@ const UserInfo: React.FC = () => {
 				<div className="info-subscription__user">
 					<div className="info-subscription__photo-wrap">
 						{
-							state.loading
+							state.loading 
 								? <Loading />
-								: <img src={user?.photoURL} alt='image' className='info-subscription__photo' />
+								: <img
+									src={user?.photoURL ? user?.photoURL : icon}
+									alt='image'
+									className='info-subscription__photo' />
 						}
-
 					</div>
 					<p className="info-subscription__user-name">
 						{`${user?.firstName} ${user?.lastName}`}
@@ -73,11 +76,11 @@ const UserInfo: React.FC = () => {
 					<ItemUserInfo
 						iconID={state.subscribers.iconID}
 						text={state.subscribers.text}
-						amount='15' />
+						amount={user.amountSubscribers} />
 					<ItemUserInfo
 						iconID={state.videos.iconID}
 						text={state.videos.text}
-						amount='20' />
+						amount={Object.keys(user.videos).length} />
 					<ItemUserInfo
 						iconID={state.views.iconID}
 						text={state.views.text}
@@ -85,9 +88,9 @@ const UserInfo: React.FC = () => {
 				</ul>
 				<div
 					className="info-subscription__button-wrap"
-					style={loggedUID === uid ? { display: 'none' } : {}}>
+					style={getUserUID().uid === uid ? { display: 'none' } : {}}>
 					{
-						users[loggedUID].subscribes[uid]
+						subscribed
 							?
 							(<Button
 								variant='brown'

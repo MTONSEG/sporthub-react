@@ -1,0 +1,65 @@
+.header-view-video {
+	display: flex;
+	align-items: center;
+	margin-bottom: 17px;
+	&__back-link {
+		display: block;
+		width: 40px;
+		height: 40px;
+		border-radius: 8px;
+		background: #222;
+		position: relative;
+		margin: 0 24px 0 0;
+		&:hover {
+			background: #333;
+		}
+		&::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%) rotate(45deg);
+			width: 8px;
+			height: 8px;
+			display: block;
+			border: 2px solid #fff;
+			border-width: 0 0 2px 2px;
+		}
+	}
+	&__author {
+		flex: 1 1 auto;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		&:hover {
+			.header-view-video__name {
+				color: #bbb;
+			}
+		}
+	}
+	&__photo-wrap {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		overflow: hidden;
+		margin: 0 8px 0 0;
+	}
+	&__photo {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+	&__name {
+		font-size: 18px;
+		font-weight: 600;
+		line-height: normal;
+		margin-bottom: 2px;
+		transition: color .2s;
+	}
+	&__amount-subs {
+		color: #999;
+	}
+	&__subscribe-btn {
+		width: 180px;
+	}
+}

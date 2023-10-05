@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './VideoItem.scss';
-import { useAppSelector } from '../../../hooks/hooks';
-import { VideoFileType } from '../../../redux/slices/video/videoSlice';
+import { VideoFileType, setPreviewPath } from '../../../redux/slices/video/videoSlice';
 import { getCreateDate } from '../../../redux/slices/auth/getCreateDate';
 import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ITEM_VIDEO_ROUTE } from '../../../routes/routes';
+import { useAppDispatch } from '../../../hooks/hooks';
 
 interface IVideoItem {
 	video: VideoFileType,
@@ -14,15 +15,13 @@ interface IVideoItem {
 const VideoItem: React.FC<IVideoItem> = ({
 	video, authorView
 }) => {
-	const user = useAppSelector(state => state.singin.currentUser)
 	const navigate = useNavigate();
-
-	useEffect(() => {
-
-	}, []);
+	const {pathname} = useLocation();
+	const dispatch = useAppDispatch();
 
 	const handleClick = (uid: NumStrNullType): void => {
-		navigate(`/item/${uid}`);
+		navigate(`${ITEM_VIDEO_ROUTE}/${uid}`);
+		dispatch(setPreviewPath(pathname));
 	}
 
 	return (

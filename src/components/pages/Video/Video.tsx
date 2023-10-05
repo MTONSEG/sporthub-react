@@ -62,7 +62,6 @@ const Video: React.FC = () => {
 						<Routes>
 							<Route index element={<AllVideo />} />
 							<Route path='playlist' element={<PlaylistVideo />} />
-							<Route path='item/:id' element={<ViewVideo />} />
 						</Routes>
 					</React.Suspense>
 				</div>

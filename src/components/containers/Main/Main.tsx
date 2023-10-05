@@ -13,12 +13,14 @@ import Video from '../../pages/Video/Video';
 import AddVideo from '../../pages/Video/AddVideo/AddVideo';
 import Home from '../../pages/Home/Home';
 import Latest from '../../pages/Home/LatestHome/LatestHome';
+import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
 
 export interface BaseUser {
 	uid: string | number,
 	name: string,
 	email?: string,
 	photoURL: string,
+	amountSubscribers?: number
 }
 
 
@@ -66,6 +68,7 @@ const Main: React.FC = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/video/*' element={<Video />} />
 				<Route path='/video/add' element={<AddVideo />} />
+				<Route path='/view/:id' element={<ViewVideo />} />
 			</Routes>
 		</>
 	)

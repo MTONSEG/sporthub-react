@@ -237,7 +237,7 @@ export const deletePhoto =
 		}
 	)
 export const deletePoster =
-	createAsyncThunk<void, NumStrNullType, { rejectValue: string, }>(
+	createAsyncThunk<void, NumStrNullType, { rejectValue: string}>(
 		'users/deletePoster',
 		async (uid, { rejectWithValue, dispatch }) => {
 			try {
