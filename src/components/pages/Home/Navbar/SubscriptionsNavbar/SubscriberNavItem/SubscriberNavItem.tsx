@@ -2,7 +2,6 @@ import React from "react";
 import './SubscriberNavItem.scss';
 import { USER_ROUTE } from "../../../../../../routes/routes";
 import { NavLink } from "react-router-dom";
-import { fetchUserInfo } from '../../../../../../redux/slices/userInfo/userInfoSlice';
 import { useAppDispatch } from '../../../../../../hooks/hooks';
 import { toggleMenu } from '../../../../../../redux/slices/header/headerSlice';
 import { Icon } from '../../../../../ui/atoms/Icon/Icon';
@@ -18,7 +17,6 @@ const SubscriberNavItem: React.FC<PropsType> = ({ imgSrc, name, uid }) => {
 	const dispatch = useAppDispatch();
 
 	const handleOnClick = () => {
-		dispatch(fetchUserInfo(uid));
 		dispatch(toggleMenu())
 	}
 

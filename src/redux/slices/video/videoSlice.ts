@@ -333,17 +333,11 @@ const videoSlice = createSlice({
 			.addCase(getVideos.fulfilled, (state, action) => {
 				if (action.payload) {
 					state.videos = action.payload;
+
 					let list: VideoFileType[] = [];
 
 					for (let key in action.payload) {
 						list.push({ uid: key, ...action.payload[key] })
-					}
-
-					if (action.meta.arg === 'sort') {
-						state.videosList = list
-							.filter(el => (
-								el.category === state.videoTabValue && el.author === getUserUID().uid
-							));
 					}
 
 					if (action.meta.arg === 'all') {

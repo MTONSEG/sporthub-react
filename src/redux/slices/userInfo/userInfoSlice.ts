@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import img from '../../../assets/images/subscription/poster.jpg';
 import webp from '../../../assets/images/subscription/poster.jpg?as=webp';
 import img_m from '../../../assets/images/subscription/poster_mob.jpg';
@@ -7,7 +7,6 @@ import { imageType } from '../auth/sliderAuthSlice';
 import uuid from 'react-uuid';
 import { User, UserObject } from '../home/userSlice';
 import { NumStrNullType } from '../auth/singupSlice';
-import { BaseUser } from '../../../components/containers/Main/Main';
 
 export type UserTabPathTypes = 'video' | 'bio' | 'store' | 'playlist'|'mind'|'body'|'soul';
 
@@ -83,20 +82,6 @@ const initialState: UserInfoType = {
 	]
 }
 
-export const fetchUserInfo = createAsyncThunk<UserObject, string | number, { rejectValue: string }>(
-	'users/fetchUserInfo',
-	async (uid, { rejectWithValue }) => {
-		const res = await fetch('https://sporthub-8cd3f-default-rtdb.firebaseio.com/users.json');
-
-		const data = await res.json();
-
-		if (!res.ok) {
-			return rejectWithValue('Server Error');
-		}
-
-		return data;
-	}
-)
 
 const userInfoSlice = createSlice({
 	name: 'subscription',
@@ -105,22 +90,6 @@ const userInfoSlice = createSlice({
 		setTabValue(state, action: PayloadAction<UserTabPathTypes>) {
 			state.tabValue = action.payload;
 		}
-	},
-	extraReducers: builder => {
-		builder
-			.addCase(fetchUserInfo.pending, state => {
-				state.loading = true;
-			})
-			.addCase(fetchUserInfo.fulfilled, (state, action) => {
-				const user: User = action.payload[action.meta.arg];
-			
-				state.user = {
-					...user,
-					subscribes: {}
-				};
-
-				state.loading = false;
-			})
 	}
 })
 export const {setTabValue} = userInfoSlice.actions;

@@ -127,7 +127,7 @@ export const fetchSubscribe = createAsyncThunk<void, SubscribeParameters, {
 			let subsBody = JSON.stringify({
 				[subscriberUID]: true
 			});
-			console.log(subsBody)
+
 			let amountSubsBody = JSON.stringify({
 				amountSubscribers: amountSubs ? amountSubs + 1 : 1
 			})

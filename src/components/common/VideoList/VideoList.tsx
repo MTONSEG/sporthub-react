@@ -3,6 +3,8 @@ import './VideoList.scss';
 import { Title } from '../../ui/atoms/Title/Title';
 import VideoItem from '../VideoItem/VideoItem';
 import { VideoFileType } from '../../../redux/slices/video/videoSlice';
+import { useAppSelector } from '../../../hooks/hooks';
+import { getUserUID } from '../../../utils/getUserUID';
 
 interface IVideoList {
 	title?: string,
@@ -10,7 +12,9 @@ interface IVideoList {
 	authorView?: boolean
 }
 
-const VideoList: React.FC<IVideoList> = ({ title, videos,authorView }) => {
+const VideoList: React.FC<IVideoList> = ({ title, videos, authorView }) => {
+	const { users } = useAppSelector(state => state.users);
+
 
 	return (
 		<>
@@ -19,7 +23,11 @@ const VideoList: React.FC<IVideoList> = ({ title, videos,authorView }) => {
 				{
 					videos
 						? videos.map((el, index) => (
-							<VideoItem key={index} video={el} authorView={authorView} />
+							<VideoItem
+								key={index}
+								video={el}
+								user={users[el.author]}
+								authorView={authorView} />
 						))
 						: <></>
 

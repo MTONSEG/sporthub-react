@@ -7,11 +7,16 @@ import Loading from '../../../ui/atoms/Loading/Loading';
 import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe } from '../../../../redux/slices/home/userSlice';
 import { getUserUID } from '../../../../utils/getUserUID';
 import icon from '../../../../assets/icons/user.svg';
+import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
 
 const ItemUserInfo = React.lazy(() => import('./ItemUserInfo/ItemUserInfo'));
 
-const UserInfo: React.FC = () => {
-	const { user, ...state } = useAppSelector(state => state.userInfo);
+type UserInfoPropsType = {
+	currentUID: NumStrNullType
+}
+
+const UserInfo: React.FC<UserInfoPropsType> = ({currentUID}) => {
+	const { ...state } = useAppSelector(state => state.userInfo);
 	const { users } = useAppSelector(state => state.users);
 	const { uid } = useParams();
 	const [subscribed, setSubscribed] = useState<boolean>();
@@ -46,10 +51,10 @@ const UserInfo: React.FC = () => {
 
 			<div className="info-subscription__poster-wrap">
 				{
-					user.posterURL
+					users[currentUID].posterURL
 						? <>
-							<img src={user.posterURL} alt="poster" className="info-subscription__poster" />
-							<img src={user.posterURL} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
+							<img src={users[currentUID].posterURL} alt="poster" className="info-subscription__poster" />
+							<img src={users[currentUID].posterURL} alt="poster" className="info-subscription__poster info-subscription__poster_mob" />
 						</>
 						: <span></span>
 				}
@@ -63,13 +68,13 @@ const UserInfo: React.FC = () => {
 							state.loading
 								? <Loading />
 								: <img
-									src={user?.photoURL ? user?.photoURL : icon}
+									src={users[currentUID].photoURL ? users[currentUID].photoURL : icon}
 									alt='image'
 									className='info-subscription__photo' />
 						}
 					</div>
 					<p className="info-subscription__user-name">
-						{`${user?.firstName} ${user?.lastName}`}
+						{`${users[currentUID].firstName} ${users[currentUID].lastName}`}
 					</p>
 				</div>
 

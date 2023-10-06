@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "../Header/Header";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { AUTH_ROUTE } from "../../../routes/routes";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
 import { setCurrentUser } from "../../../redux/slices/auth/singinSlice";
@@ -14,6 +14,7 @@ import AddVideo from '../../pages/Video/AddVideo/AddVideo';
 import Home from '../../pages/Home/Home';
 import Latest from '../../pages/Home/LatestHome/LatestHome';
 import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
+import Loading from '../../ui/atoms/Loading/Loading';
 
 export interface BaseUser {
 	uid: string | number,
@@ -28,6 +29,7 @@ export interface BaseUser {
 const Main: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const { users } = useAppSelector(state => state.users);
 
 	useEffect(() => {
 		dispatch(getUsers());
@@ -56,6 +58,7 @@ const Main: React.FC = () => {
 		}
 	}, [])
 
+	if (!users) return <Loading />
 
 	return (
 		<>
@@ -68,7 +71,7 @@ const Main: React.FC = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/video/*' element={<Video />} />
 				<Route path='/video/add' element={<AddVideo />} />
-				{/* <Route path='/view/:id' element={<ViewVideo />} /> */}
+				<Route path='/view/:id' element={<ViewVideo />} />
 			</Routes>
 		</>
 	)

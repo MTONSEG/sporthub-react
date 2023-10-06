@@ -3,66 +3,65 @@ import './BioUser.scss';
 import ItemBioUser from './ItemBioUser/ItemBioUser';
 import SocialBioUser, { SocListType } from './SocialBioUser/SocialBioUser';
 import { useAppSelector } from '../../../../../../hooks/hooks';
-
-
-
+import { getUserUID } from '../../../../../../utils/getUserUID';
 
 
 
 const BioUser: React.FC = () => {
-	const { user } = useAppSelector(state => state.userInfo);
+	const { users } = useAppSelector(state => state.users);
+
 	const soc: SocListType = {
 		facebook: {
 			title: 'Facebook',
-			link: user.facebook
+			link: users[getUserUID().uid].facebook
 		},
 		instagram: {
 			title: 'Instagram',
-			link: user.instagram
+			link: users[getUserUID().uid].instagram
 		},
 		twitter: {
 			title: 'Twitter',
-			link: user.twitter
+			link: users[getUserUID().uid].twitter
 		},
 		vimeo: {
 			title: 'Vimeo',
-			link: user.vimeo
+			link: users[getUserUID().uid].vimeo
 		}
 	}
-
+	
 	return (
 		<div className='bio-user'>
 			<div className="bio-user__body">
-				{user.businessName
+				{users[getUserUID().uid].businessName
 					? <ItemBioUser
 						title={'Business Name'}
-						text={user.businessName}
+						text={users[getUserUID().uid].businessName}
 						strong={true}
 						className='bio-user__item'
 					/>
 					: <></>
 				}
-				{user.address
+				{users[getUserUID().uid].address
 					? <ItemBioUser
 						title={'Address'}
-						text={user.address}
+						text={users[getUserUID().uid].address}
 						strong={true}
 						className='bio-user__item'
 					/>
 					: <></>
 				}
 
-				{user.description
+				{users[getUserUID().uid].description
 					? <ItemBioUser
 						title={'About'}
-						text={user.description}
+						text={users[getUserUID().uid].description}
 						className='bio-user__item'
 					/>
 					: <></>
 				}
 			</div>
 			{
-				user.facebook || user.twitter || user.vimeo || user.instagram
+				users[getUserUID().uid].facebook || users[getUserUID().uid].twitter || users[getUserUID().uid].vimeo || users[getUserUID().uid].instagram
 					? <SocialBioUser
 						title='My social media'
 						soc={soc}

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './BodyUserTabs.scss';
-import { Route, Routes, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loading from '../../../../ui/atoms/Loading/Loading';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import { getVideos } from '../../../../../redux/slices/video/videoSlice';
@@ -11,24 +11,38 @@ const StoreUser = React.lazy(() => import('./StoreUser/StoreUser'));
 const PlaylistsUser = React.lazy(() => import('./PlaylistsUser/PlaylistsUser'));
 
 const BodyUserTabs: React.FC = () => {
-	const { videosList } = useAppSelector(state => state.videos);
-	const dispatch = useAppDispatch();
+	const { videosList} = useAppSelector(state => state.videos);
+	const { tabValue } = useAppSelector(state => state.userInfo);
 	const { uid } = useParams();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(getVideos('all'));
-	}, [])
+		dispatch(getVideos(uid));
+	}, [uid])
 
 	return (
 		<div className='body-user-tabs'>
 			<React.Suspense fallback={<Loading />}>
-				<Routes>
-					<Route index element={<VideoList videos={videosList} />} />
-					<Route path='bio' element={<BioUser />} />
-					<Route path='store' element={<StoreUser />} />
-					<Route path='playlist' element={<PlaylistsUser />} />
-					<Route path='*' element={<VideoList />} />
-				</Routes>
+				{
+					tabValue === 'video'
+						? <VideoList videos={videosList} />
+						: <></>
+				}
+				{
+					tabValue === 'bio'
+						? <BioUser />
+						: <></>
+				}
+				{
+					tabValue === 'store'
+						? <StoreUser />
+						: <></>
+				}
+				{
+					tabValue === 'playlist'
+						? <PlaylistsUser />
+						: <></>
+				}
 			</React.Suspense>
 		</div>
 	)

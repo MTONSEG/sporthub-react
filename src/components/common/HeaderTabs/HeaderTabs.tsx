@@ -54,7 +54,7 @@ const HeaderTabs: React.FC<HeaderUserTabsPropsType> = ({ tabList, tabWidth, tabV
 				{
 					tabList.map((el, index) => (
 						<Link
-							to={tabMobWidth ? '#' : el.value}
+							to={tabMobWidth ? '#' : '#'}
 							key={el.id}
 							className='header-user-tabs__link'
 							onClick={() => { handlerTabClick(el.value) }}

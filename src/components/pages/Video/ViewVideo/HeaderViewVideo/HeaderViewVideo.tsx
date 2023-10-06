@@ -5,9 +5,10 @@ import { Button } from '../../../../ui/buttons/Button/Button';
 import { BaseUser } from '../../../../containers/Main/Main';
 import { useAppSelector } from '../../../../../hooks/hooks';
 import { getUserUID } from '../../../../../utils/getUserUID';
+import { User } from '../../../../../redux/slices/home/userSlice';
 
 type HeaderViewVideoPropsType = {
-	author: BaseUser
+	author: User
 	titleBtn: string
 }
 
@@ -37,7 +38,7 @@ const HeaderViewVideo: React.FC<HeaderViewVideoPropsType> = ({
 				</div>
 				<div className="header-view-video__author-info">
 					<p className="header-view-video__name">
-						{author.name}
+						{`${author.firstName} ${author.lastName}` }
 					</p>
 					<p className="header-view-video__amount-subs">
 						{`${author.amountSubscribers} subscribers`}

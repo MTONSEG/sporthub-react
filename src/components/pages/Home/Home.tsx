@@ -6,7 +6,6 @@ import { SwiperOptions } from "swiper/types/swiper-options";
 import ContainerMain from '../../containers/ContainerMain/ContainerMain';
 import Loading from '../../ui/atoms/Loading/Loading';
 import { getVideos } from '../../../redux/slices/video/videoSlice';
-// import { fetchVideos } from '../../../redux/slices/video/videoSlice';
 
 const VideoList = React.lazy(() => import('../../common/VideoList/VideoList'));
 
@@ -31,6 +30,8 @@ const Home: React.FC = () => {
 		dispatch(getVideos('all'));
 	}, [])
 
+	
+
 	return (
 		<ContainerMain>
 			<>
@@ -40,7 +41,7 @@ const Home: React.FC = () => {
 						slides={slides} />
 				</div>
 				<React.Suspense fallback={<Loading />} >
-					<VideoList title={titleList} videos={videosList} authorView={false} />
+					<VideoList title={titleList} videos={videosList} authorView={true} />
 				</React.Suspense>
 			</>
 		</ContainerMain>

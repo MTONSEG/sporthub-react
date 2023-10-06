@@ -7,17 +7,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ITEM_VIDEO_ROUTE } from '../../../routes/routes';
 import { useAppDispatch } from '../../../hooks/hooks';
 import Loading from '../../ui/atoms/Loading/Loading';
+import { User } from '../../../redux/slices/home/userSlice';
 
 interface IVideoItem {
 	video: VideoFileType,
+	user?: User,
 	authorView?: boolean
 }
 
 const VideoItem: React.FC<IVideoItem> = ({
-	video, authorView
+	video, user, authorView
 }) => {
 	const navigate = useNavigate();
-	const {pathname} = useLocation();
+	const { pathname } = useLocation();
 	const dispatch = useAppDispatch();
 
 	const handleClick = (uid: NumStrNullType): void => {
@@ -42,10 +44,10 @@ const VideoItem: React.FC<IVideoItem> = ({
 							? (
 								<div className="video-item__author">
 									<div className="video-item__author-photo-wrap">
-										<img src={''} alt={''} className="video-item__author-photo" />
+										<img src={user.photoURL} alt={''} className="video-item__author-photo" />
 									</div>
 									<p className="video-item__author-name">
-										{video.author}
+										{user.firstName + ' ' + user.lastName}
 									</p>
 								</div>
 							)
