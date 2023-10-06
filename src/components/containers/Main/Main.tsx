@@ -68,7 +68,7 @@ const Main: React.FC = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/video/*' element={<Video />} />
 				<Route path='/video/add' element={<AddVideo />} />
-				<Route path='/view/:id' element={<ViewVideo />} />
+				{/* <Route path='/view/:id' element={<ViewVideo />} /> */}
 			</Routes>
 		</>
 	)

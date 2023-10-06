@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { useParams } from 'react-router-dom';
 import Loading from '../../../ui/atoms/Loading/Loading';
 import { SubscribeParameters, fetchSubscribe, fetchUnsubscribe } from '../../../../redux/slices/home/userSlice';
-import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
+import { getUserUID } from '../../../../utils/getUserUID';
 import icon from '../../../../assets/icons/user.svg';
 
 const ItemUserInfo = React.lazy(() => import('./ItemUserInfo/ItemUserInfo'));
@@ -56,10 +56,11 @@ const UserInfo: React.FC = () => {
 			</div>
 
 			<div className="info-subscription__body">
+
 				<div className="info-subscription__user">
 					<div className="info-subscription__photo-wrap">
 						{
-							state.loading 
+							state.loading
 								? <Loading />
 								: <img
 									src={user?.photoURL ? user?.photoURL : icon}
@@ -76,11 +77,11 @@ const UserInfo: React.FC = () => {
 					<ItemUserInfo
 						iconID={state.subscribers.iconID}
 						text={state.subscribers.text}
-						amount={user.amountSubscribers} />
+						amount={5} />
 					<ItemUserInfo
 						iconID={state.videos.iconID}
 						text={state.videos.text}
-						amount={Object.keys(user.videos).length} />
+						amount={5} />
 					<ItemUserInfo
 						iconID={state.views.iconID}
 						text={state.views.text}

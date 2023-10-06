@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Video.scss';
 import { Route, Routes } from 'react-router-dom';
 import Loading from '../../ui/atoms/Loading/Loading';

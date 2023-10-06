@@ -1,0 +1,15 @@
+.option-btn {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&__icon {
+		width: 4.5px;
+		height: 20px;
+		fill: #999;
+	}
+	&:hover .option-btn__icon {
+		fill: #fff;
+	}
+}

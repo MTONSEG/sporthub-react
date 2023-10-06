@@ -1,0 +1,29 @@
+.comment-btn {
+	background: #222;
+	padding: 16px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	color: #999;
+	width: max-content;
+	font-size: 16px;
+	font-weight: 500;
+	&:hover {
+		color: #fff;
+	}
+	&:hover .comment-btn__icon {
+		stroke: #fff;
+	}
+	&__icon {
+		width: 20px;
+		height: 17px;
+		stroke: #999;
+		display: inline-block;
+		margin: 0 8px 0 0;
+		transition: all .2s;
+	}
+	@media (max-width: 576px) {
+		padding: 8px;
+		font-size: 14px;
+	}
+}

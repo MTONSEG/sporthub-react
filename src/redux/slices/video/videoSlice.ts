@@ -4,10 +4,9 @@ import uuid from 'react-uuid';
 import { ONLY_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE } from '../../../routes/routes';
 import { inputType } from '../auth/singinSlice';
 import { NumStrNullType } from '../auth/singupSlice';
-import { User, UserType } from '../home/userSlice';
+import { UserType } from '../home/userSlice';
 import { alertType, setMessage, showAlert } from '../alert/alertSlice';
-import { getUserUID } from '../auth/getUserUID';
-import { BaseUser } from '../../../components/containers/Main/Main';
+import { getUserUID } from '../../../utils/getUserUID';
 
 type ILinkWithActive = {
 	id: string | number,
@@ -21,7 +20,7 @@ export type VideoFileType = {
 	posterURL: string | null,
 	category: string,
 	title: string,
-	author: BaseUser,
+	author: NumStrNullType,
 	description: string,
 	shopifyLink: string,
 	created: Date
@@ -64,12 +63,9 @@ type VideoStateType = {
 	loading: boolean,
 	disabledBtn: boolean,
 	videoTabValue: UserTabPathTypes,
-	videosUser: { [key: string]: VideoFileType } | null,
-	videosUserList: VideoFileType[],
 	videos: { [key: string]: VideoFileType } | null,
 	videosList: VideoFileType[],
-	video: VideoFileType | null,
-	previewPath: string
+	previewPath: string,
 }
 
 const initialState: VideoStateType = {
@@ -161,13 +157,10 @@ const initialState: VideoStateType = {
 	videoPoster: '',
 	videoPosterURL: '',
 	loading: false,
-	videosUser: null,
-	videosUserList: [],
 	videos: null,
 	videosList: [],
 	videoTabValue: 'mind',
-	video: null,
-	previewPath: null
+	previewPath: null,
 }
 
 export const uploadVideo =
@@ -182,20 +175,6 @@ export const uploadVideo =
 				const videosURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos.json`;
 				const state = getState();
 
-				const firstName: string = state.users.users[getUserUID().uid].firstName;
-				const lastName: string = state.users.users[getUserUID().uid].lastName;
-
-				// const amountSubscribers: number = Object.keys(state.users.users[getUserUID().uid].subscribes).length;
-
-				// const subs = Object.keys
-
-				const author: BaseUser = {
-					uid: getUserUID().uid,
-					photoURL: getUserUID().photoURL,
-					name: `${firstName} ${lastName}`,
-					// amountSubscribers
-				}
-
 				const createDate: Date = new Date();
 
 				const video: VideoFileType = {
@@ -203,13 +182,13 @@ export const uploadVideo =
 					posterURL: state.videos.videoPosterURL,
 					title: state.videos.title.value,
 					category: state.videos.category.value,
-					author: author,
+					author: getUserUID().uid,
 					description: state.videos.description.value,
 					shopifyLink: state.videos.shopifyURL.value,
 					created: createDate
 				}
-				console.log(video);
-				await fetch(URL, {
+
+				await fetch(videosURL, {
 					method: 'POST',
 					body: JSON.stringify(video),
 					headers: {
@@ -219,11 +198,11 @@ export const uploadVideo =
 					.then(res => res.json())
 					.then(async (resDB) => {
 						const id: NumStrNullType = resDB.name;
-						const videoItem: { [key: NumStrNullType]: VideoFileType } = {
-							[id]: video
+						const videoItem: { [key: string]: boolean } = {
+							[id]: true
 						}
-						console.log('fetch video');
-						await fetch(videosURL, {
+
+						await fetch(URL, {
 							method: 'PATCH',
 							body: JSON.stringify(videoItem),
 							headers: {
@@ -245,23 +224,9 @@ export const uploadVideo =
 			}
 		})
 
-export const fetchUserVideos = createAsyncThunk<VideoFileObjectType, NumStrNullType, { rejectValue: string }>(
-	'users/fetchVideosUser',
-	async (uid, { rejectWithValue }) => {
-		try {
-			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${uid}/videos.json`);
-
-			return res.json();
-		}
-		catch (error) {
-			rejectWithValue(error);
-		}
-	}
-)
-
-export const fetchVideos = createAsyncThunk<VideoFileObjectType, null, { rejectValue: string }>(
-	'users/fetchVideos',
-	async (_, { rejectWithValue }) => {
+export const getVideos = createAsyncThunk<VideoFileObjectType, 'sort' | 'all' | NumStrNullType, { rejectValue: string }>(
+	'users/getVideos',
+	async (str, { rejectWithValue }) => {
 		try {
 			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos.json`);
 
@@ -273,19 +238,6 @@ export const fetchVideos = createAsyncThunk<VideoFileObjectType, null, { rejectV
 	}
 )
 
-export const getVideoData = createAsyncThunk<VideoFileType, NumStrNullType, { rejectValue: string }>(
-	'users/getVideoData',
-	async (id, { rejectWithValue }) => {
-		try {
-			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${id}.json`);
-
-			return res.json();
-		}
-		catch (error) {
-			rejectWithValue(error);
-		}
-	}
-)
 
 
 
@@ -346,12 +298,15 @@ const videoSlice = createSlice({
 
 			let list: VideoFileType[] = [];
 
-			for (let key in state.videosUser) {
-				list.push({ uid: key, ...state.videosUser[key] })
+			for (let key in state.videos) {
+				list.push({ uid: key, ...state.videos[key] })
 			}
 
-			state.videosUserList = list
-				.filter(el => (el.category === state.videoTabValue));
+			state.videosList = list
+				.filter(el => (
+					el.category === state.videoTabValue &&
+					el.author === getUserUID().uid
+				));
 		},
 		setPreviewPath(state, action: PayloadAction<string>) {
 			state.previewPath = action.payload;
@@ -372,47 +327,36 @@ const videoSlice = createSlice({
 				state.videoFileName = '';
 				state.loading = false;
 			})
-			.addCase(fetchUserVideos.pending, state => {
+			.addCase(getVideos.pending, state => {
 				state.loading = true;
 			})
-			.addCase(fetchUserVideos.fulfilled, (state, action) => {
-				if (action.payload) {
-					state.videosUser = action.payload;
-					let list: VideoFileType[] = [];
-
-					for (let key in action.payload) {
-						list.push({ uid: key, ...action.payload[key] })
-					}
-
-					state.videosUserList = list
-						.filter(el => (el.category === state.videoTabValue));
-				}
-
-				state.loading = false;
-			})
-			.addCase(fetchVideos.pending, state => {
-				state.loading = true;
-			})
-			.addCase(fetchVideos.fulfilled, (state, action) => {
+			.addCase(getVideos.fulfilled, (state, action) => {
 				if (action.payload) {
 					state.videos = action.payload;
-
 					let list: VideoFileType[] = [];
 
 					for (let key in action.payload) {
 						list.push({ uid: key, ...action.payload[key] })
 					}
 
-					state.videosList = list;
-				}
+					if (action.meta.arg === 'sort') {
+						state.videosList = list
+							.filter(el => (
+								el.category === state.videoTabValue && el.author === getUserUID().uid
+							));
+					}
 
-				state.loading = false;
-			})
-			.addCase(getVideoData.pending, state => {
-				state.loading = true;
-			})
-			.addCase(getVideoData.fulfilled, (state, action) => {
-				state.video = action.payload;
+					if (action.meta.arg === 'all') {
+						state.videosList = list;
+					} else {
+						state.videosList = list
+							.filter(el => (
+								el.category === state.videoTabValue && el.author === action.meta.arg
+							));
+					}
+
+
+				}
 
 				state.loading = false;
 			})

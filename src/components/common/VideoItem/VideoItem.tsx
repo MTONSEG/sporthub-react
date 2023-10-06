@@ -1,11 +1,12 @@
 import React from 'react';
 import './VideoItem.scss';
 import { VideoFileType, setPreviewPath } from '../../../redux/slices/video/videoSlice';
-import { getCreateDate } from '../../../redux/slices/auth/getCreateDate';
+import { getCreateDate } from '../../../utils/getCreateDate';
 import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ITEM_VIDEO_ROUTE } from '../../../routes/routes';
 import { useAppDispatch } from '../../../hooks/hooks';
+import Loading from '../../ui/atoms/Loading/Loading';
 
 interface IVideoItem {
 	video: VideoFileType,
@@ -41,10 +42,10 @@ const VideoItem: React.FC<IVideoItem> = ({
 							? (
 								<div className="video-item__author">
 									<div className="video-item__author-photo-wrap">
-										<img src={video.author.photoURL} alt={''} className="video-item__author-photo" />
+										<img src={''} alt={''} className="video-item__author-photo" />
 									</div>
 									<p className="video-item__author-name">
-										{video.author.name}
+										{video.author}
 									</p>
 								</div>
 							)

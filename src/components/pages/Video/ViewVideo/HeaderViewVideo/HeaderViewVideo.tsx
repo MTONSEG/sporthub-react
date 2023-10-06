@@ -4,19 +4,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../../ui/buttons/Button/Button';
 import { BaseUser } from '../../../../containers/Main/Main';
 import { useAppSelector } from '../../../../../hooks/hooks';
-import { getUserUID } from '../../../../../redux/slices/auth/getUserUID';
+import { getUserUID } from '../../../../../utils/getUserUID';
 
 type HeaderViewVideoPropsType = {
 	author: BaseUser
-	amountSubs: string,
 	titleBtn: string
 }
 
 const HeaderViewVideo: React.FC<HeaderViewVideoPropsType> = ({
-	author, amountSubs, titleBtn
+	author, titleBtn
 }) => {
 	const navigate = useNavigate();
-	const { previewPath } = useAppSelector(state => state.videos);
+	const { previewPath} = useAppSelector(state => state.videos);
 
 	useEffect((): void => {
 	}, [])

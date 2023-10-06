@@ -3,23 +3,22 @@ import './AllVideo.scss';
 import VideoList from '../../../common/VideoList/VideoList';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import Loading from '../../../ui/atoms/Loading/Loading';
-import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
-import { fetchUserVideos } from '../../../../redux/slices/video/videoSlice';
+import { getUserUID } from '../../../../utils/getUserUID';
+import {  getVideos, sortVideoList } from '../../../../redux/slices/video/videoSlice';
 
 const AllVideo: React.FC = () => {
-	const { videosUserList } = useAppSelector(state => state.videos);
+	const { videosList } = useAppSelector(state => state.videos);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchUserVideos(getUserUID().uid));
+		dispatch(getVideos('sort'));
+		dispatch(sortVideoList());
 	}, [])
-
-	// if (!users) return <Loading />
 
 	return (
 		<div className='all-video'>
 			<VideoList
-				videos={videosUserList} />
+				videos={videosList} />
 		</div>
 	)
 }

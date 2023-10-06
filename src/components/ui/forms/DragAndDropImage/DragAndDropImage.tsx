@@ -4,8 +4,8 @@ import icon from '../../../../assets/icons/upload-video.svg';
 import { Button } from '../../buttons/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
-import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
-import { setVideoPosterURL} from '../../../../redux/slices/video/videoSlice';
+import { getUserUID } from '../../../../utils/getUserUID';
+import { setVideoPosterURL } from '../../../../redux/slices/video/videoSlice';
 import { storage } from '../../../../initializeFirebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 

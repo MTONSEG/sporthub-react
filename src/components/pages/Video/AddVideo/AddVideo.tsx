@@ -5,7 +5,7 @@ import HeaderAddPage from './HeaderAddPage/HeaderAddPage';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import UploadVideo from '../../../ui/forms/UploadVideo/UploadVideo';
 import FormAddVideo from './FormAddVideo/FormAddVideo';
-import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
+import { getUserUID } from '../../../../utils/getUserUID';
 import { disableBtnSave, uploadVideo } from '../../../../redux/slices/video/videoSlice';
 import { getUsers } from '../../../../redux/slices/home/userSlice';
 

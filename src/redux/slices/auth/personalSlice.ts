@@ -3,7 +3,7 @@ import { inputType, setPhotoURLCurrentUser, singInType } from "./singinSlice";
 import uuid from "react-uuid";
 import { User } from '../home/userSlice';
 import { NumStrNullType } from './singupSlice';
-import { getUserUID } from './getUserUID';
+import { getUserUID } from '../../../utils/getUserUID';
 import { BaseUser } from '../../../components/containers/Main/Main';
 
 export type uploadType = {
@@ -237,7 +237,7 @@ export const deletePhoto =
 		}
 	)
 export const deletePoster =
-	createAsyncThunk<void, NumStrNullType, { rejectValue: string}>(
+	createAsyncThunk<void, NumStrNullType, { rejectValue: string }>(
 		'users/deletePoster',
 		async (uid, { rejectWithValue, dispatch }) => {
 			try {

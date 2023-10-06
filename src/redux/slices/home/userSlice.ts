@@ -5,7 +5,7 @@ import { HOME_ROUTE, LATEST_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/rout
 import { NumStrNullType } from '../auth/singupSlice';
 import { genderType } from '../auth/personalSlice';
 import { VideoFileType } from '../video/videoSlice';
-import { getUserUID } from '../auth/getUserUID';
+import { getUserUID } from '../../../utils/getUserUID';
 
 type NumString = string | number;
 
@@ -45,7 +45,7 @@ export interface User {
 	posterURL?: string,
 	posterName?: string,
 	amountSubscribers?: number,
-	videos?:VideoFileType
+	videos?: VideoFileType
 }
 
 export type Subscribe = {
@@ -132,6 +132,8 @@ export const fetchSubscribe = createAsyncThunk<void, SubscribeParameters, {
 				amountSubscribers: amountSubs ? amountSubs + 1 : 1
 			})
 
+			dispatch(subscribeUser(params));
+
 			await fetch(subsURL, {
 				method: 'PATCH',
 				body: subsBody,
@@ -148,7 +150,7 @@ export const fetchSubscribe = createAsyncThunk<void, SubscribeParameters, {
 				},
 			})
 
-			dispatch(subscribeUser(params));
+
 		}
 		catch (e) {
 			rejectWithValue('Error');
@@ -213,11 +215,11 @@ const userSlice = createSlice({
 		subscribeUser(state, action: PayloadAction<SubscribeParameters>) {
 			let { userUID, subscriberUID } = action.payload;
 			let currentAmount: number = state.users[userUID].amountSubscribers;
-			
+
 			if (state.users[userUID].subscribes) {
 				state.users[userUID].subscribes[subscriberUID] = true;
-			} 
-			
+			}
+
 			let obj: User = {
 				uid: subscriberUID,
 				...state.users[subscriberUID]

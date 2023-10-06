@@ -2,13 +2,13 @@ import React, { useRef, DragEvent, useState, ChangeEvent, useEffect } from 'reac
 import './UploadVideo.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { enableBtnSave, setVideoFileName, setVideoURL } from '../../../../redux/slices/video/videoSlice';
-import { getUserUID } from '../../../../redux/slices/auth/getUserUID';
+import { getUserUID } from '../../../../utils/getUserUID';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../../initializeFirebase';
 import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
-import  LoaderUploadVideo from './LoaderUploadVideo/LoaderUploadVideo';
-import  VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
-import  PlaceholderUploadVideo from './PlaceholderUploadVideo/PlaceholderUploadVideo';
+import LoaderUploadVideo from './LoaderUploadVideo/LoaderUploadVideo';
+import VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
+import PlaceholderUploadVideo from './PlaceholderUploadVideo/PlaceholderUploadVideo';
 
 type UploadVideoPropsType = {
 	// setVideoFile: Function
