@@ -15,7 +15,7 @@ type UserInfoPropsType = {
 	currentUID: NumStrNullType
 }
 
-const UserInfo: React.FC<UserInfoPropsType> = ({currentUID}) => {
+const UserInfo: React.FC<UserInfoPropsType> = ({ currentUID }) => {
 	const { ...state } = useAppSelector(state => state.userInfo);
 	const { users } = useAppSelector(state => state.users);
 	const { uid } = useParams();
@@ -83,11 +83,15 @@ const UserInfo: React.FC<UserInfoPropsType> = ({currentUID}) => {
 					<ItemUserInfo
 						iconID={state.subscribers.iconID}
 						text={state.subscribers.text}
-						amount={5} />
+						amount={users[uid].amountSubscribers} />
 					<ItemUserInfo
 						iconID={state.videos.iconID}
 						text={state.videos.text}
-						amount={5} />
+						amount={
+							users[uid].videos
+								? Object.keys(users[uid].videos).length
+								: 0
+						} />
 					<ItemUserInfo
 						iconID={state.views.iconID}
 						text={state.views.text}

@@ -12,7 +12,6 @@ const AllVideo: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(getVideos('user'));
-		// dispatch(sortVideoList());
 	}, [])
 
 	return (
