@@ -218,13 +218,13 @@ export const uploadVideo =
 								}, 5000);
 							})
 					})
-				console.log('success');
+				dispatch(getVideos(getUserUID().uid));
 			} catch (error) {
 				rejectWithValue(error);
 			}
 		})
 
-export const getVideos = createAsyncThunk<VideoFileObjectType, 'sort' | 'all' | NumStrNullType, { rejectValue: string }>(
+export const getVideos = createAsyncThunk<VideoFileObjectType, 'user' | 'all' | NumStrNullType, { rejectValue: string }>(
 	'users/getVideos',
 	async (str, { rejectWithValue }) => {
 		try {
@@ -325,6 +325,7 @@ const videoSlice = createSlice({
 				state.videoPosterURL = '';
 				state.videoURL = '';
 				state.videoFileName = '';
+
 				state.loading = false;
 			})
 			.addCase(getVideos.pending, state => {
@@ -341,11 +342,16 @@ const videoSlice = createSlice({
 					}
 
 					if (action.meta.arg === 'all') {
-						state.videosList = list;
-					} else {
-						state.videosList = list
+						state.videosList = list.reverse();
+					} else if (action.meta.arg === 'user') {
+						state.videosList = list.reverse()
 							.filter(el => (
-								el.category === state.videoTabValue && el.author === action.meta.arg
+								el.category === state.videoTabValue && el.author === getUserUID().uid
+							));
+					} else {
+						state.videosList = list.reverse()
+							.filter(el => (
+								el.author === action.meta.arg
 							));
 					}
 

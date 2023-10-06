@@ -10,16 +10,17 @@ interface IVideoList {
 	title?: string,
 	videos?: VideoFileType[],
 	authorView?: boolean
+	fourColumn?: boolean
 }
 
-const VideoList: React.FC<IVideoList> = ({ title, videos, authorView }) => {
+const VideoList: React.FC<IVideoList> = ({ title, videos, authorView, fourColumn }) => {
 	const { users } = useAppSelector(state => state.users);
 
 
 	return (
 		<>
 			<Title text={title} />
-			<div className={'video-list'}>
+			<div className={`video-list ${fourColumn ? 'four' : ''}`}>
 				{
 					videos
 						? videos.map((el, index) => (

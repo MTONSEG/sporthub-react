@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import img from '../../../assets/images/subscription/poster.jpg';
 import webp from '../../../assets/images/subscription/poster.jpg?as=webp';
 import img_m from '../../../assets/images/subscription/poster_mob.jpg';

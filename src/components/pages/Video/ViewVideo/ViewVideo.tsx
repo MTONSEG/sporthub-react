@@ -27,6 +27,8 @@ const ViewVideo: React.FC = () => {
 			<ContainerProfile maxWidth='920px'>
 				<>
 					<HeaderViewVideo
+						videoID={id}
+						authorUID={videos[id].author}
 						author={users[videos[id].author]}
 						titleBtn={'Subscribe'}
 					/>

@@ -11,7 +11,7 @@ const StoreUser = React.lazy(() => import('./StoreUser/StoreUser'));
 const PlaylistsUser = React.lazy(() => import('./PlaylistsUser/PlaylistsUser'));
 
 const BodyUserTabs: React.FC = () => {
-	const { videosList} = useAppSelector(state => state.videos);
+	const { videosList } = useAppSelector(state => state.videos);
 	const { tabValue } = useAppSelector(state => state.userInfo);
 	const { uid } = useParams();
 	const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ const BodyUserTabs: React.FC = () => {
 	useEffect(() => {
 		dispatch(getVideos(uid));
 	}, [uid])
-
+	console.log(tabValue);
 	return (
 		<div className='body-user-tabs'>
 			<React.Suspense fallback={<Loading />}>
@@ -30,7 +30,7 @@ const BodyUserTabs: React.FC = () => {
 				}
 				{
 					tabValue === 'bio'
-						? <BioUser />
+						? <BioUser userUID={uid} />
 						: <></>
 				}
 				{

@@ -35,6 +35,7 @@ const UserInfo: React.FC<UserInfoPropsType> = ({currentUID}) => {
 		}
 		if (!users[getUserUID().uid].subscribes) {
 			dispatch(fetchSubscribe(params));
+			setSubscribed(true)
 		} else {
 			if (users[getUserUID().uid].subscribes[uid]) {
 				dispatch(fetchUnsubscribe(params));

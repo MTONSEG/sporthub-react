@@ -1,28 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './HeaderViewVideo.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../../ui/buttons/Button/Button';
 import { BaseUser } from '../../../../containers/Main/Main';
-import { useAppSelector } from '../../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import { getUserUID } from '../../../../../utils/getUserUID';
-import { User } from '../../../../../redux/slices/home/userSlice';
+import { SubscribeParameters, User, fetchSubscribe, fetchUnsubscribe } from '../../../../../redux/slices/home/userSlice';
+import { NumStrNullType } from '../../../../../redux/slices/auth/singupSlice';
 
 type HeaderViewVideoPropsType = {
-	author: User
+	videoID: NumStrNullType,
+	author: User,
+	authorUID: NumStrNullType,
 	titleBtn: string
 }
 
 const HeaderViewVideo: React.FC<HeaderViewVideoPropsType> = ({
-	author, titleBtn
+	author, videoID, authorUID, titleBtn
 }) => {
 	const navigate = useNavigate();
-	const { previewPath} = useAppSelector(state => state.videos);
+	const dispatch = useAppDispatch();
+	const [subscribed, setSubscribed] = useState<boolean>();
+	const { previewPath } = useAppSelector(state => state.videos);
+	const { users } = useAppSelector(state => state.users);
 
 	useEffect((): void => {
-	}, [])
+		if (users[getUserUID().uid].subscribes) {
+			setSubscribed(users[getUserUID().uid].subscribes[authorUID]);
+		}
+	}, [users])
 
 	const handleUserClick = (): void => {
-		navigate(`/user/${author.uid}`)
+		navigate(`/user/${authorUID}`);
+	}
+	const handleSubscribe = (): void => {
+		let params: SubscribeParameters = {
+			userUID: getUserUID().uid,
+			subscriberUID: authorUID
+		}
+
+		if (!users[getUserUID().uid].subscribes) {
+			dispatch(fetchSubscribe(params));
+			setSubscribed(true)
+		} else {
+			if (users[getUserUID().uid].subscribes[authorUID]) {
+				dispatch(fetchUnsubscribe(params));
+			} else {
+				dispatch(fetchSubscribe(params));
+			}
+		}
 	}
 
 	return (
@@ -38,7 +64,7 @@ const HeaderViewVideo: React.FC<HeaderViewVideoPropsType> = ({
 				</div>
 				<div className="header-view-video__author-info">
 					<p className="header-view-video__name">
-						{`${author.firstName} ${author.lastName}` }
+						{`${author.firstName} ${author.lastName}`}
 					</p>
 					<p className="header-view-video__amount-subs">
 						{`${author.amountSubscribers} subscribers`}
@@ -46,9 +72,18 @@ const HeaderViewVideo: React.FC<HeaderViewVideoPropsType> = ({
 				</div>
 			</div>
 			{
-				author.uid === getUserUID().uid
-					? <></>
-					: <Button className='header-view-video__subscribe-btn'>
+				subscribed
+					? <Button
+						onClickHandler={handleSubscribe}
+						variant='brown'
+						style={authorUID === getUserUID().uid ? { display: 'none' } : {}}
+						className='header-view-video__subscribe-btn'>
+						Unsubscribe
+					</Button>
+					: <Button
+						onClickHandler={handleSubscribe}
+						style={authorUID === getUserUID().uid ? { display: 'none' } : {}}
+						className='header-view-video__subscribe-btn'>
 						{titleBtn}
 					</Button>
 			}

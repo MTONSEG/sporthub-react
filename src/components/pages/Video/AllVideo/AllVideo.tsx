@@ -11,7 +11,7 @@ const AllVideo: React.FC = () => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(getVideos(getUserUID().uid));
+		dispatch(getVideos('user'));
 		// dispatch(sortVideoList());
 	}, [])
 
