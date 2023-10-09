@@ -1,0 +1,46 @@
+.add-playlist {
+	&__body {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		align-items: start;
+		gap: 0 80px;
+		position: relative;
+	}
+	&__body::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate(-1px, 0);
+		height: 100%;
+		width: 2px;
+		background: #222;
+		display: block;
+	}
+	&__form {
+		display: grid;
+		gap: 24px;
+	}
+
+	@media (max-width: 767px) {
+		&__body {
+			grid-template-columns: 1fr;
+			gap: 0;
+			&::after {
+				display: none;
+			}
+		}
+		&__list,
+		&__form {
+			display: none;
+		}
+		&__list.active {
+			display: block;
+		}
+
+		&__form.active {
+			display: grid;
+			// gap: 24px;
+		}
+	}
+}

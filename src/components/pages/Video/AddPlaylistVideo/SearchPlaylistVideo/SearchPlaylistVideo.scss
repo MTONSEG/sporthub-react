@@ -1,0 +1,12 @@
+.amount-select-video {
+	background: #323232;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: normal;
+	padding: 17px 30px;
+	margin: 0 -16px 16px;
+	display: none;
+	@media (max-width: 767px) {
+		display: block;
+	}
+}

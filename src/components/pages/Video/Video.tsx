@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Video.scss';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 import Loading from '../../ui/atoms/Loading/Loading';
 import HeaderTabs from '../../common/HeaderTabs/HeaderTabs';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
@@ -8,22 +8,25 @@ import ContainerProfile from '../../containers/ContainerProfile/ContainerProfile
 import { UserTabPathTypes } from '../../../redux/slices/userInfo/userInfoSlice';
 import { Button } from '../../ui/buttons/Button/Button';
 import plusIcon from '../../../assets/icons/plus.svg';
-import { ADD_VIDEO_ROUTE } from '../../../routes/routes';
+import { ADD_PLAYLIST_VIDEO_ROUTE, ADD_VIDEO_ROUTE } from '../../../routes/routes';
 import { Link } from 'react-router-dom';
 import { setActiveVideoLink, setVideoTabValue, sortVideoList } from '../../../redux/slices/video/videoSlice';
+import { NavLink } from 'react-router-dom';
 
 const AllVideo = React.lazy(() => import('./AllVideo/AllVideo'));
 const PlaylistVideo = React.lazy(() => import('./PlaylistVideo/PlaylistVideo'));
-const ViewVideo = React.lazy(() => import('./ViewVideo/ViewVideo'));
 
 const Video: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const { tabList, linkList, videoTabValue, ...state } = useAppSelector(state => state.videos);
-
+	const params = useParams();
+	console.log(linkList);
 	const handleTabCLick = (value: UserTabPathTypes): void => {
 		dispatch(setVideoTabValue(value));
 		dispatch(sortVideoList());
 	}
+
+
 
 	return (
 		<ContainerProfile>
@@ -43,10 +46,17 @@ const Video: React.FC = () => {
 							))
 						}
 					</div>
-					<Button path={ADD_VIDEO_ROUTE} className='video__add-btn'>
-						<img src={plusIcon} alt='' className='video__plus-icon' />
-						<span>{state.titleAddVideo}</span>
-					</Button>
+					{
+						linkList[1].active
+							? <Button path={ADD_PLAYLIST_VIDEO_ROUTE} className='video__add-btn'>
+								<img src={plusIcon} alt='' className='video__plus-icon' />
+								<span>{state.titleAddPlaylist}</span>
+							</Button>
+							: <Button path={ADD_VIDEO_ROUTE} className='video__add-btn'>
+								<img src={plusIcon} alt='' className='video__plus-icon' />
+								<span>{state.titleAddVideo}</span>
+							</Button>
+					}
 				</div>
 
 				<HeaderTabs

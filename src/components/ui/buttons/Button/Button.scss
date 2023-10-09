@@ -28,4 +28,8 @@
 		pointer-events: none;
 		background-color: #777;
 	}
+	&_black.disable {
+		background-color: #999;
+		color: #fff;
+	}
 }

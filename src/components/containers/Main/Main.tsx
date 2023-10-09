@@ -15,6 +15,7 @@ import Home from '../../pages/Home/Home';
 import Latest from '../../pages/Home/LatestHome/LatestHome';
 import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
 import Loading from '../../ui/atoms/Loading/Loading';
+import AddPlaylistVideo from '../../pages/Video/AddPlaylistVideo/AddPlaylistVideo';
 
 export interface BaseUser {
 	uid: string | number,
@@ -71,6 +72,7 @@ const Main: React.FC = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/video/*' element={<Video />} />
 				<Route path='/video/add' element={<AddVideo />} />
+				<Route path='/video/playlist/add' element={<AddPlaylistVideo />} />
 				<Route path='/view/:id' element={<ViewVideo />} />
 			</Routes>
 		</>

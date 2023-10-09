@@ -22,6 +22,7 @@ export const ONLY_VIDEO_ROUTE: string = '/video/';
 export const ITEM_VIDEO_ROUTE: string = '/view';
 export const ADD_VIDEO_ROUTE: string = '/video/add';
 export const PLAYLIST_VIDEO_ROUTE: string = '/video/playlist';
+export const ADD_PLAYLIST_VIDEO_ROUTE: string = '/video/playlist/add';
 export const MIND_VIDEO_ROUTE: string = '/video/mind';
 export const BODY_VIDEO_ROUTE: string = '/video/body';
 export const SOUL_VIDEO_ROUTE: string = '/video/soul';

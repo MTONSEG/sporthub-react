@@ -62,7 +62,7 @@ const Input: React.FC<inputType> = ({
 
 	const handelOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		console.log(e.currentTarget.value);
-		
+
 		if (setStateValue) {
 			dispatch(setStateValue(e.currentTarget.value));
 		} else {
@@ -72,7 +72,7 @@ const Input: React.FC<inputType> = ({
 
 	return (
 		<div className={`input-field${className ? ` ${className}` : ''}`} style={styles}>
-			<div className="input-field__head">
+			<div className="input-field__head" style={title ? {} : { display: 'none' }}>
 				<p className="input-field__title">{title}</p>
 				{
 					forgotLink

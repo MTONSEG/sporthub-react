@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './VideoItem.scss';
-import { VideoFileType, setPreviewPath } from '../../../redux/slices/video/videoSlice';
+import { VideoFileType, addVideoToPlaylist, removeVideoFromPlaylist, setPreviewPath } from '../../../redux/slices/video/videoSlice';
 import { getCreateDate } from '../../../utils/getCreateDate';
 import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,23 +12,43 @@ import { User } from '../../../redux/slices/home/userSlice';
 interface IVideoItem {
 	video: VideoFileType,
 	user?: User,
-	authorView?: boolean
+	authorView?: boolean,
+	playlistAdd?: boolean
 }
 
 const VideoItem: React.FC<IVideoItem> = ({
-	video, user, authorView
+	video, user, authorView, playlistAdd
 }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	const dispatch = useAppDispatch();
+	const [selected, setSelected] = useState<boolean>(video.selected);
 
 	const handleClick = (uid: NumStrNullType): void => {
-		navigate(`${ITEM_VIDEO_ROUTE}/${uid}`);
-		dispatch(setPreviewPath(pathname));
+		if (playlistAdd) {
+			if (selected) {
+				console.log('remove')
+				dispatch(removeVideoFromPlaylist(video.uid));
+			} else {
+				dispatch(addVideoToPlaylist(video));
+			}
+
+			setSelected(!selected);
+		} else {
+			navigate(`${ITEM_VIDEO_ROUTE}/${uid}`);
+			dispatch(setPreviewPath(pathname));
+		}
 	}
 
+	useEffect(() => {
+		setSelected(video.selected);
+	},[video])
+
 	return (
-		<div className={`video-item`} onClick={() => { handleClick(video.uid) }}>
+		<div
+			className={`video-item ${playlistAdd ? 'playlist' : ''} ${video.selected ? 'selected' : ''}`}
+			onClick={() => { handleClick(video.uid) }}
+		>
 			<div className="video-item__poster-wrap">
 				{
 					video.posterURL

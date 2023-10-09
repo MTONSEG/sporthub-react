@@ -23,7 +23,8 @@ export type VideoFileType = {
 	author: NumStrNullType,
 	description: string,
 	shopifyLink: string,
-	created: Date
+	created: Date,
+	selected?: boolean
 }
 export type VideoFileObjectType = { [key: string]: VideoFileType }
 
@@ -38,6 +39,17 @@ export interface ISelect extends inputType {
 	list: ItemSelectType[]
 }
 
+export type PlaylistType = {
+	uid?: NumStrNullType,
+	title: string,
+	description: string,
+	category: string,
+	date: Date,
+	views?: number,
+	list: VideoFileType[],
+	author: NumStrNullType
+}
+
 type VideoStateType = {
 	titleAddVideo: string,
 	titleAddPlaylist: string,
@@ -47,13 +59,19 @@ type VideoStateType = {
 	titleUpload: string,
 	titleAdding: string,
 	titlePreviewMob: string,
+	titleEditPlaylist: string,
 	textUpload: string,
+	titleSaveBtn: string,
 	linkList: ILinkWithActive[],
 	tabList: TabLink[],
 	title: inputType,
 	category: ISelect,
 	description: inputType,
 	shopifyURL: inputType,
+	titlePlaylist: inputType,
+	descriptionPlaylist: inputType,
+	searchVideoInput: inputType,
+	categoryPlaylist: ISelect,
 	videoFileName: string,
 	videoURL: string,
 	videoPoster: string,
@@ -66,11 +84,15 @@ type VideoStateType = {
 	videos: { [key: string]: VideoFileType } | null,
 	videosList: VideoFileType[],
 	previewPath: string,
+	currentPlaylist: VideoFileType[],
+	playlists: { [key: string]: PlaylistType }
 }
 
 const initialState: VideoStateType = {
 	titleAddVideo: 'Add new video',
 	titleAddPlaylist: 'Create new playlist',
+	titleEditPlaylist: 'Edit playlist',
+	titleSaveBtn: 'Save',
 	titleViewAll: 'View all',
 	titlePublishBtn: 'Publish',
 	titleChooseBtn: 'Or choose files',
@@ -81,17 +103,18 @@ const initialState: VideoStateType = {
 	titlePreviewMob: 'Upload the image preview',
 	textUpload: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit',
 	disabledBtn: true,
+	currentPlaylist: [],
 	linkList: [
 		{
 			id: uuid(),
 			title: 'Your video',
-			path: ONLY_VIDEO_ROUTE,
+			path: '/video/',
 			active: true
 		},
 		{
 			id: uuid(),
 			title: 'Playlists',
-			path: PLAYLIST_VIDEO_ROUTE,
+			path: '/video/playlist/',
 			active: false
 		},
 	],
@@ -117,7 +140,42 @@ const initialState: VideoStateType = {
 		placeholder: 'Video Name',
 		value: ''
 	},
+	titlePlaylist: {
+		title: 'Playlist name',
+		placeholder: 'Enter playlist name',
+		value: ''
+	},
+	searchVideoInput: {
+		title: '',
+		placeholder: 'Search',
+		value: ''
+	},
 	category: {
+		title: 'Category',
+		placeholder: 'Select category',
+		value: '',
+		list: [
+			{
+				id: uuid(),
+				title: 'Mind',
+				value: 'mind',
+				selected: false,
+			},
+			{
+				id: uuid(),
+				title: 'Body',
+				value: 'body',
+				selected: false,
+			},
+			{
+				id: uuid(),
+				title: 'Soul',
+				value: 'soul',
+				selected: false,
+			}
+		]
+	},
+	categoryPlaylist: {
 		title: 'Category',
 		placeholder: 'Select category',
 		value: '',
@@ -147,6 +205,11 @@ const initialState: VideoStateType = {
 		placeholder: 'Description',
 		value: ''
 	},
+	descriptionPlaylist: {
+		title: 'Description',
+		placeholder: 'Enter description',
+		value: ''
+	},
 	shopifyURL: {
 		title: 'Add Shopify link',
 		placeholder: 'Add link on product',
@@ -161,6 +224,7 @@ const initialState: VideoStateType = {
 	videosList: [],
 	videoTabValue: 'mind',
 	previewPath: null,
+	playlists: null
 }
 
 export const uploadVideo =
@@ -239,6 +303,67 @@ export const getVideos = createAsyncThunk<VideoFileObjectType, 'user' | 'all' | 
 )
 
 
+export const setPlaylist = createAsyncThunk<void, null, {
+	rejectValue: string,
+	state: { users: UserType, videos: VideoStateType, alert: alertType }
+}>(
+	'users/setPlaylist',
+	async (_, { rejectWithValue, getState, dispatch }) => {
+		const URL: string = 'https://sporthub-8cd3f-default-rtdb.firebaseio.com/playlists.json';
+
+		const { videos } = getState();
+
+		const body: PlaylistType = {
+			title: videos.titlePlaylist.value,
+			description: videos.descriptionPlaylist.value,
+			category: videos.categoryPlaylist.value,
+			views: 0,
+			date: new Date(),
+			author: getUserUID().uid,
+			list: videos.currentPlaylist
+		}
+		try {
+			await fetch(URL, {
+				method: 'POST',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
+				}
+			})
+				.then(res => res.json())
+				.then(async res => {
+					await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${getUserUID().uid}/playlists.json`, {
+						method: 'PATCH',
+						body: JSON.stringify({
+							[res.name]: true
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+				})
+
+			dispatch(clearPlaylist());
+		} catch (e) {
+			rejectWithValue(e);
+		}
+	}
+)
+
+export const getPlaylist = createAsyncThunk<{ [key: string]: PlaylistType }, null, { rejectValue: string }>(
+	'users/getPlaylist',
+	async (_, { rejectWithValue }) => {
+		try {
+			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/playlists.json`);
+			let data: { [key: string]: PlaylistType } = await res.json();
+
+			return data;
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
 
 
 const videoSlice = createSlice({
@@ -257,6 +382,9 @@ const videoSlice = createSlice({
 		setTitleValue(state, action: PayloadAction<string>) {
 			state.title.value = action.payload;
 		},
+		setTitlePlaylistValue(state, action: PayloadAction<string>) {
+			state.titlePlaylist.value = action.payload;
+		},
 		setCategoryValue(state, action: PayloadAction<number | string>) {
 			state.category.list.forEach(el => {
 				if (el.id === action.payload) {
@@ -267,8 +395,24 @@ const videoSlice = createSlice({
 				}
 			})
 		},
+		setCategoryPlaylistValue(state, action: PayloadAction<number | string>) {
+			state.categoryPlaylist.list.forEach(el => {
+				if (el.id === action.payload) {
+					el.selected = true;
+					state.categoryPlaylist.value = el.value;
+				} else {
+					el.selected = false;
+				}
+			})
+		},
 		setDescriptionVideoValue(state, action: PayloadAction<string>) {
 			state.description.value = action.payload;
+		},
+		setSearchVideoValue(state, action: PayloadAction<string>) {
+			state.searchVideoInput.value = action.payload;
+		},
+		setDescriptionPlaylistValue(state, action: PayloadAction<string>) {
+			state.descriptionPlaylist.value = action.payload;
 		},
 		setShopifyURLValue(state, action: PayloadAction<string>) {
 			state.shopifyURL.value = action.payload;
@@ -289,7 +433,7 @@ const videoSlice = createSlice({
 			state.disabledBtn = false;
 		},
 		disableBtnSave(state) {
-			state.disabledBtn = false;
+			state.disabledBtn = true;
 		},
 		setVideoTabValue(state, action: PayloadAction<UserTabPathTypes>) {
 			state.videoTabValue = action.payload;
@@ -310,6 +454,39 @@ const videoSlice = createSlice({
 		},
 		setPreviewPath(state, action: PayloadAction<string>) {
 			state.previewPath = action.payload;
+		},
+		addVideoToPlaylist(state, action: PayloadAction<VideoFileType>) {
+			state.currentPlaylist.push(action.payload);
+			state.videosList = state.videosList.map(el => {
+				if (action.payload.uid === el.uid) {
+					el.selected = true;
+				}
+
+				return el;
+			})
+		},
+		removeVideoFromPlaylist(state, action: PayloadAction<NumStrNullType>) {
+			state.currentPlaylist = state.currentPlaylist.filter(el => {
+				if (el.uid !== action.payload) {
+					console.log(el.uid);
+					return el;
+				} else {
+					console.log(action.payload);
+
+				}
+			});
+			state.videosList = state.videosList.map(el => {
+				if (el.uid === action.payload) {
+					el.selected = false;
+				}
+				return el;
+			})
+		},
+		clearPlaylist(state) {
+			state.titlePlaylist.value = '';
+			state.categoryPlaylist.value = '';
+			state.descriptionPlaylist.value = '';
+			state.currentPlaylist = [];
 		}
 	},
 	extraReducers: builder => {
@@ -338,7 +515,7 @@ const videoSlice = createSlice({
 					let list: VideoFileType[] = [];
 
 					for (let key in action.payload) {
-						list.push({ uid: key, ...action.payload[key] })
+						list.push({ uid: key, selected: false, ...action.payload[key] })
 					}
 
 					if (action.meta.arg === 'all') {
@@ -360,8 +537,17 @@ const videoSlice = createSlice({
 
 				state.loading = false;
 			})
+			.addCase(getPlaylist.pending, state => {
+				state.loading = true;
+			})
+			.addCase(getPlaylist.fulfilled, (state, action) => {
+				state.playlists = action.payload;
+
+				state.loading = false;
+			})
+
 
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist } = videoSlice.actions;
 export default videoSlice.reducer;

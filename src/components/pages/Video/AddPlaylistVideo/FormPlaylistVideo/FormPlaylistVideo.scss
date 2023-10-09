@@ -1,0 +1,45 @@
+.form-add-playlist {
+	&__list-title {
+		line-height: normal;
+		margin-bottom: 4px;
+	}
+
+	&__list {
+		border-radius: 8px;
+		background: #222;
+		padding: 8px 0;
+	}
+	&__item {
+		padding: 8px 16px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	&__item-text {
+		font-size: 16px;
+		line-height: normal;
+	}
+	&__item-close {
+		background: url('../../../../../assets/icons/close.svg') no-repeat;
+		flex: 0 0 16px;
+		width: 16px;
+		height: 16px;
+		display: block;
+		margin: 0 0 0 15px;
+		cursor: pointer;
+		&:hover {
+			opacity: .7;
+		}
+	}
+	&__btn {
+		display: none;
+	}
+	@media (max-width: 767px) {
+		&__selected {
+			display: none;
+		}
+		&__btn {
+			display: block;
+		}
+	}
+}
