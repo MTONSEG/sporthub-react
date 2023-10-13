@@ -20,6 +20,7 @@ const ViewVideo: React.FC = () => {
 	const { users } = useAppSelector(state => state.users);
 	const { videos, videosList } = useAppSelector(state => state.videos);
 	const [showComments, setShowComments] = useState<boolean>(false);
+
 	const sliderSetting: SwiperOptions = {
 		slidesPerView: 1.2,
 		spaceBetween: 10,
@@ -70,11 +71,14 @@ const ViewVideo: React.FC = () => {
 					</div>
 					<BodyViewVideo
 						title={videos[id].title}
+						videoUID={id}
 						amountViews={45}
 						date={getCreateDate(videos[id].created)}
 						description={videos[id].description}
 						showComments={showComments}
 						setShowComments={setShowComments}
+						like={videos[id].like}
+						dislike={videos[id].dislike}
 					/>
 				</>
 			</ContainerProfile >

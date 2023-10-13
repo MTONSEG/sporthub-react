@@ -3,7 +3,8 @@ import './BodyViewVideo.scss';
 import ApprovalButtons from '../../../../ui/buttons/ApprovalButtons/ApprovalButtons';
 import CommentButton from '../../../../ui/buttons/CommentButton/CommentButton';
 import OptionButton from '../../../../ui/buttons/OptionButton/OptionButton';
-import { useAppSelector } from '../../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
+import { dislikeVideo, likeVideo, setLikeVideo } from '../../../../../redux/slices/video/videoSlice';
 
 type BodyViewVideoPropsType = {
 	title: string,
@@ -11,14 +12,22 @@ type BodyViewVideoPropsType = {
 	date: string,
 	description: string,
 	showComments?: boolean,
-	setShowComments: Function
+	setShowComments: Function,
+	like: number,
+	dislike: number,
+	videoUID: string | number
 }
 
 const BodyViewVideo: React.FC<BodyViewVideoPropsType> = ({
-	title, amountViews, date, description, showComments, setShowComments
+	title, amountViews, date, description, showComments, setShowComments, like, dislike, videoUID
 }) => {
 	const { commentList } = useAppSelector(state => state.videos);
-	const handleShowComments = () => { setShowComments(!showComments) };
+	const dispatch = useAppDispatch();
+
+	const handleShowComments = (): void => { setShowComments(!showComments) };
+	const handleLike = (): void => {dispatch(likeVideo(videoUID))}
+	const handleDislike = (): void => {dispatch(dislikeVideo(videoUID)) }
+
 
 	return (
 		<div className='body-view-video'>
@@ -28,10 +37,10 @@ const BodyViewVideo: React.FC<BodyViewVideoPropsType> = ({
 			<div className="body-view-video__rating">
 				<ApprovalButtons
 					className='body-view-video__approval-btn'
-					amountDislike={33}
-					amountLike={334}
-					handleDislike={() => { }}
-					handleLike={() => { }} />
+					amountDislike={dislike ? dislike : 0}
+					amountLike={like ? like : 0}
+					handleDislike={handleDislike}
+					handleLike={handleLike} />
 				<CommentButton
 					className='body-view-video__comment-btn'
 					show={showComments}

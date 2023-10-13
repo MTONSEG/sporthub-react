@@ -33,7 +33,9 @@ export type VideoFileType = {
 	description: string,
 	shopifyLink: string,
 	created: Date,
-	selected?: boolean
+	selected?: boolean,
+	like?: number,
+	dislike?: number
 }
 export type VideoFileObjectType = { [key: string]: VideoFileType }
 
@@ -520,6 +522,52 @@ export const getVideoComments = createAsyncThunk<{ [key: string | number]: Comme
 	}
 )
 
+export const likeVideo = createAsyncThunk<void, string | number, { rejectValue: string, state: { videos: VideoStateType } }>(
+	'users/likeVideo',
+	async (uid, { rejectWithValue, dispatch, getState }) => {
+		try {
+			const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${uid}.json`;
+			const state = getState().videos;
+			const currentLikes: number = state.videos[uid].like;
+			console.log(currentLikes);
+
+			await fetch(URL, {
+				method: 'PATCH',
+				body: JSON.stringify({
+					like: currentLikes ? currentLikes + 1 : 1
+				})
+			})
+
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
+export const dislikeVideo = createAsyncThunk<void, string | number, { rejectValue: string, state: { videos: VideoStateType } }>(
+	'users/dislikeVideo',
+	async (uid, { rejectWithValue, dispatch, getState }) => {
+		try {
+			const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${uid}.json`;
+			const state = getState().videos;
+			const current: number = state.videos[uid].dislike;
+			console.log(current);
+
+
+			await fetch(URL, {
+				method: 'PATCH',
+				body: JSON.stringify({
+					dislike: current <= 0 ? current - 1 : -1
+				})
+			})
+
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
 
 
 const videoSlice = createSlice({
@@ -737,6 +785,11 @@ const videoSlice = createSlice({
 		},
 		setEditPlaylist(state, action: PayloadAction<boolean>) {
 			state.isEditPlaylist = action.payload;
+		},
+		setLikeVideo(state, action: PayloadAction<string | number>) {
+			let currentLikes: number = state.videos[action.payload].like;
+
+			state.videos[action.payload].like = currentLikes ? currentLikes + 1 : 1;
 		}
 	},
 	extraReducers: builder => {
@@ -848,10 +901,31 @@ const videoSlice = createSlice({
 
 				state.loading = false;
 			})
+			.addCase(likeVideo.pending, state => {
+				state.loading = true;
+			})
+			.addCase(likeVideo.fulfilled, (state, action) => {
+				let uid: number | string = action.meta.arg;
+				let currentLikes: number = state.videos[uid].like;
+
+				state.videos[uid].like = currentLikes ? ++currentLikes : 1;
+
+				state.loading = false;
+			})
+			.addCase(dislikeVideo.pending, state => {
+				state.loading = true;
+			})
+			.addCase(dislikeVideo.fulfilled, (state, action) => {
+				let uid: number | string = action.meta.arg;
+				let currentLikes: number = state.videos[uid].dislike;
+				console.log(currentLikes);
 
 
-		getVideoComments
+				state.videos[uid].dislike = currentLikes <= 0 ? currentLikes - 1 : -1;
+
+				state.loading = false;
+			})
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist, setActivePlaylist, sortPlaylist, setActiveVideo, setCategoryPlaylistValueForTitle, setEditPlaylist, setCurrentPlaylist, initialPlaylistVideoEdit, setCommentVideoValue } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist, setActivePlaylist, sortPlaylist, setActiveVideo, setCategoryPlaylistValueForTitle, setEditPlaylist, setCurrentPlaylist, initialPlaylistVideoEdit, setCommentVideoValue, setLikeVideo } = videoSlice.actions;
 export default videoSlice.reducer;
