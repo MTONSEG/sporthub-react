@@ -3,7 +3,7 @@ import './ViewVideo.scss';
 import HeaderViewVideo from './HeaderViewVideo/HeaderViewVideo';
 import BodyViewVideo from './BodyViewVideo/BodyViewVideo';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { getVideoComments, getVideos } from '../../../../redux/slices/video/videoSlice';
+import { addViewsVideo, getVideoComments, getVideos } from '../../../../redux/slices/video/videoSlice';
 import Loading from '../../../ui/atoms/Loading/Loading';
 import ContainerProfile from '../../../containers/ContainerProfile/ContainerProfile';
 import VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
@@ -72,7 +72,7 @@ const ViewVideo: React.FC = () => {
 					<BodyViewVideo
 						title={videos[id].title}
 						videoUID={id}
-						amountViews={45}
+						amountViews={videos[id].views}
 						date={getCreateDate(videos[id].created)}
 						description={videos[id].description}
 						showComments={showComments}

@@ -35,7 +35,8 @@ export type VideoFileType = {
 	created: Date,
 	selected?: boolean,
 	like?: number,
-	dislike?: number
+	dislike?: number,
+	views?: number
 }
 export type VideoFileObjectType = { [key: string]: VideoFileType }
 
@@ -570,6 +571,30 @@ export const dislikeVideo = createAsyncThunk<void, string | number, { rejectValu
 )
 
 
+export const addViewsVideo = createAsyncThunk<void, string | number, { rejectValue: string, state: { videos: VideoStateType } }>(
+	'users/addViewsVideo',
+	async (uid, { rejectWithValue, dispatch, getState }) => {
+		try {
+			const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${uid}.json`;
+			const state = getState().videos;
+			const current: number = state.videos[uid].views;
+			console.log(current);
+
+
+			await fetch(URL, {
+				method: 'PATCH',
+				body: JSON.stringify({
+					views: current ? current + 1 : 1
+				})
+			})
+
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
 const videoSlice = createSlice({
 	name: 'users/videoSlice',
 	initialState,
@@ -856,6 +881,7 @@ const videoSlice = createSlice({
 				let list: PlaylistType[] = [];
 
 				for (let key in action.payload) {
+
 					let obj: PlaylistType = {
 						uid: key,
 						...action.payload[key]
@@ -874,7 +900,16 @@ const videoSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(getCurrentPlaylist.fulfilled, (state, action) => {
+				let views: number = 0;
+
+				for (let item of action.payload.list) {
+					console.log(item.views);
+				}
+
+
 				state.playlistView = action.payload;
+				
+				console.log(action.payload.views)
 
 				state.loading = false;
 			})
@@ -922,6 +957,19 @@ const videoSlice = createSlice({
 
 
 				state.videos[uid].dislike = currentLikes <= 0 ? currentLikes - 1 : -1;
+
+				state.loading = false;
+			})
+			.addCase(addViewsVideo.pending, state => {
+				state.loading = true;
+			})
+			.addCase(addViewsVideo.fulfilled, (state, action) => {
+				let uid: number | string = action.meta.arg;
+				let views: number = state.videos[uid].views;
+				console.log(views);
+
+
+				state.videos[uid].views = views ? ++views : 1;
 
 				state.loading = false;
 			})

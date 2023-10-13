@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './BodyViewVideo.scss';
 import ApprovalButtons from '../../../../ui/buttons/ApprovalButtons/ApprovalButtons';
 import CommentButton from '../../../../ui/buttons/CommentButton/CommentButton';
 import OptionButton from '../../../../ui/buttons/OptionButton/OptionButton';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
-import { dislikeVideo, likeVideo, setLikeVideo } from '../../../../../redux/slices/video/videoSlice';
+import { addViewsVideo, dislikeVideo, likeVideo, setLikeVideo } from '../../../../../redux/slices/video/videoSlice';
+import { useParams } from 'react-router-dom';
 
 type BodyViewVideoPropsType = {
 	title: string,
@@ -23,11 +24,15 @@ const BodyViewVideo: React.FC<BodyViewVideoPropsType> = ({
 }) => {
 	const { commentList } = useAppSelector(state => state.videos);
 	const dispatch = useAppDispatch();
+	const { id } = useParams();
 
 	const handleShowComments = (): void => { setShowComments(!showComments) };
 	const handleLike = (): void => {dispatch(likeVideo(videoUID))}
 	const handleDislike = (): void => {dispatch(dislikeVideo(videoUID)) }
 
+	useEffect((): void => {
+		dispatch(addViewsVideo(videoUID));
+	},[id])
 
 	return (
 		<div className='body-view-video'>
@@ -50,7 +55,7 @@ const BodyViewVideo: React.FC<BodyViewVideoPropsType> = ({
 
 				<div className="body-view-video__info">
 					<p className="body-view-video__info-item">
-						{amountViews} views
+						{amountViews ? amountViews : 0} views
 					</p>
 					<p className="body-view-video__info-item">
 						{date}

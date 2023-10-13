@@ -70,7 +70,9 @@ const ViewPlaylist: React.FC<ViewPlaylistPropsType> = () => {
 							{`${playlistView.list?.length} videos`}
 						</p>
 						<div className="view-playlist__info">
-							<p className="view-playlist__info-item">145.3K views</p>
+							<p className="view-playlist__info-item">
+								{playlistView.views} views
+							</p>
 							<p className="view-playlist__info-item">
 								{getCreateDate(playlistView.date)}
 							</p>
