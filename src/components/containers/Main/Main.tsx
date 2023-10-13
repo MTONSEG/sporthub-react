@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../Header/Header";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { AUTH_ROUTE } from "../../../routes/routes";
+import { ADD_PLAYLIST_VIDEO_ROUTE, ADD_VIDEO_ROUTE, AUTH_ROUTE, EDIT_UID_PLAYLIST_VIDEO_ROUTE, ITEM_ID_VIDEO_ROUTE, LATEST_ROUTE, PLAYLIST_UID_VIDEO_ROUTE, PROFILE_ROUTE, UID_USER_WITH_OTHER_ROUTE, VIDEO_WITH_OTHER_ROUTE, VIEW_LATER_ROUTE } from "../../../routes/routes";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { setMessage, showAlert } from "../../../redux/slices/alert/alertSlice";
 import { setLogin } from "../../../redux/slices/header/headerSlice";
@@ -16,6 +16,8 @@ import Latest from '../../pages/Home/LatestHome/LatestHome';
 import ViewVideo from '../../pages/Video/ViewVideo/ViewVideo';
 import Loading from '../../ui/atoms/Loading/Loading';
 import AddPlaylistVideo from '../../pages/Video/AddPlaylistVideo/AddPlaylistVideo';
+import ViewPlaylist from '../../pages/Video/ViewPlaylist/ViewPlaylist';
+import EditPlaylistVideo from '../../pages/Video/EditPlaylistVideo/EditPlaylistVideo';
 
 export interface BaseUser {
 	uid: string | number,
@@ -66,14 +68,16 @@ const Main: React.FC = () => {
 			<Header />
 			<Routes>
 				<Route index element={<Home />} />
-				<Route path="/latest" element={<Latest title='Lates Video' />} />
-				<Route path='/later' element={<Latest title='View later' />} />
-				<Route path='/user/:uid/*' element={<User />} />
-				<Route path='/profile' element={<Profile />} />
-				<Route path='/video/*' element={<Video />} />
-				<Route path='/video/add' element={<AddVideo />} />
-				<Route path='/video/playlist/add' element={<AddPlaylistVideo />} />
-				<Route path='/view/:id' element={<ViewVideo />} />
+				<Route path={LATEST_ROUTE} element={<Latest title='Lates Video' />} />
+				<Route path={VIEW_LATER_ROUTE} element={<Latest title='View later' />} />
+				<Route path={UID_USER_WITH_OTHER_ROUTE} element={<User />} />
+				<Route path={PROFILE_ROUTE} element={<Profile />} />
+				<Route path={VIDEO_WITH_OTHER_ROUTE} element={<Video />} />
+				<Route path={ADD_VIDEO_ROUTE} element={<AddVideo />} />
+				<Route path={ADD_PLAYLIST_VIDEO_ROUTE} element={<AddPlaylistVideo />} />
+				<Route path={EDIT_UID_PLAYLIST_VIDEO_ROUTE} element={<EditPlaylistVideo />} />
+				<Route path={ITEM_ID_VIDEO_ROUTE} element={<ViewVideo />} />
+				<Route path={PLAYLIST_UID_VIDEO_ROUTE} element={<ViewPlaylist/>} />
 			</Routes>
 		</>
 	)

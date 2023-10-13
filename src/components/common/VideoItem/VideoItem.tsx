@@ -27,7 +27,6 @@ const VideoItem: React.FC<IVideoItem> = ({
 	const handleClick = (uid: NumStrNullType): void => {
 		if (playlistAdd) {
 			if (selected) {
-				console.log('remove')
 				dispatch(removeVideoFromPlaylist(video.uid));
 			} else {
 				dispatch(addVideoToPlaylist(video));

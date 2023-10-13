@@ -2,6 +2,9 @@
 	padding: 88px 24px 60px;
 	max-width: 1460px;
 	margin: 0 auto;
+	&.pb0 {
+		padding-bottom: 0;
+	}
 	@media (max-width: 767px) {
 		padding: 88px 16px 40px;
 	}

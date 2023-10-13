@@ -1,0 +1,63 @@
+.view-playlist {
+	&__header,
+	&__info,
+	&__body {
+		display: flex;
+		align-items: center;
+	}
+	&__header {
+		justify-content: space-between;
+		margin-bottom: 27px;
+	}
+	&__body {
+		flex-wrap: wrap;
+		padding: 0 0 32px;
+	}
+	&__info {
+		width: 70%;
+		justify-content: flex-end;
+	}
+	&__amount-video,
+	&__info-item {
+		font-size: 16px;
+		line-height: normal;
+	}
+	&__amount-video {
+		width: calc(30% - 40px);
+		margin: 0 40px 0 0;
+		font-weight: 500;
+	}
+	&__info-item {
+		font-weight: 300;
+		color: #bbb;
+		&:first-child {
+			margin: 0 16px 0 0;
+		}
+	}
+	&__description {
+		width: 100%;
+		margin: 27px 0 0;
+		line-height: normal;
+	}
+	&__description-btn {
+		color: #ad7955;
+		display: inline-block;
+		margin: 0 0 0 4px;
+	}
+	&__title {
+		max-width: 900px;
+		margin: 0 80px 0 0;
+	}
+	&__list-wrap {
+		padding: 24px 0;
+		background: #222;
+	}
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+		gap: 24px;
+		&.small-grid {
+			grid-template-columns: repeat(auto-fit, minmax(250px, 0.25fr));
+		}
+	}
+}

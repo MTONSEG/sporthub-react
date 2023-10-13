@@ -40,11 +40,12 @@ export interface ISelect extends inputType {
 }
 
 export type PlaylistType = {
-	uid?: NumStrNullType,
+	uid?: string | number,
 	title: string,
 	description: string,
 	category: string,
 	date: Date,
+	update?: Date,
 	views?: number,
 	list: VideoFileType[],
 	author: NumStrNullType
@@ -85,7 +86,12 @@ type VideoStateType = {
 	videosList: VideoFileType[],
 	previewPath: string,
 	currentPlaylist: VideoFileType[],
-	playlists: { [key: string]: PlaylistType }
+	playlists: { [key: string]: PlaylistType },
+	playlistsArr: PlaylistType[],
+	searchVideosList: VideoFileType[],
+	playlistView: PlaylistType,
+	isEditPlaylist: boolean,
+	editPlaylistObj: { [key: string | number]: boolean }
 }
 
 const initialState: VideoStateType = {
@@ -224,7 +230,12 @@ const initialState: VideoStateType = {
 	videosList: [],
 	videoTabValue: 'mind',
 	previewPath: null,
-	playlists: null
+	playlists: null,
+	playlistsArr: [],
+	searchVideosList: [],
+	playlistView: null,
+	isEditPlaylist: true,
+	editPlaylistObj: {}
 }
 
 export const uploadVideo =
@@ -350,6 +361,36 @@ export const setPlaylist = createAsyncThunk<void, null, {
 	}
 )
 
+export const updatePlaylist = createAsyncThunk<void, string | number, {
+	rejectValue: string,
+	state: { videos: VideoStateType }
+}>(
+	'users/updatePlaylist',
+	async (uid, { rejectWithValue, getState, dispatch }) => {
+		try {
+			const URL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/playlists/${uid}.json`;
+			const videos: VideoStateType = getState().videos;
+
+			await fetch(URL, {
+				method: 'PATCH',
+				body: JSON.stringify({
+					title: videos.titlePlaylist.value,
+					description: videos.descriptionPlaylist.value,
+					category: videos.categoryPlaylist.value,
+					views: 0,
+					update: new Date(),
+					list: videos.currentPlaylist
+				})
+			}).then(res => {
+				dispatch(getCurrentPlaylist(uid));
+			})
+		}
+		catch (e) {
+			rejectWithValue(e);
+		}
+	}
+)
+
 export const getPlaylist = createAsyncThunk<{ [key: string]: PlaylistType }, null, { rejectValue: string }>(
 	'users/getPlaylist',
 	async (_, { rejectWithValue }) => {
@@ -365,6 +406,24 @@ export const getPlaylist = createAsyncThunk<{ [key: string]: PlaylistType }, nul
 	}
 )
 
+export const getCurrentPlaylist = createAsyncThunk<PlaylistType, NumStrNullType, { rejectValue: string }>(
+	'users/getCurrentPlaylist',
+	async (uid, { rejectWithValue, dispatch }) => {
+		try {
+			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/playlists/${uid}.json`);
+			let data: PlaylistType = await res.json();
+
+
+
+			return data;
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
+
 
 const videoSlice = createSlice({
 	name: 'users/videoSlice',
@@ -373,6 +432,24 @@ const videoSlice = createSlice({
 		setActiveVideoLink(state, action: PayloadAction<string | number>) {
 			state.linkList.forEach(el => {
 				if (el.id === action.payload) {
+					el.active = true;
+				} else {
+					el.active = false;
+				}
+			})
+		},
+		setActivePlaylist(state) {
+			state.linkList.forEach(el => {
+				if (el.title === 'Playlists') {
+					el.active = true;
+				} else {
+					el.active = false;
+				}
+			})
+		},
+		setActiveVideo(state) {
+			state.linkList.forEach(el => {
+				if (el.title === 'Your video') {
 					el.active = true;
 				} else {
 					el.active = false;
@@ -405,11 +482,24 @@ const videoSlice = createSlice({
 				}
 			})
 		},
+		setCategoryPlaylistValueForTitle(state, action: PayloadAction<string>) {
+			state.categoryPlaylist.list.forEach(el => {
+				if (el.value === action.payload) {
+					el.selected = true;
+					state.categoryPlaylist.value = el.value;
+				} else {
+					el.selected = false;
+				}
+			})
+		},
 		setDescriptionVideoValue(state, action: PayloadAction<string>) {
 			state.description.value = action.payload;
 		},
 		setSearchVideoValue(state, action: PayloadAction<string>) {
 			state.searchVideoInput.value = action.payload;
+
+			state.searchVideosList = state.videosList
+				.filter(el => el.title.toLowerCase().includes(action.payload.toLowerCase()));
 		},
 		setDescriptionPlaylistValue(state, action: PayloadAction<string>) {
 			state.descriptionPlaylist.value = action.payload;
@@ -452,12 +542,37 @@ const videoSlice = createSlice({
 					el.author === getUserUID().uid
 				));
 		},
+		sortPlaylist(state) {
+
+
+			let list: PlaylistType[] = [];
+
+			for (let key in state.playlists) {
+				let obj: PlaylistType = {
+					uid: key,
+					...state.playlists[key]
+				}
+
+				list.push(obj);
+			}
+
+			state.playlistsArr = list.filter(el => el.category === state.videoTabValue);
+		},
 		setPreviewPath(state, action: PayloadAction<string>) {
 			state.previewPath = action.payload;
 		},
 		addVideoToPlaylist(state, action: PayloadAction<VideoFileType>) {
 			state.currentPlaylist.push(action.payload);
+
 			state.videosList = state.videosList.map(el => {
+				if (action.payload.uid === el.uid) {
+					el.selected = true;
+				}
+
+				return el;
+			})
+
+			state.searchVideosList = state.searchVideosList.map(el => {
 				if (action.payload.uid === el.uid) {
 					el.selected = true;
 				}
@@ -468,25 +583,57 @@ const videoSlice = createSlice({
 		removeVideoFromPlaylist(state, action: PayloadAction<NumStrNullType>) {
 			state.currentPlaylist = state.currentPlaylist.filter(el => {
 				if (el.uid !== action.payload) {
-					console.log(el.uid);
 					return el;
-				} else {
-					console.log(action.payload);
-
 				}
 			});
+
+
 			state.videosList = state.videosList.map(el => {
 				if (el.uid === action.payload) {
 					el.selected = false;
 				}
 				return el;
 			})
+
+			state.searchVideosList = state.searchVideosList.map(el => {
+				if (el.uid === action.payload) {
+					el.selected = false;
+				}
+				return el;
+			})
+		},
+		initialPlaylistVideoEdit(state) {
+
+			let videos: VideoFileType[] = [];
+			let obj: { [key: string | number]: boolean } = {};
+
+			if (state.playlistView.list.length) {
+				state.playlistView.list.forEach(video => {
+					videos.push({ ...video, selected: true });
+					state.currentPlaylist.push(video);
+					obj[video.uid] = true;
+				})
+
+				state.searchVideosList = videos;
+				state.editPlaylistObj = obj;
+			}
+			
+
+	
+
+		},
+		setCurrentPlaylist(state, action: PayloadAction<VideoFileType[]>) {
+			state.currentPlaylist = action.payload;
 		},
 		clearPlaylist(state) {
 			state.titlePlaylist.value = '';
 			state.categoryPlaylist.value = '';
 			state.descriptionPlaylist.value = '';
 			state.currentPlaylist = [];
+			state.searchVideosList = [];
+		},
+		setEditPlaylist(state, action: PayloadAction<boolean>) {
+			state.isEditPlaylist = action.payload;
 		}
 	},
 	extraReducers: builder => {
@@ -531,8 +678,15 @@ const videoSlice = createSlice({
 								el.author === action.meta.arg
 							));
 					}
-
-
+					if (!state.searchVideosList.length) {
+						state.searchVideosList = list;
+					} else {
+						for (let item of list) {
+							if (!state.editPlaylistObj[item.uid]) {
+								state.searchVideosList.push(item);
+							}
+						}
+					}
 				}
 
 				state.loading = false;
@@ -543,11 +697,32 @@ const videoSlice = createSlice({
 			.addCase(getPlaylist.fulfilled, (state, action) => {
 				state.playlists = action.payload;
 
+				let list: PlaylistType[] = [];
+
+				for (let key in action.payload) {
+					let obj: PlaylistType = {
+						uid: key,
+						...action.payload[key]
+					}
+
+					list.push(obj);
+				}
+
+				state.playlistsArr = list.filter(el => el.category === state.videoTabValue);
+
+				state.loading = false;
+			})
+			.addCase(getCurrentPlaylist.pending, state => {
+				state.loading = true;
+			})
+			.addCase(getCurrentPlaylist.fulfilled, (state, action) => {
+				state.playlistView = action.payload;
+
 				state.loading = false;
 			})
 
 
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist, setActivePlaylist, sortPlaylist, setActiveVideo, setCategoryPlaylistValueForTitle, setEditPlaylist, setCurrentPlaylist, initialPlaylistVideoEdit } = videoSlice.actions;
 export default videoSlice.reducer;

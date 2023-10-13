@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Video.scss';
 import { Route, Routes, useParams } from 'react-router-dom';
 import Loading from '../../ui/atoms/Loading/Loading';
@@ -10,23 +10,32 @@ import { Button } from '../../ui/buttons/Button/Button';
 import plusIcon from '../../../assets/icons/plus.svg';
 import { ADD_PLAYLIST_VIDEO_ROUTE, ADD_VIDEO_ROUTE } from '../../../routes/routes';
 import { Link } from 'react-router-dom';
-import { setActiveVideoLink, setVideoTabValue, sortVideoList } from '../../../redux/slices/video/videoSlice';
-import { NavLink } from 'react-router-dom';
+import { setActivePlaylist, setActiveVideo, setActiveVideoLink, setVideoTabValue, sortPlaylist, sortVideoList } from '../../../redux/slices/video/videoSlice';
 
 const AllVideo = React.lazy(() => import('./AllVideo/AllVideo'));
 const PlaylistVideo = React.lazy(() => import('./PlaylistVideo/PlaylistVideo'));
 
 const Video: React.FC = () => {
+	const params = useParams();
 	const dispatch = useAppDispatch();
 	const { tabList, linkList, videoTabValue, ...state } = useAppSelector(state => state.videos);
-	const params = useParams();
-	console.log(linkList);
+
+	useEffect(() => {
+		if (params['*'] === 'playlist/') {
+			dispatch(setActivePlaylist());
+		} else {
+			dispatch(setActiveVideo());
+		}
+	}, [params])
+
 	const handleTabCLick = (value: UserTabPathTypes): void => {
 		dispatch(setVideoTabValue(value));
-		dispatch(sortVideoList());
+		if (params['*'] === 'playlist/') {
+			dispatch(sortPlaylist());
+		} else {
+			dispatch(sortVideoList());
+		}
 	}
-
-
 
 	return (
 		<ContainerProfile>

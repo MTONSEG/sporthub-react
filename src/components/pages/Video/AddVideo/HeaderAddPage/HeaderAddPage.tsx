@@ -4,17 +4,18 @@ import { Title } from '../../../../ui/atoms/Title/Title';
 import { Button } from '../../../../ui/buttons/Button/Button';
 import { ButtonPopup } from '../../../../ui/buttons/ButtonPopup/ButtonPopup';
 import { VIDEO_ROUTE } from '../../../../../routes/routes';
-import PopupAddVideoMenu from '../../../../common/PopupAddVideoMenu/PopupAddVideoMenu';
+import PopupOption from '../../../../ui/atoms/PopupOption/PopupOption';
 
 type HeaderAddPage = {
 	title: string,
 	titleBtn: string,
-	disabledBtn: boolean,
+	path?: string,
+	disabledBtn?: boolean,
 	handleSave: () => void
 }
 
 const HeaderAddPage: React.FC<HeaderAddPage> = ({
-	title, titleBtn, disabledBtn, handleSave
+	title, titleBtn, disabledBtn, path, handleSave
 }) => {
 	const [activePopup, setActivePopup] = useState<boolean>(false);
 
@@ -28,12 +29,14 @@ const HeaderAddPage: React.FC<HeaderAddPage> = ({
 			<div className="header-add__nav">
 				<Button
 					disabled={disabledBtn}
-					path={VIDEO_ROUTE}
+					path={path ? path : VIDEO_ROUTE}
 					className={`header-add__btn`}
 					onClickHandler={handleSave}
 				>{titleBtn}</Button>
-				<ButtonPopup handleClick={handleClickPopup} disabled={disabledBtn} />
-				<PopupAddVideoMenu/>
+				{/* <PopupOption>
+
+				</PopupOption> */}
+				{/* <ButtonPopup handleClick={handleClickPopup} disabled={disabledBtn} /> */}
 			</div>
 		</div>
 	)
