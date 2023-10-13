@@ -391,6 +391,32 @@ export const updatePlaylist = createAsyncThunk<void, string | number, {
 	}
 )
 
+export const deletePlaylist = createAsyncThunk<void, string | number, {
+	rejectValue: string,
+	state: { videos: VideoStateType }
+}>(
+	'users/deletePlaylist',
+	async (uid, { rejectWithValue, dispatch }) => {
+		try {
+			const PlaylistURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/playlists/${uid}.json`;
+			const UserPlaylistURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/users/${getUserUID().uid}/playlists/${uid}.json`;
+
+			await fetch(PlaylistURL, { method: 'DELETE' })
+				.then(async res => {
+					await fetch(UserPlaylistURL, { method: 'DELETE' })
+					return res.json()
+				})
+				.then(res => {
+					dispatch(getPlaylist());
+				})
+		}
+		catch (e) {
+			rejectWithValue(e);
+		}
+	}
+)
+
+
 export const getPlaylist = createAsyncThunk<{ [key: string]: PlaylistType }, null, { rejectValue: string }>(
 	'users/getPlaylist',
 	async (_, { rejectWithValue }) => {
@@ -556,7 +582,9 @@ const videoSlice = createSlice({
 				list.push(obj);
 			}
 
-			state.playlistsArr = list.filter(el => el.category === state.videoTabValue);
+			state.playlistsArr = list
+				.reverse()
+				.filter(el => el.category === state.videoTabValue);
 		},
 		setPreviewPath(state, action: PayloadAction<string>) {
 			state.previewPath = action.payload;
@@ -617,9 +645,9 @@ const videoSlice = createSlice({
 				state.searchVideosList = videos;
 				state.editPlaylistObj = obj;
 			}
-			
 
-	
+
+
 
 		},
 		setCurrentPlaylist(state, action: PayloadAction<VideoFileType[]>) {
@@ -679,7 +707,7 @@ const videoSlice = createSlice({
 							));
 					}
 					if (!state.searchVideosList.length) {
-						state.searchVideosList = list;
+						state.searchVideosList = list.reverse();
 					} else {
 						for (let item of list) {
 							if (!state.editPlaylistObj[item.uid]) {
@@ -707,8 +735,10 @@ const videoSlice = createSlice({
 
 					list.push(obj);
 				}
+				list.reverse();
 
-				state.playlistsArr = list.filter(el => el.category === state.videoTabValue);
+				state.playlistsArr = list
+					.filter(el => el.category === state.videoTabValue);
 
 				state.loading = false;
 			})

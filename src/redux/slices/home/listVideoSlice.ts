@@ -15,11 +15,13 @@ export interface IVideo {
 
 type ListVideoType = {
 	title: string,
+	titleLatest:string,
 	videos: IVideo[]
 }
 
 const initialState: ListVideoType = {
 	title: 'Video List',
+	titleLatest: 'Latest Video',
 	videos: []
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ViewPlaylist.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { PlaylistType, clearPlaylist, getCurrentPlaylist, getPlaylist, setEditPlaylist } from '../../../../redux/slices/video/videoSlice';
+import { PlaylistType, clearPlaylist, deletePlaylist, getCurrentPlaylist, getPlaylist, setEditPlaylist } from '../../../../redux/slices/video/videoSlice';
 import ContainerProfile from '../../../containers/ContainerProfile/ContainerProfile';
 import VideoItem from '../../../common/VideoItem/VideoItem';
 import Loading from '../../../ui/atoms/Loading/Loading';
@@ -13,7 +13,7 @@ import { Title } from '../../../ui/atoms/Title/Title';
 import { showDescriptionPlaylist } from '../../../../utils/showDescriptionPlaylist';
 import PopupOption from '../../../ui/atoms/PopupOption/PopupOption';
 import ItemPopupOption from '../../../ui/atoms/PopupOption/ItemPopupOption/ItemPopupOption';
-import { EDIT_PLAYLIST_VIDEO_ROUTE } from '../../../../routes/routes';
+import { EDIT_PLAYLIST_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE } from '../../../../routes/routes';
 
 type ViewPlaylistPropsType = {}
 
@@ -37,7 +37,7 @@ const ViewPlaylist: React.FC<ViewPlaylistPropsType> = () => {
 		}
 	}
 	const handleDelClick = (): void => {
-		console.log('delete');
+		dispatch(deletePlaylist(uid));
 	}
 
 	const handleEditClick = (): void => {
@@ -59,6 +59,7 @@ const ViewPlaylist: React.FC<ViewPlaylistPropsType> = () => {
 									text='Edit'
 									handleClick={handleEditClick} />
 								<ItemPopupOption
+									path={PLAYLIST_VIDEO_ROUTE}
 									text='Delete'
 									handleClick={handleDelClick} />
 							</>
