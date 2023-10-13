@@ -22,6 +22,14 @@
 		margin: 0 8px 0 0;
 		transition: all .2s;
 	}
+	&.show {
+		background: #fff;
+		color: #111;
+		& .comment-btn__icon {
+			stroke: #111;
+			fill: #fff;
+		}
+	}
 	@media (max-width: 576px) {
 		padding: 8px;
 		font-size: 14px;

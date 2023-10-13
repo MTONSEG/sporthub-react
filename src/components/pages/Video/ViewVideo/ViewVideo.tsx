@@ -1,20 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ViewVideo.scss';
 import HeaderViewVideo from './HeaderViewVideo/HeaderViewVideo';
 import BodyViewVideo from './BodyViewVideo/BodyViewVideo';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { getVideos } from '../../../../redux/slices/video/videoSlice';
+import { getVideoComments, getVideos } from '../../../../redux/slices/video/videoSlice';
 import Loading from '../../../ui/atoms/Loading/Loading';
 import ContainerProfile from '../../../containers/ContainerProfile/ContainerProfile';
 import VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
 import { getCreateDate } from '../../../../utils/getCreateDate';
 import { useParams } from 'react-router-dom';
+import CommentsVideo from './CommentsVideo/CommentsVideo';
+import Slider from '../../../ui/sliders/Slider/Slider';
+import { SwiperOptions } from 'swiper/types/swiper-options';
+import Container from '../../../containers/Container/Container';
 
 const ViewVideo: React.FC = () => {
 	const { id } = useParams();
 	const dispatch = useAppDispatch();
 	const { users } = useAppSelector(state => state.users);
-	const { videos } = useAppSelector(state => state.videos);
+	const { videos, videosList } = useAppSelector(state => state.videos);
+	const [showComments, setShowComments] = useState<boolean>(false);
+	const sliderSetting: SwiperOptions = {
+		slidesPerView: 1.2,
+		spaceBetween: 10,
+		loop: true,
+		autoplay: {
+			delay: 3000
+		},
+		mousewheel: {
+			invert: true
+		},
+		breakpoints: {
+			374: {
+				slidesPerView: 1.3,
+				spaceBetween: 24,
+			},
+			576: {
+				slidesPerView: 2.3,
+				spaceBetween: 24,
+			},
+			992: {
+				slidesPerView: 3.5,
+				spaceBetween: 24,
+			}
+		}
+	}
 
 	useEffect((): void => {
 		dispatch(getVideos('all'));
@@ -39,13 +69,29 @@ const ViewVideo: React.FC = () => {
 							position='static' />
 					</div>
 					<BodyViewVideo
-						title={'Amet minim mollit non deserunt ullamco est sit aliqua dolor do ame'}
+						title={videos[id].title}
 						amountViews={45}
 						date={getCreateDate(videos[id].created)}
 						description={videos[id].description}
+						showComments={showComments}
+						setShowComments={setShowComments}
 					/>
 				</>
 			</ContainerProfile >
+
+			<div className="view-video__bottom">
+				<Container>
+					{
+						showComments
+							? <CommentsVideo />
+							: <Slider
+								settings={sliderSetting}
+								videos={videosList}
+							/>
+					}
+				</Container>
+			</div>
+
 		</div>
 	)
 }

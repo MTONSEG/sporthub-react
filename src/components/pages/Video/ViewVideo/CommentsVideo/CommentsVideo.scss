@@ -1,0 +1,23 @@
+.comments-video {
+
+	&__title {
+		margin-bottom: 24px;
+	}
+	&__enter-text {
+		display: grid;
+		grid-template-columns: 1fr 200px;
+		gap: 16px;
+		align-items: end;
+		margin-bottom: 32px;
+	}
+	&__textarea {
+		width: 100%;
+		textarea {
+			background: #111;
+		}
+	}
+	&__btn {
+		text-align: center;
+		flex: 0 0 60px;
+	}
+}

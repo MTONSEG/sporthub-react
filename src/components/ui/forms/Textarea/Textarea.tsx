@@ -1,6 +1,6 @@
 import React, { CSSProperties, ChangeEvent, useEffect, useRef, useState } from "react";
 import './Textarea.scss';
-import { useAppDispatch} from "../../../../hooks/hooks";
+import { useAppDispatch } from "../../../../hooks/hooks";
 
 type TextareaType = {
 	title?: string,
@@ -42,7 +42,7 @@ const Textarea: React.FC<TextareaType> = ({
 		const scrollHeight: number = ref.current.scrollHeight;
 		const newHeight: string = ref.current.scrollHeight + 'px';
 		setHeight(newHeight);
-	},[value])
+	}, [value])
 
 	const handelOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		console.log(e.currentTarget.value);
@@ -56,12 +56,17 @@ const Textarea: React.FC<TextareaType> = ({
 
 	return (
 		<div className={`input-field${className ? ` ${className}` : ''}`} style={styles}>
-			<p className="input-field__title">{title}</p>
+			{
+				title
+					? <p className="input-field__title">{title}</p>
+					: <></>
+			}
+
 
 			<div className="input-field__wrapper">
 				<textarea
 					ref={ref}
-					style={{height}}
+					style={{ height }}
 					className="input-field__input"
 					aria-label={title}
 					value={value}

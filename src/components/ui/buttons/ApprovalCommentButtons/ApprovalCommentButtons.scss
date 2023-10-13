@@ -1,0 +1,29 @@
+.approval-comment {
+	display: flex;
+	align-items: center;
+	&__btn {
+		display: flex;
+		align-items: center;
+		color: #fff;
+		font-size: 12px;
+		line-height: normal;
+		font-weight: 500;
+		&:not(:last-child) {
+			margin: 0 10px 0 0;
+		}
+		&:hover .approval-comment__btn-icon {
+			fill: #fff;
+		}
+	}
+	&__btn-icon {
+		width: 18px;
+		height: 18px;
+		fill: rgba(187, 187, 187, 1);
+		display: inline-block;
+		margin: 0 10px 0 0;
+		&.reverse {
+			transform: rotate(180deg);
+		}
+	}
+
+}

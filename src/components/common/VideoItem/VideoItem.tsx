@@ -13,11 +13,12 @@ interface IVideoItem {
 	video: VideoFileType,
 	user?: User,
 	authorView?: boolean,
-	playlistAdd?: boolean
+	playlistAdd?: boolean,
+	swiper?: boolean
 }
 
 const VideoItem: React.FC<IVideoItem> = ({
-	video, user, authorView, playlistAdd
+	video, user, authorView, playlistAdd, swiper
 }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -41,11 +42,11 @@ const VideoItem: React.FC<IVideoItem> = ({
 
 	useEffect(() => {
 		setSelected(video.selected);
-	},[video])
+	}, [video])
 
 	return (
 		<div
-			className={`video-item ${playlistAdd ? 'playlist' : ''} ${video.selected ? 'selected' : ''}`}
+			className={`video-item ${playlistAdd ? 'playlist' : ''} ${video.selected ? 'selected' : ''} ${swiper?'swiper-slide':''}`}
 			onClick={() => { handleClick(video.uid) }}
 		>
 			<div className="video-item__poster-wrap">

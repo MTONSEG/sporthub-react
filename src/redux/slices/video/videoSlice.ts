@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TabLink, UserTabPathTypes } from '../userInfo/userInfoSlice';
 import uuid from 'react-uuid';
-import { ONLY_VIDEO_ROUTE, PLAYLIST_VIDEO_ROUTE } from '../../../routes/routes';
 import { inputType } from '../auth/singinSlice';
 import { NumStrNullType } from '../auth/singupSlice';
 import { UserType } from '../home/userSlice';
@@ -14,6 +13,16 @@ type ILinkWithActive = {
 	path: string,
 	active: boolean
 }
+
+export type Comment = {
+	uid?: string | number,
+	text: string,
+	author: string | number,
+	created: Date,
+	like?: number,
+	dislike?: number
+}
+
 export type VideoFileType = {
 	uid?: string | number,
 	videoURL: string,
@@ -61,6 +70,8 @@ type VideoStateType = {
 	titleAdding: string,
 	titlePreviewMob: string,
 	titleEditPlaylist: string,
+	titleSendBtn: string,
+	titleComments: string,
 	textUpload: string,
 	titleSaveBtn: string,
 	linkList: ILinkWithActive[],
@@ -73,6 +84,7 @@ type VideoStateType = {
 	descriptionPlaylist: inputType,
 	searchVideoInput: inputType,
 	categoryPlaylist: ISelect,
+	commentField: inputType,
 	videoFileName: string,
 	videoURL: string,
 	videoPoster: string,
@@ -91,7 +103,9 @@ type VideoStateType = {
 	searchVideosList: VideoFileType[],
 	playlistView: PlaylistType,
 	isEditPlaylist: boolean,
-	editPlaylistObj: { [key: string | number]: boolean }
+	editPlaylistObj: { [key: string | number]: boolean },
+	comments: { [key: string | number]: Comment },
+	commentList: Comment[]
 }
 
 const initialState: VideoStateType = {
@@ -107,6 +121,8 @@ const initialState: VideoStateType = {
 	titleAdding: 'Adding a new video',
 	titleDrag: 'Drag and drop videos to upload',
 	titlePreviewMob: 'Upload the image preview',
+	titleComments: 'Comments',
+	titleSendBtn: 'Send',
 	textUpload: 'Information about adding photo. Amet minim mollit non deserunt ullamco est sit',
 	disabledBtn: true,
 	currentPlaylist: [],
@@ -221,6 +237,11 @@ const initialState: VideoStateType = {
 		placeholder: 'Add link on product',
 		value: ''
 	},
+	commentField: {
+		title: '',
+		placeholder: 'Enter your comment',
+		value: ''
+	},
 	videoFileName: '',
 	videoURL: '',
 	videoPoster: '',
@@ -235,7 +256,9 @@ const initialState: VideoStateType = {
 	searchVideosList: [],
 	playlistView: null,
 	isEditPlaylist: true,
-	editPlaylistObj: {}
+	editPlaylistObj: {},
+	comments: {},
+	commentList: []
 }
 
 export const uploadVideo =
@@ -449,6 +472,54 @@ export const getCurrentPlaylist = createAsyncThunk<PlaylistType, NumStrNullType,
 	}
 )
 
+export const setVideoComment = createAsyncThunk<void, string | null, {
+	rejectValue: string,
+	state: { videos: VideoStateType }
+}>(
+	'users/setVideoComment',
+	async (uid, { rejectWithValue, getState, dispatch }) => {
+		try {
+			const state: VideoStateType = getState().videos;
+
+			const videosURL: string = `https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${uid}/comments.json`;
+
+			const comment: Comment = {
+				text: state.commentField.value,
+				author: getUserUID().uid,
+				created: new Date()
+			}
+
+			await fetch(videosURL, {
+				method: 'POST',
+				body: JSON.stringify(comment),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+
+			dispatch(setCommentVideoValue(''));
+			dispatch(getVideoComments(uid));
+		} catch (e) {
+			rejectWithValue(e);
+		}
+	}
+);
+
+export const getVideoComments = createAsyncThunk<{ [key: string | number]: Comment }, string | number, { rejectValue: string }>(
+	'users/getVideoComments',
+	async (uid, { rejectWithValue, dispatch }) => {
+		try {
+			let res = await fetch(`https://sporthub-8cd3f-default-rtdb.firebaseio.com/videos/${uid}/comments.json`);
+			let data: { [key: string | number]: Comment } = await res.json();
+
+			return data;
+		}
+		catch (error) {
+			rejectWithValue(error);
+		}
+	}
+)
+
 
 
 const videoSlice = createSlice({
@@ -520,6 +591,10 @@ const videoSlice = createSlice({
 		},
 		setDescriptionVideoValue(state, action: PayloadAction<string>) {
 			state.description.value = action.payload;
+		},
+
+		setCommentVideoValue(state, action: PayloadAction<string>) {
+			state.commentField.value = action.payload;
 		},
 		setSearchVideoValue(state, action: PayloadAction<string>) {
 			state.searchVideoInput.value = action.payload;
@@ -750,9 +825,33 @@ const videoSlice = createSlice({
 
 				state.loading = false;
 			})
+			.addCase(setVideoComment.pending, state => {
+				state.loading = true;
+			})
+			.addCase(setVideoComment.fulfilled, (state) => {
+
+				state.loading = false;
+			})
+			.addCase(getVideoComments.pending, state => {
+				state.loading = true;
+			})
+			.addCase(getVideoComments.fulfilled, (state, action) => {
+				state.comments = action.payload;
+
+				let list: Comment[] = [];
+
+				for (let key in action.payload) {
+					list.push({ uid: key, ...action.payload[key] });
+				}
+
+				state.commentList = list.reverse();
+
+				state.loading = false;
+			})
 
 
+		getVideoComments
 	}
 })
-export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist, setActivePlaylist, sortPlaylist, setActiveVideo, setCategoryPlaylistValueForTitle, setEditPlaylist, setCurrentPlaylist, initialPlaylistVideoEdit } = videoSlice.actions;
+export const { setActiveVideoLink, setCategoryValue, setDescriptionVideoValue, setShopifyURLValue, setTitleValue, setVideoFileName, setVideoPoster, setVideoPosterURL, setVideoURL, enableBtnSave, disableBtnSave, setVideoTabValue, sortVideoList, setPreviewPath, setCategoryPlaylistValue, setDescriptionPlaylistValue, setTitlePlaylistValue, setSearchVideoValue, removeVideoFromPlaylist, addVideoToPlaylist, clearPlaylist, setActivePlaylist, sortPlaylist, setActiveVideo, setCategoryPlaylistValueForTitle, setEditPlaylist, setCurrentPlaylist, initialPlaylistVideoEdit, setCommentVideoValue } = videoSlice.actions;
 export default videoSlice.reducer;
