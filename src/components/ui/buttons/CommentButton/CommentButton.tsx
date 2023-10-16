@@ -3,7 +3,7 @@ import './CommentButton.scss';
 import { Icon } from '../../atoms/Icon/Icon';
 
 type CommentButtonPropsType = {
-	className: string,
+	className?: string,
 	title: number,
 	show:boolean,
 	handleClick?: () => void

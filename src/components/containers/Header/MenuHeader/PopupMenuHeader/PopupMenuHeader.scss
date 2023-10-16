@@ -65,6 +65,8 @@
 		padding: 0;
 		&__wrapper {
 			min-height: 0;
+			opacity: 0;
+			transition: all .2s;
 		}
 		&__list {
 			padding: 16px;
@@ -72,8 +74,10 @@
 		&.active {
 			grid-template-rows: 1fr;
 			opacity: 1;
-			// padding: 16px;
 		}
+		&.active .popup-header__wrapper {
+			opacity: 1;
+		} 
 		&__link_logout {
 			margin: 0 16px 16px;
 		}

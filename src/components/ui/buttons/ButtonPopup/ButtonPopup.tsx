@@ -1,6 +1,5 @@
-import React, { CSSProperties, MouseEventHandler } from "react";
+import React from "react";
 import './ButtonPopup.scss';
-import icon from '../../../../assets/icons/popup-btn-points.svg';
 import { Icon } from '../../atoms/Icon/Icon';
 
 

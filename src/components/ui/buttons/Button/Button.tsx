@@ -7,14 +7,14 @@ type variantType = 'black' | 'default' | 'brown'
 type propsType = {
 	children: any,
 	maxWidth?: string,
-	onClickHandler?: MouseEventHandler,
 	className?: string,
 	style?: CSSProperties,
 	centered?: boolean,
 	mb?: string | number,
 	path?: string,
 	variant?: variantType,
-	disabled?: boolean
+	disabled?: boolean,
+	onClickHandler?: MouseEventHandler,
 }
 
 export const Button: React.FC<propsType> = ({

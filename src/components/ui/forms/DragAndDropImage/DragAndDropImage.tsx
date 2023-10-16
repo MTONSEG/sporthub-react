@@ -51,7 +51,7 @@ const DragAndDropImage: React.FC = () => {
 	}
 
 	async function addPosterVideoProcess(file: File) {
-		const storageRef = ref(storage, `posters/${uid}/${file.name}`);
+		const storageRef = ref(storage, `posters/${getUserUID().uid}/${file.name}`);
 		await uploadBytes(storageRef, file);
 		await getDownloadURL(storageRef).then(url => {
 			dispatch(setVideoPosterURL(url));
