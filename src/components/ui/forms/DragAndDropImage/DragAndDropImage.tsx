@@ -1,9 +1,8 @@
-import React, { useRef, DragEvent, useState, ChangeEvent, useEffect } from 'react';
+import React, { useRef, DragEvent, useState, ChangeEvent} from 'react';
 import './DragAndDropImage.scss';
 import icon from '../../../../assets/icons/upload-video.svg';
 import { Button } from '../../buttons/Button/Button';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import { NumStrNullType } from '../../../../redux/slices/auth/singupSlice';
 import { getUserUID } from '../../../../utils/getUserUID';
 import { setVideoPosterURL } from '../../../../redux/slices/video/videoSlice';
 import { storage } from '../../../../initializeFirebase';
@@ -13,12 +12,7 @@ const DragAndDropImage: React.FC = () => {
 	const { ...state } = useAppSelector(state => state.videos);
 	const inputRef = useRef<HTMLInputElement>();
 	const [drag, setDrag] = useState<boolean>();
-	const [uid, setUID] = useState<NumStrNullType>();
 	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		setUID(getUserUID().uid);
-	}, [])
 
 	const handlerChooseClick = (): void => {
 		inputRef.current.click();

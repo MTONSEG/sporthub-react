@@ -11,10 +11,10 @@ import VideoPlayer from '../../../common/VideoPlayer/VideoPlayer';
 import PlaceholderUploadVideo from './PlaceholderUploadVideo/PlaceholderUploadVideo';
 
 type UploadVideoPropsType = {
-	// setVideoFile: Function
+	userUID?:NumStrNullType
 }
 
-const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
+const UploadVideo: React.FC<UploadVideoPropsType> = ({userUID }) => {
 	const { ...state } = useAppSelector(state => state.videos);
 	const inputRef = useRef<HTMLInputElement>();
 	const [drag, setDrag] = useState<boolean>();
@@ -22,7 +22,12 @@ const UploadVideo: React.FC<UploadVideoPropsType> = ({ }) => {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		setUID(getUserUID().uid);
+		if (!userUID) {
+			setUID(getUserUID().uid);
+		} else {
+			setUID(userUID)
+		}
+		
 	}, [])
 
 	const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {

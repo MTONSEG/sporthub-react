@@ -5,15 +5,18 @@ import VideoItem from '../VideoItem/VideoItem';
 import { VideoFileType } from '../../../redux/slices/video/videoSlice';
 import { useAppSelector } from '../../../hooks/hooks';
 import { getUserUID } from '../../../utils/getUserUID';
+import { NumStrNullType } from '../../../redux/slices/auth/singupSlice';
+import { User } from '../../../redux/slices/home/userSlice';
 
 interface IVideoList {
 	title?: string,
 	videos?: VideoFileType[],
-	authorView?: boolean
-	fourColumn?: boolean
+	authorView?: boolean,
+	fourColumn?: boolean,
+	user?: User
 }
 
-const VideoList: React.FC<IVideoList> = ({ title, videos, authorView, fourColumn }) => {
+const VideoList: React.FC<IVideoList> = ({ title, videos, authorView, fourColumn, user }) => {
 	const { users } = useAppSelector(state => state.users);
 
 
@@ -27,7 +30,7 @@ const VideoList: React.FC<IVideoList> = ({ title, videos, authorView, fourColumn
 							<VideoItem
 								key={index}
 								video={el}
-								user={users[el.author]}
+								user={user ? user : users[el.author]}
 								authorView={authorView} />
 						))
 						: <></>

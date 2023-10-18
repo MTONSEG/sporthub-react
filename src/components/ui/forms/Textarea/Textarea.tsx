@@ -10,9 +10,6 @@ type TextareaType = {
 	setStateValue?: Function,
 	maxWidth?: string,
 	mb?: string,
-	forgotLink?: boolean,
-	dateMask?: string,
-	maskChar?: string,
 	className?: string,
 }
 

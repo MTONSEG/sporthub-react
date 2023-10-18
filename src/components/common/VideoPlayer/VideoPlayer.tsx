@@ -6,11 +6,12 @@ type VideoPlayerPropsType = {
 	videoSrc: string,
 	posterSrc?: string,
 	position?: 'static' | 'absolute';
+	maxWidth?: string
 }
 
-const VideoPlayer: React.FC<VideoPlayerPropsType> = ({ videoSrc, posterSrc, position = 'absolute' }) => {
+const VideoPlayer: React.FC<VideoPlayerPropsType> = ({ videoSrc, posterSrc, position = 'absolute', maxWidth }) => {
 	return (
-		<div className="video-player" style={{position}}>
+		<div className="video-player" style={{ position, maxWidth: maxWidth ? maxWidth : '100%' }}>
 			<Player
 				src={videoSrc}
 				poster={posterSrc}

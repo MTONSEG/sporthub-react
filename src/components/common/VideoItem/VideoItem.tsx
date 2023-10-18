@@ -9,21 +9,22 @@ import { useAppDispatch } from '../../../hooks/hooks';
 import Loading from '../../ui/atoms/Loading/Loading';
 import { User } from '../../../redux/slices/home/userSlice';
 
-interface IVideoItem {
+export interface IVideoItem {
 	video: VideoFileType,
 	user?: User,
 	authorView?: boolean,
 	playlistAdd?: boolean,
-	swiper?: boolean
+	swiper?: boolean,
+	maxWidth?:string
 }
 
 const VideoItem: React.FC<IVideoItem> = ({
-	video, user, authorView, playlistAdd, swiper
+	video, user, authorView, playlistAdd, swiper,maxWidth
 }) => {
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	const dispatch = useAppDispatch();
-	const [selected, setSelected] = useState<boolean>(video.selected);
+	const [selected, setSelected] = useState<boolean>(video.selected );
 
 	const handleClick = (uid: NumStrNullType): void => {
 		if (playlistAdd) {
@@ -46,8 +47,9 @@ const VideoItem: React.FC<IVideoItem> = ({
 
 	return (
 		<div
-			className={`video-item ${playlistAdd ? 'playlist' : ''} ${video.selected ? 'selected' : ''} ${swiper?'swiper-slide':''}`}
+			className={`video-item ${playlistAdd ? 'playlist' : ''} ${video.selected ? 'selected' : ''} ${swiper ? 'swiper-slide' : ''}`}
 			onClick={() => { handleClick(video.uid) }}
+			style={maxWidth ? { maxWidth } :{}}
 		>
 			<div className="video-item__poster-wrap">
 				{
